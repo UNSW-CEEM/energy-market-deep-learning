@@ -20,7 +20,7 @@ class ElectricityMarket(gym.Env):
 	}
 
 	def __init__(self):
-		self.solar_data = [0,0,0,0,0,1,1,1,1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2,2,1,1,1,0,0,0]
+		self.solar_data =  [0,0,0,0,0,1,1,1,1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2,2,1,1,1,0,0,0]
 		self.market_data = [0,0,0,0,0,1,1,1,1,2,3,4,5,6,7,8,9,8,7,6,5,100,3,2,2,1,1,1,0,0,0]
 		self.time_index = 0
 		self.state = (0,0,0,0) #storage, time index
