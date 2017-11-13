@@ -10,8 +10,118 @@ import gym
 from gym import spaces
 from gym.utils import seeding
 import numpy as np
+import pandas
+from collections import OrderedDict
+import threading
 
 logger = logging.getLogger(__name__)
+
+
+class Generator():
+	def __init__(self, label, capacity_MW):
+		self.capacity_MW = capacity_MW
+		self.current_output_MW = 0
+		self.label = label
+	
+	def get_minimum_next_output_MWh(self, time_step_mins):
+		return 0
+
+	def get_maximum_next_output_MWh(self, time_step_mins):
+		return self.current_output + 1
+
+	def get_srmc(self):
+		return 0
+	
+	def get_lrmc(self):
+		return 0
+
+class Coal_Generator(Generator):
+	def __init__(self, label, capacity_MW, ramp_rate_MW_per_min, srmc, lrmc):
+		Generator.__init__(self, label, capacity_MW)
+		self.ramp_rate_MW_per_min = ramp_rate_MW_per_min
+		self.srmc = srmc
+		self.lrmc = lrmc
+		self.current_output_MW = capacity_MW
+
+	def get_minimum_next_output_MWh(self, time_step_mins):
+		# Calculate the maximum output power change.
+		maximum_change_MW = float(time_step_mins) * float(self.ramp_rate_MW_per_min)
+		# Calculate output if kept steady.
+		next_output = float(self.current_output_MW) *  float(time_step_mins) / 60.0
+		# Triangle calc to take into account ramping down.
+		next_output = next_output - 0.5 * float(maximum_change_MW) * float(time_step_mins) / 60.0
+		# Make sure if next min output is below zero, we just return 0
+		return max(next_output, 0)
+
+	def get_maximum_next_output_MWh(self, time_step_mins):
+		# Calculate the maximum output power change.
+		maximum_change_MW = float(time_step_mins) * float(self.ramp_rate_MW_per_min)
+		# Calculate output if kept steady.
+		next_output = float(self.current_output_MW) *  float(time_step_mins) / 60.0
+		# Triangle calc to take into account ramping up.
+		next_output = next_output + 0.5 * float(maximum_change_MW) * float(time_step_mins) / 60.0
+		# Make sure if next min output above the capacity, we just return the energy generated at capacity
+		return min(next_output, float(self.capacity_MW) * float(time_step_mins) / 60.0)
+
+	def get_srmc(self):
+		return self.srmc
+
+	def get_lrmc(self):
+		return self.lrmc	
+
+	def set_output_MW(self, MW, time_step_mins):
+		maximum = self.get_maximum_next_output_MWh(time_step_mins)
+		minimum = self.get_minimum_next_output_MWh(time_step_mins)
+		if MW > maximum:
+			self.current_output_MW = maximum * 60.0 / time_step_mins
+		elif MW < minimum:
+			self.current_output_MW = minimum * 60.0 / time_step_mins
+		else:
+			self.current_output_MW = MW
+
+class Gas_Turbine_Generator(Generator):
+	def __init__(self, label, capacity_MW, ramp_rate_MW_per_min, srmc, lrmc):
+		Generator.__init__(self, label, capacity_MW)
+		self.ramp_rate_MW_per_min = ramp_rate_MW_per_min
+		self.srmc = srmc
+		self.lrmc = lrmc
+
+	def get_minimum_next_output_MWh(self, time_step_mins):
+		# Calculate the maximum output power change.
+		maximum_change_MW = float(time_step_mins) * float(self.ramp_rate_MW_per_min)
+		# Calculate output if kept steady.
+		next_output = float(self.current_output_MW) *  float(time_step_mins) / 60.0
+		# Triangle calc to take into account ramping down.
+		next_output = next_output - 0.5 * float(maximum_change_MW) * float(time_step_mins) / 60.0
+		# Make sure if next min output is below zero, we just return 0
+		return max(next_output, 0)
+
+	def get_maximum_next_output_MWh(self, time_step_mins):
+		# Calculate the maximum output power change.
+		maximum_change_MW = float(time_step_mins) * float(self.ramp_rate_MW_per_min)
+		# Calculate output if kept steady.
+		next_output = float(self.current_output_MW) *  float(time_step_mins) / 60.0
+		# Triangle calc to take into account ramping up.
+		next_output = next_output + 0.5 * float(maximum_change_MW) * float(time_step_mins) / 60.0
+		# Make sure if next min output above the capacity, we just return the energy generated at capacity
+		return min(next_output, float(self.capacity_MW) * float(time_step_mins) / 60.0)
+
+	def get_srmc(self):
+		return self.srmc
+
+	def get_lrmc(self):
+		return self.lrmc	
+
+class Single_Ownership_Market_Interface(object):
+	def __init__(self, market, label):
+		self.market = market 
+		self.label = label
+	def seed(self, seed=None):
+		return self.market._seed(seed)
+	def step(self, action):
+		return self.market._step(action, self.label)
+	def reset(self):
+		return self.market._reset()
 
 class ElectricityMarket(gym.Env):
 	metadata = {
@@ -20,107 +130,173 @@ class ElectricityMarket(gym.Env):
 	}
 
 	def __init__(self):
-		self.solar_data =  [0,0,0,0,0,1,1,1,1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2,2,1,1,1,0,0,0]
-		self.market_data = [0,0,0,0,0,1,1,1,1,2,3,4,5,6,7,8,9,8,7,6,5,100,3,2,2,1,1,1,0,0,0]
+		print "Initialising Market Environment."
+		self.demand_data = getDemandData('PRICE_AND_DEMAND_201701_QLD1.csv')
 		self.time_index = 0
-		self.state = (0,0,0,0) #storage, time index
+		self.time_step_mins = 30
+		self.time_step_hrs = self.time_step_mins / 60.0
 
-		self.gravity = 9.8
-		self.masscart = 1.0
-		self.masspole = 0.1
-		self.total_mass = (self.masspole + self.masscart)
-		self.length = 0.5 # actually half the pole's length
-		self.polemass_length = (self.masspole * self.length)
-		self.force_mag = 10.0
-		self.tau = 0.02  # seconds between state updates
+		# Event used to tell if all bids have come in. Makes individual bidders wait for the last bid so we can calculate result of auction.
+		self.bid_stack_ready = threading.Event()
+		# Set the minimum and maximum market prices.
+		self.min_price = -1000
+		self.max_price = 13100
+		# Define the participants as a list of generator objects.
+		self.generators = {
+			'Bayswater': Coal_Generator('Bayswater',2640, 1, 40, 40),
+			'Eraring': Coal_Generator('Eraring',2880, 1, 35, 35),
+			'Liddell': Coal_Generator('Liddell',2000, 7, 35, 35),
+			'Mt Piper': Coal_Generator('Mt Piper',1400, 1, 30, 30),
+			'Vales Point B' : Coal_Generator('Vales Point B',1320, 1, 30, 30),
+			'Colongra': Gas_Turbine_Generator('Colongra',667, 50, 80, 80),
+			'Liddell': Gas_Turbine_Generator('Liddell',50, 70, 90, 90),
+			'Tallawarra': Gas_Turbine_Generator('Tallawarra',435, 70, 85, 85),
+			'Smithfield': Gas_Turbine_Generator('Smithfield',176, 70, 85, 85),
+			'Uraniquity': Gas_Turbine_Generator('Uraniquity',641, 70, 85, 85),
+		}
 
-		# Angle at which to fail the episode
-		self.theta_threshold_radians = 12 * 2 * math.pi / 360
-		self.x_threshold = 2.4
+		# Initialise a bid stack.
+		self._reset_bid_stack()
 
-		# Angle limit set to 2 * theta_threshold_radians so failing observation is still within bounds
-		high = np.array([
-			self.x_threshold * 2,
-			np.finfo(np.float32).max,
-			self.theta_threshold_radians * 2,
-			np.finfo(np.float32).max])
+		# =========================
+		# DEFINING THE OBSERVATION SPACE
+		# =========================
+		observation_minimums = [
+			0, # Demand next time period
+			0, # Max dispatch this time period
+			0, # Min dispatch this time period
+			0, # dispatch level last time period
+			0, # Marginal price per MWh
+			-500, # previous market price per MWh 	
+		]
+		
+		observation_maximums = [
+			100000, # Demand
+			100000, # Max dispatch this time period for the subject generator
+			100000, # Min dispatch this time period for the subject generator
+			100000, # dispatch level last time period for the subject generator
+			13100,  # short-run marginal cost per MWh for the subject generator
+			13100,  # previous market price per MWh
+		]
 
-		self.action_space = spaces.Discrete(2)
-		self.observation_space = spaces.Box(-high, high)
+		# For each generator, add a spot in the observation space for current output. 
+		# Minimum 0 maximum 10000 (arbitrary)
+		# Later, we will make this more relevant to each generator
+		for label in self.generators:
+			g = self.generators[label]
+			observation_minimums.append(0)
+			observation_maximums.append(float(g.capacity_MW) * self.time_step_hrs)
+		# Define the observation space, based on the minimums and maximums set. 
+		self.observation_space = spaces.Box(np.array(observation_minimums), np.array(observation_maximums))
 
+		# =========================
+		# DEFINING THE ACTION SPACE
+		# =========================
+		# These are representations of the min and max values for an action
+		# First col is  MWh, second is price. 
+		low_bid = np.array([ 0,self.min_price])
+		high_bid = np.array([ 1000, self.max_price])
+
+		# Define the action space - can be any number from the mins in low_bid to the axes in high_bid
+		self.action_space = spaces.Box(low_bid,high_bid)
+
+		# =========================
+		# FINISHING SETUP
+		# =========================
 		self._seed()
 		self.viewer = None
 		# self.state = None
 
-		self.steps_beyond_done = None
+		
 
 	def _seed(self, seed=None):
 		self.np_random, seed = seeding.np_random(seed)
 		return [seed]
 
-		dsa
-	def _step(self, action):
+	def _step(self, action, generator_label):
+		# A bid has been submitted, make sure all threads are going to wait until ready.
+		if self.bid_stack_ready.isSet():
+			self.bid_stack_ready.clear()
+		
+		# Step time forward by 1 period. 
+		self.time_index += 1
+		
+		# Check if we are done
+		done = True if self.time_index >= len(self.demand_data)-1 else False
+		
+		# Make sure the action is valid.
 		assert self.action_space.contains(action), "%r (%s) invalid"%(action, type(action))
-		# state = self.state
-		# x, x_dot, theta, theta_dot = state
-		# force = self.force_mag if action==1 else -self.force_mag
-		# costheta = math.cos(theta)
-		# sintheta = math.sin(theta)
-		# temp = (force + self.polemass_length * theta_dot * theta_dot * sintheta) / self.total_mass
-		# thetaacc = (self.gravity * sintheta - costheta* temp) / (self.length * (4.0/3.0 - self.masspole * costheta * costheta / self.total_mass))
-		# xacc  = temp - self.polemass_length * thetaacc * costheta / self.total_mass
-		# x  = x + self.tau * x_dot
-		# x_dot = x_dot + self.tau * xacc
-		# theta = theta + self.tau * theta_dot
-		# theta_dot = theta_dot + self.tau * thetaacc
-		# self.state = (x,x_dot,theta,theta_dot)
-		# done =  x < -self.x_threshold \
-		#		 or x > self.x_threshold \
-		#		 or theta < -self.theta_threshold_radians \
-		#		 or theta > self.theta_threshold_radians
-		# done = bool(done)
-
-
-
-		state = self.state
-		index = int(self.state[1])
-		stored = self.state[0]
-
-
-		done = True if index >= len(self.solar_data)-1 else False
-		reward = 0
-		# Store Action
-		if action == 0 and not done:
-			stored += self.solar_data[index]
-			reward = 0
-		# Sell Action
-		elif action == 1 and not done:
-			reward = int(float(stored) *  float(self.market_data[index]))
 		
+		# Get the bid from the submitted action.
+		bid_MWh = action[0]
+		bid_price = action[1]
+		generator = generators[generator_label]
 		
-
-
+		# If bid acceptable, place bid in bidstack.
+		self.add_bid(generator, bid_MWh, bid_price)
 		
-		if not done:
-			reward = reward
-			self.state = (stored, index + 1 ,self.market_data[index + 1],self.solar_data[index+1])
-		elif self.steps_beyond_done is None:
-			# Pole just fell!
-			self.steps_beyond_done = 0
-			self.state = (0, index + 1 ,0,0)
-		else:
-			if self.steps_beyond_done == 0:
-				logger.warning("You are calling 'step()' even though this environment has already returned done = True. You should always call 'reset()' once you receive 'done = True' -- any further steps are undefined behavior.")
-			self.steps_beyond_done += 1
-			reward = 0.0
-			self.state = (0, index + 1 ,0,0)
+		#Now that we've submitted our bid, check if it's the last one. 
+		if self._all_bids_submitted(): 
+			# Perform the bid stack calculations - who gets dispatched etc. 
+			self._settle_auction()
+			# Tell the other threads the bid stack is ready.
+			self.bid_stack_ready.set()
+		
+		else: # Otherwise wait for the others to place bids
+			# Wait for the others to place bids.
+			self.bid_stack_ready.wait()
+
+		# Calculate reward as difference between revenue and cost of generation.
+		reward = (self.price - generator.get_srmc()) * self.bid_stack[generator.label]['dispatched']
+
+		# Get the state as a numpy array
+		state = self._get_state()
 
 		return np.array(self.state), reward, done, {}
 
 	def _reset(self):
-		self.state = self.np_random.uniform(low=-0.05, high=0.05, size=(4,))
-		self.steps_beyond_done = None
-		return np.array(self.state)
+		print "RESETTING MARKET"
+		self.demand_data = getDemandData('PRICE_AND_DEMAND_201701_QLD1.csv')
+		self.time_index = 0
+
+		# Event used to tell if all bids have come in. Makes individual bidders wait for the last bid so we can calculate result of auction.
+		self.bid_stack_ready = threading.Event()
+		
+		# Define the participants as a list of generator objects.
+		self.generators = {
+			'Bayswater': Coal_Generator('Bayswater',2640, 1, 40, 40),
+			'Eraring': Coal_Generator('Eraring',2880, 1, 35, 35),
+			'Liddell': Coal_Generator('Liddell',2000, 7, 35, 35),
+			'Mt Piper': Coal_Generator('Mt Piper',1400, 1, 30, 30),
+			'Vales Point B' : Coal_Generator('Vales Point B',1320, 1, 30, 30),
+			'Colongra': Gas_Turbine_Generator('Colongra',667, 50, 80, 80),
+			'Liddell': Gas_Turbine_Generator('Liddell',50, 70, 90, 90),
+			'Tallawarra': Gas_Turbine_Generator('Tallawarra',435, 70, 85, 85),
+			'Smithfield': Gas_Turbine_Generator('Smithfield',176, 70, 85, 85),
+			'Uraniquity': Gas_Turbine_Generator('Uraniquity',641, 70, 85, 85),
+		}
+
+		# Initialise a bid stack.
+		self._reset_bid_stack()
+
+		# =========================
+		# FINISHING SETUP
+		# =========================
+		self._seed()
+
+		# Create initial set of observations.
+		observations = [
+			self.demand_data[0], # Demand next time period
+			1, # Max dispatch this coming time period for the subject generator
+			0, # Min dispatch this coming time period for the subject generator
+			0, # dispatch level last time period for the subject generator
+			0,  # short-run marginal cost per MWh for the subject generator
+			0,  # previous market price per MWh
+		]
+		# Record each generator's output.
+		for g in sorted(self.generators, key=lambda k: k):
+			observations.append(0)
+		return np.array(observations)
 
 	def _render(self, mode='human', close=False):
 		return None
@@ -174,3 +350,65 @@ class ElectricityMarket(gym.Env):
 		# self.poletrans.set_rotation(-x[2])
 
 		# return self.viewer.render(return_rgb_array = mode=='rgb_array')
+
+	def _reset_bid_stack(self):
+		self.bid_stack = {}
+		for g in self.generators:
+			self.bid_stack[g] = None
+	
+	def _add_bid(self, generator, MWh, price):
+		self.bid_stack[generator.label] = {'price':price, 'MWh':MWh}
+	
+	def _all_bids_submitted(self):
+		for label in self.bid_stack:
+			if self.bid_stack[label] == None:
+				return False
+		return True
+
+	# Settles the auction based on the assumption that all bids were achievable.
+	def _settle_auction(self):
+		# Get demand in MWh
+		demand = self.demand_data[self.time_index] * self.time_step_hrs
+		# Get a list of bids from the bid stack
+		bids = []
+		for gen_label in self.bid_stack:
+			bid = self.bid_stack[gen_label]
+			bid['label'] = gen_label
+		# Sort the bids by price
+		sorted_bids = sorted(bids, key=lambda k: k['price'])
+		# dispatch until requirement satisfied.
+		for bid in bids:
+			gen_label = bid['label']
+			# Step the price up to match the bid, if there is still dispatch to do.
+			if demand > 0:
+				self.price = bid['price']
+			# Find the amount dispatched. Either the demand or what's available. 
+			dispatched = min(bid['MWh'], demand)
+			# Record the amount dispatched.
+			self.bid_stack[gen_label]['dispatched'] = dispatched
+			# Advise the generator to go to requested level
+
+			# Decrement demand, stopping at 0.
+			demand = max(demand - dispatched, 0)
+	
+	def _get_observations(self, generator_label):
+		generator = generators[generator_label]
+		observations = [
+			self.demand_data[self.time_index+1], # Demand next time period
+			generator.get_maximum_next_output_MWh(self.time_step_mins), # Max dispatch this coming time period for the subject generator
+			generator.get_minimum_next_output_MWh(self.time_step_mins), # Min dispatch this coming time period for the subject generator
+			self.bid_stack[generator.label]['dispatched'], # dispatch level last time period for the subject generator
+			generator.get_srmc(),  # short-run marginal cost per MWh for the subject generator
+			generator.get_lrmc(),  # previous market price per MWh
+		]
+		# Record each generator's output.
+		for g in sorted(self.generators, key=lambda k: k.label):
+			observations.append(self.bid_stack[g.label]['dispatched'])
+		return np.array(observations)
+
+
+def getDemandData(path):
+	import pandas
+	colnames = ['REGION','SETTLEMENTDATE','TOTALDEMAND','RRP','PERIODTYPE']
+	data = pandas.read_csv(path, names=colnames, skiprows=[0])
+	return np.array(data.TOTALDEMAND.tolist())
