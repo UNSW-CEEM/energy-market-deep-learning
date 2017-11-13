@@ -119,7 +119,7 @@ class Single_Ownership_Market_Interface(object):
 	def seed(self, seed=None):
 		return self.market._seed(seed)
 	def step(self, action):
-		return self.market._step(action, self.label)
+		return self.market.step(action, self.label)
 	def reset(self):
 		return self.market._reset()
 
@@ -213,6 +213,9 @@ class ElectricityMarket(gym.Env):
 		self.np_random, seed = seeding.np_random(seed)
 		return [seed]
 
+	def step(self, action, generator_label):
+		return self._step(action, generator_label)
+
 	def _step(self, action, generator_label):
 		# A bid has been submitted, make sure all threads are going to wait until ready.
 		if self.bid_stack_ready.isSet():
@@ -225,15 +228,15 @@ class ElectricityMarket(gym.Env):
 		done = True if self.time_index >= len(self.demand_data)-1 else False
 		
 		# Make sure the action is valid.
-		assert self.action_space.contains(action), "%r (%s) invalid"%(action, type(action))
+		# assert self.action_space.contains(action), "%r (%s) invalid"%(action, type(action))
 		
 		# Get the bid from the submitted action.
 		bid_MWh = action[0]
 		bid_price = action[1]
-		generator = generators[generator_label]
+		generator = self.generators[generator_label]
 		
 		# If bid acceptable, place bid in bidstack.
-		self.add_bid(generator, bid_MWh, bid_price)
+		self._add_bid(generator, bid_MWh, bid_price)
 		
 		#Now that we've submitted our bid, check if it's the last one. 
 		if self._all_bids_submitted(): 
@@ -243,6 +246,7 @@ class ElectricityMarket(gym.Env):
 			self.bid_stack_ready.set()
 		
 		else: # Otherwise wait for the others to place bids
+			print "Waiting -> ", generator_label
 			# Wait for the others to place bids.
 			self.bid_stack_ready.wait()
 
