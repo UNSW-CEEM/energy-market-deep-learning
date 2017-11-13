@@ -122,6 +122,8 @@ class Single_Ownership_Market_Interface(object):
 		return self.market.step(action, self.label)
 	def reset(self):
 		return self.market._reset()
+	def render(self, mode='human', close=False):
+		return self.market._render(mode=mode, close=close)
 
 class ElectricityMarket(gym.Env):
 	metadata = {
@@ -143,16 +145,16 @@ class ElectricityMarket(gym.Env):
 		self.max_price = 13100
 		# Define the participants as a list of generator objects.
 		self.generators = {
-			'Bayswater': Coal_Generator('Bayswater',2640, 1, 40, 40),
-			'Eraring': Coal_Generator('Eraring',2880, 1, 35, 35),
-			'Liddell': Coal_Generator('Liddell',2000, 7, 35, 35),
-			'Mt Piper': Coal_Generator('Mt Piper',1400, 1, 30, 30),
-			'Vales Point B' : Coal_Generator('Vales Point B',1320, 1, 30, 30),
-			'Colongra': Gas_Turbine_Generator('Colongra',667, 50, 80, 80),
-			'Liddell': Gas_Turbine_Generator('Liddell',50, 70, 90, 90),
-			'Tallawarra': Gas_Turbine_Generator('Tallawarra',435, 70, 85, 85),
-			'Smithfield': Gas_Turbine_Generator('Smithfield',176, 70, 85, 85),
-			'Uraniquity': Gas_Turbine_Generator('Uraniquity',641, 70, 85, 85),
+			'Bayswater': Coal_Generator('Bayswater',12640, 1, 40, 40),
+			# 'Eraring': Coal_Generator('Eraring',2880, 1, 35, 35),
+			# 'Liddell': Coal_Generator('Liddell',2000, 7, 35, 35),
+			# 'Mt Piper': Coal_Generator('Mt Piper',1400, 1, 30, 30),
+			# 'Vales Point B' : Coal_Generator('Vales Point B',1320, 1, 30, 30),
+			# 'Colongra': Gas_Turbine_Generator('Colongra',667, 50, 80, 80),
+			# 'Liddell': Gas_Turbine_Generator('Liddell',50, 70, 90, 90),
+			# 'Tallawarra': Gas_Turbine_Generator('Tallawarra',435, 70, 85, 85),
+			# 'Smithfield': Gas_Turbine_Generator('Smithfield',176, 70, 85, 85),
+			# 'Uraniquity': Gas_Turbine_Generator('Uraniquity',641, 70, 85, 85),
 		}
 
 		# Initialise a bid stack.
@@ -195,7 +197,7 @@ class ElectricityMarket(gym.Env):
 		# These are representations of the min and max values for an action
 		# First col is  MWh, second is price. 
 		low_bid = np.array([ 0,self.min_price])
-		high_bid = np.array([ 1000, self.max_price])
+		high_bid = np.array([ 15000, self.max_price])
 
 		# Define the action space - can be any number from the mins in low_bid to the axes in high_bid
 		self.action_space = spaces.Box(low_bid,high_bid)
@@ -240,6 +242,7 @@ class ElectricityMarket(gym.Env):
 		
 		#Now that we've submitted our bid, check if it's the last one. 
 		if self._all_bids_submitted(): 
+			print "All Bids Submitted!!"
 			# Perform the bid stack calculations - who gets dispatched etc. 
 			self._settle_auction()
 			# Tell the other threads the bid stack is ready.
@@ -254,9 +257,9 @@ class ElectricityMarket(gym.Env):
 		reward = (self.price - generator.get_srmc()) * self.bid_stack[generator.label]['dispatched']
 
 		# Get the state as a numpy array
-		state = self._get_state()
+		observations = self._get_observations(generator_label)
 
-		return np.array(self.state), reward, done, {}
+		return observations, reward, done, {}
 
 	def _reset(self):
 		print "RESETTING MARKET"
@@ -268,16 +271,16 @@ class ElectricityMarket(gym.Env):
 		
 		# Define the participants as a list of generator objects.
 		self.generators = {
-			'Bayswater': Coal_Generator('Bayswater',2640, 1, 40, 40),
-			'Eraring': Coal_Generator('Eraring',2880, 1, 35, 35),
-			'Liddell': Coal_Generator('Liddell',2000, 7, 35, 35),
-			'Mt Piper': Coal_Generator('Mt Piper',1400, 1, 30, 30),
-			'Vales Point B' : Coal_Generator('Vales Point B',1320, 1, 30, 30),
-			'Colongra': Gas_Turbine_Generator('Colongra',667, 50, 80, 80),
-			'Liddell': Gas_Turbine_Generator('Liddell',50, 70, 90, 90),
-			'Tallawarra': Gas_Turbine_Generator('Tallawarra',435, 70, 85, 85),
-			'Smithfield': Gas_Turbine_Generator('Smithfield',176, 70, 85, 85),
-			'Uraniquity': Gas_Turbine_Generator('Uraniquity',641, 70, 85, 85),
+			'Bayswater': Coal_Generator('Bayswater',12640, 1, 40, 40),
+			# 'Eraring': Coal_Generator('Eraring',2880, 1, 35, 35),
+			# 'Liddell': Coal_Generator('Liddell',2000, 7, 35, 35),
+			# 'Mt Piper': Coal_Generator('Mt Piper',1400, 1, 30, 30),
+			# 'Vales Point B' : Coal_Generator('Vales Point B',1320, 1, 30, 30),
+			# 'Colongra': Gas_Turbine_Generator('Colongra',667, 50, 80, 80),
+			# 'Liddell': Gas_Turbine_Generator('Liddell',50, 70, 90, 90),
+			# 'Tallawarra': Gas_Turbine_Generator('Tallawarra',435, 70, 85, 85),
+			# 'Smithfield': Gas_Turbine_Generator('Smithfield',176, 70, 85, 85),
+			# 'Uraniquity': Gas_Turbine_Generator('Uraniquity',641, 70, 85, 85),
 		}
 
 		# Initialise a bid stack.
@@ -371,20 +374,25 @@ class ElectricityMarket(gym.Env):
 
 	# Settles the auction based on the assumption that all bids were achievable.
 	def _settle_auction(self):
+		print "Settling Auction"
 		# Get demand in MWh
-		demand = self.demand_data[self.time_index] * self.time_step_hrs
+		demand = float(self.demand_data[self.time_index]) * float(self.time_step_hrs)
+		print "Demand:", demand
 		# Get a list of bids from the bid stack
 		bids = []
 		for gen_label in self.bid_stack:
 			bid = self.bid_stack[gen_label]
 			bid['label'] = gen_label
+			bids.append(bid)
 		# Sort the bids by price
 		sorted_bids = sorted(bids, key=lambda k: k['price'])
 		# dispatch until requirement satisfied.
-		for bid in bids:
+		for bid in sorted_bids:
+			print "Demand:", demand
 			gen_label = bid['label']
 			# Step the price up to match the bid, if there is still dispatch to do.
 			if demand > 0:
+				print "PRICE", bid['price']
 				self.price = bid['price']
 			# Find the amount dispatched. Either the demand or what's available. 
 			dispatched = min(bid['MWh'], demand)
@@ -396,7 +404,7 @@ class ElectricityMarket(gym.Env):
 			demand = max(demand - dispatched, 0)
 	
 	def _get_observations(self, generator_label):
-		generator = generators[generator_label]
+		generator = self.generators[generator_label]
 		observations = [
 			self.demand_data[self.time_index+1], # Demand next time period
 			generator.get_maximum_next_output_MWh(self.time_step_mins), # Max dispatch this coming time period for the subject generator
@@ -406,8 +414,8 @@ class ElectricityMarket(gym.Env):
 			generator.get_lrmc(),  # previous market price per MWh
 		]
 		# Record each generator's output.
-		for g in sorted(self.generators, key=lambda k: k.label):
-			observations.append(self.bid_stack[g.label]['dispatched'])
+		for g in sorted(self.generators, key=lambda k: k):
+			observations.append(self.bid_stack[g]['dispatched'])
 		return np.array(observations)
 
 

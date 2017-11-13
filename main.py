@@ -41,15 +41,15 @@ nb_actions = env.action_space.shape[0]
 
 gens = [
     'Bayswater',
-    'Eraring',
-    'Liddell',
-    'Mt Piper',
-    'Vales Point B' ,
-    'Colongra',
-    'Liddell',
-    'Tallawarra',
-    'Smithfield',
-    'Uraniquity',
+    # 'Eraring',
+    # 'Liddell',
+    # 'Mt Piper',
+    # 'Vales Point B' ,
+    # 'Colongra',
+    # 'Liddell',
+    # 'Tallawarra',
+    # 'Smithfield',
+    # 'Uraniquity',
 ]
 
 
@@ -96,8 +96,8 @@ for g in gens:
     # Okay, now it's time to learn something! We visualize the training here for show, but this
     # slows down training quite a lot. You can always safely abort the training prematurely using
     # Ctrl + C.
-    # agent.fit(agent_environment, nb_steps=50000, visualize=True, verbose=2, nb_max_episode_steps=200)
-    threading.Thread(target=agent.fit, args=(agent_environment,), kwargs={'nb_steps':50000, 'visualize':True, 'verbose':2, 'nb_max_episode_steps': 200} ).start()
+    agent.fit(agent_environment, nb_steps=50000, visualize=True, verbose=2, nb_max_episode_steps=200)
+    # threading.Thread(target=agent.fit, args=(agent_environment,), kwargs={'nb_steps':50000, 'visualize':True, 'verbose':2, 'nb_max_episode_steps': 200} ).start()
 
 # After training is done, we save the final weights.
 # agent.save_weights('ddpg_{}_weights.h5f'.format(ENV_NAME), overwrite=True)
