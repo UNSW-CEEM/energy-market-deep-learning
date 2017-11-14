@@ -22,6 +22,7 @@ class Generator():
 		self.capacity_MW = capacity_MW
 		self.current_output_MW = 0
 		self.label = label
+		self.type_idx = 0
 	
 	def get_minimum_next_output_MWh(self, time_step_mins):
 		return 0
@@ -35,6 +36,8 @@ class Generator():
 	def get_lrmc(self):
 		return 0
 
+	
+
 class Coal_Generator(Generator):
 	def __init__(self, label, capacity_MW, ramp_rate_MW_per_min, srmc, lrmc):
 		Generator.__init__(self, label, capacity_MW)
@@ -42,6 +45,7 @@ class Coal_Generator(Generator):
 		self.srmc = srmc
 		self.lrmc = lrmc
 		self.current_output_MW = capacity_MW
+		self.type_idx = 1
 
 	def get_minimum_next_output_MWh(self, time_step_mins):
 		# Calculate the maximum output power change.
@@ -85,6 +89,7 @@ class Gas_Turbine_Generator(Generator):
 		self.ramp_rate_MW_per_min = ramp_rate_MW_per_min
 		self.srmc = srmc
 		self.lrmc = lrmc
+		self.type_idx = 2
 
 	def get_minimum_next_output_MWh(self, time_step_mins):
 		# Calculate the maximum output power change.
@@ -146,7 +151,7 @@ class ElectricityMarket(gym.Env):
 		# Define the participants as a list of generator objects.
 		self.generators = {
 			'Bayswater': Coal_Generator('Bayswater',12640, 1, 40, 40),
-			# 'Eraring': Coal_Generator('Eraring',2880, 1, 35, 35),
+			'Eraring': Coal_Generator('Eraring',2880, 1, 35, 35),
 			# 'Liddell': Coal_Generator('Liddell',2000, 7, 35, 35),
 			# 'Mt Piper': Coal_Generator('Mt Piper',1400, 1, 30, 30),
 			# 'Vales Point B' : Coal_Generator('Vales Point B',1320, 1, 30, 30),
@@ -156,6 +161,11 @@ class ElectricityMarket(gym.Env):
 			# 'Smithfield': Gas_Turbine_Generator('Smithfield',176, 70, 85, 85),
 			# 'Uraniquity': Gas_Turbine_Generator('Uraniquity',641, 70, 85, 85),
 		}
+		
+		# Get the maximum generator type available. 
+		self.num_generator_types = 0
+		for g in self.generators:
+			self.num_generator_types = max(self.num_generator_types, self.generators[g].type_idx)
 
 		# Initialise a bid stack.
 		self._reset_bid_stack()
@@ -164,6 +174,7 @@ class ElectricityMarket(gym.Env):
 		# DEFINING THE OBSERVATION SPACE
 		# =========================
 		observation_minimums = [
+			0, #generator type
 			0, # Demand next time period
 			0, # Max dispatch this time period
 			0, # Min dispatch this time period
@@ -173,6 +184,7 @@ class ElectricityMarket(gym.Env):
 		]
 		
 		observation_maximums = [
+			self.num_generator_types, #generator type. arbitrary limit here on 
 			100000, # Demand
 			100000, # Max dispatch this time period for the subject generator
 			100000, # Min dispatch this time period for the subject generator
@@ -210,7 +222,6 @@ class ElectricityMarket(gym.Env):
 		# self.state = None
 
 		
-
 	def _seed(self, seed=None):
 		self.np_random, seed = seeding.np_random(seed)
 		return [seed]
@@ -219,6 +230,7 @@ class ElectricityMarket(gym.Env):
 		return self._step(action, generator_label)
 
 	def _step(self, action, generator_label):
+		print generator_label, "Step Called" 
 		# A bid has been submitted, make sure all threads are going to wait until ready.
 		if self.bid_stack_ready.isSet():
 			self.bid_stack_ready.clear()
@@ -242,14 +254,14 @@ class ElectricityMarket(gym.Env):
 		
 		#Now that we've submitted our bid, check if it's the last one. 
 		if self._all_bids_submitted(): 
-			print "All Bids Submitted!!"
+			print generator_label, "All Bids Submitted!!"
 			# Perform the bid stack calculations - who gets dispatched etc. 
 			self._settle_auction()
 			# Tell the other threads the bid stack is ready.
 			self.bid_stack_ready.set()
 		
 		else: # Otherwise wait for the others to place bids
-			print "Waiting -> ", generator_label
+			print generator_label, "Waiting"
 			# Wait for the others to place bids.
 			self.bid_stack_ready.wait()
 
@@ -263,6 +275,7 @@ class ElectricityMarket(gym.Env):
 
 	def _reset(self):
 		print "RESETTING MARKET"
+
 		self.demand_data = getDemandData('PRICE_AND_DEMAND_201701_QLD1.csv')
 		self.time_index = 0
 
@@ -272,7 +285,7 @@ class ElectricityMarket(gym.Env):
 		# Define the participants as a list of generator objects.
 		self.generators = {
 			'Bayswater': Coal_Generator('Bayswater',12640, 1, 40, 40),
-			# 'Eraring': Coal_Generator('Eraring',2880, 1, 35, 35),
+			'Eraring': Coal_Generator('Eraring',2880, 1, 35, 35),
 			# 'Liddell': Coal_Generator('Liddell',2000, 7, 35, 35),
 			# 'Mt Piper': Coal_Generator('Mt Piper',1400, 1, 30, 30),
 			# 'Vales Point B' : Coal_Generator('Vales Point B',1320, 1, 30, 30),
@@ -293,6 +306,7 @@ class ElectricityMarket(gym.Env):
 
 		# Create initial set of observations.
 		observations = [
+			0, # Generator type
 			self.demand_data[0], # Demand next time period
 			1, # Max dispatch this coming time period for the subject generator
 			0, # Min dispatch this coming time period for the subject generator
@@ -364,20 +378,24 @@ class ElectricityMarket(gym.Env):
 			self.bid_stack[g] = None
 	
 	def _add_bid(self, generator, MWh, price):
+		print generator.label, "Adding Bid"
 		self.bid_stack[generator.label] = {'price':price, 'MWh':MWh}
+		print "Bid stack after add:", self.bid_stack
 	
 	def _all_bids_submitted(self):
+		print "Bid Stack: ", self.bid_stack
 		for label in self.bid_stack:
 			if self.bid_stack[label] == None:
+				print "Still waiting on ",label
 				return False
 		return True
 
 	# Settles the auction based on the assumption that all bids were achievable.
 	def _settle_auction(self):
-		print "Settling Auction"
+		
 		# Get demand in MWh
 		demand = float(self.demand_data[self.time_index]) * float(self.time_step_hrs)
-		print "Demand:", demand
+		
 		# Get a list of bids from the bid stack
 		bids = []
 		for gen_label in self.bid_stack:
@@ -388,7 +406,7 @@ class ElectricityMarket(gym.Env):
 		sorted_bids = sorted(bids, key=lambda k: k['price'])
 		# dispatch until requirement satisfied.
 		for bid in sorted_bids:
-			print "Demand:", demand
+			
 			gen_label = bid['label']
 			# Step the price up to match the bid, if there is still dispatch to do.
 			if demand > 0:
@@ -406,6 +424,7 @@ class ElectricityMarket(gym.Env):
 	def _get_observations(self, generator_label):
 		generator = self.generators[generator_label]
 		observations = [
+			generator.type_idx,
 			self.demand_data[self.time_index+1], # Demand next time period
 			generator.get_maximum_next_output_MWh(self.time_step_mins), # Max dispatch this coming time period for the subject generator
 			generator.get_minimum_next_output_MWh(self.time_step_mins), # Min dispatch this coming time period for the subject generator
