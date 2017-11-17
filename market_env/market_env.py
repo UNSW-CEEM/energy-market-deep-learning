@@ -13,6 +13,7 @@ import numpy as np
 import pandas
 from collections import OrderedDict
 import threading
+from threading import Lock
 
 logger = logging.getLogger(__name__)
 
@@ -31,10 +32,10 @@ class Generator():
 		return self.current_output + 1
 
 	def get_srmc(self):
-		return 0
+		return np.float32(0)
 	
 	def get_lrmc(self):
-		return 0
+		return np.float32(0)
 
 	
 
@@ -68,10 +69,10 @@ class Coal_Generator(Generator):
 		return min(next_output, float(self.capacity_MW) * float(time_step_mins) / 60.0)
 
 	def get_srmc(self):
-		return self.srmc
+		return np.float32(self.srmc)
 
 	def get_lrmc(self):
-		return self.lrmc	
+		return np.float32(self.lrmc)
 
 	def set_output_MW(self, MW, time_step_mins):
 		maximum = self.get_maximum_next_output_MWh(time_step_mins)
@@ -112,10 +113,10 @@ class Gas_Turbine_Generator(Generator):
 		return min(next_output, float(self.capacity_MW) * float(time_step_mins) / 60.0)
 
 	def get_srmc(self):
-		return self.srmc
+		return np.float32(self.srmc)
 
 	def get_lrmc(self):
-		return self.lrmc	
+		return np.float32(self.lrmc)
 
 class Single_Ownership_Market_Interface(object):
 	def __init__(self, market, label):
@@ -142,9 +143,15 @@ class ElectricityMarket(gym.Env):
 		self.time_index = 0
 		self.time_step_mins = 30
 		self.time_step_hrs = self.time_step_mins / 60.0
+		self.max_time_index = len(self.demand_data)
+		
+		self.bid_stack_lock = threading.RLock()
+		
 
 		# Event used to tell if all bids have come in. Makes individual bidders wait for the last bid so we can calculate result of auction.
-		self.bid_stack_ready = threading.Event()
+		self.bid_stack_finalised = threading.Event()
+		self.all_finished = threading.Event()
+
 		# Set the minimum and maximum market prices.
 		self.min_price = -1000
 		self.max_price = 13100
@@ -169,6 +176,9 @@ class ElectricityMarket(gym.Env):
 
 		# Initialise a bid stack.
 		self._reset_bid_stack()
+
+		# Keep a register of which participants are finished with their calculations in a given time period. 
+		self._reset_finished_register()
 
 		# =========================
 		# DEFINING THE OBSERVATION SPACE
@@ -230,16 +240,7 @@ class ElectricityMarket(gym.Env):
 		return self._step(action, generator_label)
 
 	def _step(self, action, generator_label):
-		print generator_label, "Step Called" 
-		# A bid has been submitted, make sure all threads are going to wait until ready.
-		if self.bid_stack_ready.isSet():
-			self.bid_stack_ready.clear()
-		
-		# Step time forward by 1 period. 
-		self.time_index += 1
-		
-		# Check if we are done
-		done = True if self.time_index >= len(self.demand_data)-1 else False
+		print ">>>>>>>>>>> Step Called", generator_label, self.time_index
 		
 		# Make sure the action is valid.
 		# assert self.action_space.contains(action), "%r (%s) invalid"%(action, type(action))
@@ -249,60 +250,102 @@ class ElectricityMarket(gym.Env):
 		bid_price = action[1]
 		generator = self.generators[generator_label]
 		
+		
 		# If bid acceptable, place bid in bidstack.
 		self._add_bid(generator, bid_MWh, bid_price)
 		
 		#Now that we've submitted our bid, check if it's the last one. 
 		if self._all_bids_submitted(): 
-			print generator_label, "All Bids Submitted!!"
+			print generator_label, self.time_index, "All Bids Submitted!!"
 			# Perform the bid stack calculations - who gets dispatched etc. 
 			self._settle_auction()
+			# Print the result of the auction
+			with self.bid_stack_lock:
+				print generator_label, self.time_index, "Auction Settled, bidstack:", self.bid_stacks[self.time_index]
 			# Tell the other threads the bid stack is ready.
-			self.bid_stack_ready.set()
+			self.bid_stack_finalised.set()
+
 		
 		else: # Otherwise wait for the others to place bids
 			print generator_label, "Waiting"
 			# Wait for the others to place bids.
-			self.bid_stack_ready.wait()
+			self.bid_stack_finalised.wait()
+			with self.bid_stack_lock:
+				print generator_label, self.time_index, "Finished waiting, bid stack has been finalised. ", self.bid_stacks[self.time_index]
 
-		# Calculate reward as difference between revenue and cost of generation.
-		reward = (self.price - generator.get_srmc()) * self.bid_stack[generator.label]['dispatched']
+		with self.bid_stack_lock:
+			# Calculate reward as difference between revenue and cost of generation.
+			this_bid = self.bid_stacks[self.time_index][generator_label]
+			# print type(this_bid)
+			print generator_label, this_bid
+			# print this_bid['MWh']
+			# print this_bid['price']
+			# print this_bid['dispatched']
+			dispatched = this_bid['dispatched']
+			srmc = generator.get_srmc()
+			print generator_label,self.time_index, "Dispatched", dispatched, type(dispatched)
+			print generator_label,self.time_index, "SRMC", srmc, type(srmc)
+			print generator_label,self.time_index, "Price", self.price, type(self.price)
+			# print generator_label, "About to generate error:", self.bid_stacks[self.time_index][generator_label]
+			# for thing in self.bid_stacks[self.time_index][generator_label]:
+			# 	print thing, self.bid_stacks[self.time_index][generator_label][thing]
+			# 	if thing == "dispatched":
+			# 		print "FOUND IT!"
+			# 		dispatched = self.bid_stacks[self.time_index][generator_label][thing]
+			reward = (self.price - srmc) * dispatched
+		
 
 		# Get the state as a numpy array
 		observations = self._get_observations(generator_label)
+
+		self._record_finished(generator_label)
+
+		self.all_finished.wait()
+		# Step time forward by 1 period. 
+		# self.time_index += 1
+		
+		# Check if we are done
+		done = True if self.time_index >= len(self.demand_data)-1 else False
+		
+		
 
 		return observations, reward, done, {}
 
 	def _reset(self):
 		print "RESETTING MARKET"
+		if self.time_index != 0:
+			print "Time index has been stepped forward to we will reset all params."
+			self.demand_data = getDemandData('PRICE_AND_DEMAND_201701_QLD1.csv')
+			self.time_index = 0
 
-		self.demand_data = getDemandData('PRICE_AND_DEMAND_201701_QLD1.csv')
-		self.time_index = 0
+			# Event used to tell if all bids have come in. Makes individual bidders wait for the last bid so we can calculate result of auction.
+			self.bid_stack_finalised = threading.Event()
+			self.self.all_finished = threading.Event()
+			
+			# Define the participants as a list of generator objects.
+			self.generators = {
+				'Bayswater': Coal_Generator('Bayswater',12640, 1, 40, 40),
+				'Eraring': Coal_Generator('Eraring',2880, 1, 35, 35),
+				# 'Liddell': Coal_Generator('Liddell',2000, 7, 35, 35),
+				# 'Mt Piper': Coal_Generator('Mt Piper',1400, 1, 30, 30),
+				# 'Vales Point B' : Coal_Generator('Vales Point B',1320, 1, 30, 30),
+				# 'Colongra': Gas_Turbine_Generator('Colongra',667, 50, 80, 80),
+				# 'Liddell': Gas_Turbine_Generator('Liddell',50, 70, 90, 90),
+				# 'Tallawarra': Gas_Turbine_Generator('Tallawarra',435, 70, 85, 85),
+				# 'Smithfield': Gas_Turbine_Generator('Smithfield',176, 70, 85, 85),
+				# 'Uraniquity': Gas_Turbine_Generator('Uraniquity',641, 70, 85, 85),
+			}
 
-		# Event used to tell if all bids have come in. Makes individual bidders wait for the last bid so we can calculate result of auction.
-		self.bid_stack_ready = threading.Event()
-		
-		# Define the participants as a list of generator objects.
-		self.generators = {
-			'Bayswater': Coal_Generator('Bayswater',12640, 1, 40, 40),
-			'Eraring': Coal_Generator('Eraring',2880, 1, 35, 35),
-			# 'Liddell': Coal_Generator('Liddell',2000, 7, 35, 35),
-			# 'Mt Piper': Coal_Generator('Mt Piper',1400, 1, 30, 30),
-			# 'Vales Point B' : Coal_Generator('Vales Point B',1320, 1, 30, 30),
-			# 'Colongra': Gas_Turbine_Generator('Colongra',667, 50, 80, 80),
-			# 'Liddell': Gas_Turbine_Generator('Liddell',50, 70, 90, 90),
-			# 'Tallawarra': Gas_Turbine_Generator('Tallawarra',435, 70, 85, 85),
-			# 'Smithfield': Gas_Turbine_Generator('Smithfield',176, 70, 85, 85),
-			# 'Uraniquity': Gas_Turbine_Generator('Uraniquity',641, 70, 85, 85),
-		}
+			# Initialise a bid stack.
+			self._reset_bid_stack()
 
-		# Initialise a bid stack.
-		self._reset_bid_stack()
+			# Keep a register of who has finished in a given time step.
+			self._reset_finished_register()
 
-		# =========================
-		# FINISHING SETUP
-		# =========================
-		self._seed()
+			# =========================
+			# FINISHING SETUP
+			# =========================
+			self._seed()
 
 		# Create initial set of observations.
 		observations = [
@@ -373,69 +416,109 @@ class ElectricityMarket(gym.Env):
 		# return self.viewer.render(return_rgb_array = mode=='rgb_array')
 
 	def _reset_bid_stack(self):
-		self.bid_stack = {}
-		for g in self.generators:
-			self.bid_stack[g] = None
+		print "Resetting Bid Stack"
+		with self.bid_stack_lock:
+			self.bid_stack_finalised.clear()
+			self.bid_stacks = []
+			for i in range(self.max_time_index):
+				for g in self.generators:
+					self.bid_stacks.append({})
+					for g in self.generators:
+						self.bid_stacks[i][g] = None
 	
 	def _add_bid(self, generator, MWh, price):
-		print generator.label, "Adding Bid"
-		self.bid_stack[generator.label] = {'price':price, 'MWh':MWh}
-		print "Bid stack after add:", self.bid_stack
+		with self.bid_stack_lock:
+			print generator.label, "Adding Bid"
+			self.bid_stacks[self.time_index][generator.label] = {'price':price, 'MWh':MWh, 'dispatched':None}
+			print generator.label, self.time_index, "Bid stack after add:", self.bid_stacks[self.time_index]
 	
 	def _all_bids_submitted(self):
-		print "Bid Stack: ", self.bid_stack
-		for label in self.bid_stack:
-			if self.bid_stack[label] == None:
-				print "Still waiting on ",label
-				return False
+		with self.bid_stack_lock:
+			# print "Checking submitted, Bid Stack: ", self.bid_stacks[self.time_index]
+			for label in self.bid_stacks[self.time_index]:
+				if self.bid_stacks[self.time_index][label] == None:
+					print "Still waiting on ",label, "to submit a bid."
+					return False
 		return True
+
 
 	# Settles the auction based on the assumption that all bids were achievable.
 	def _settle_auction(self):
-		
-		# Get demand in MWh
-		demand = float(self.demand_data[self.time_index]) * float(self.time_step_hrs)
-		
-		# Get a list of bids from the bid stack
-		bids = []
-		for gen_label in self.bid_stack:
-			bid = self.bid_stack[gen_label]
-			bid['label'] = gen_label
-			bids.append(bid)
-		# Sort the bids by price
-		sorted_bids = sorted(bids, key=lambda k: k['price'])
-		# dispatch until requirement satisfied.
-		for bid in sorted_bids:
-			
-			gen_label = bid['label']
-			# Step the price up to match the bid, if there is still dispatch to do.
-			if demand > 0:
-				print "PRICE", bid['price']
-				self.price = bid['price']
-			# Find the amount dispatched. Either the demand or what's available. 
-			dispatched = min(bid['MWh'], demand)
-			# Record the amount dispatched.
-			self.bid_stack[gen_label]['dispatched'] = dispatched
-			# Advise the generator to go to requested level
+		with self.bid_stack_lock:
+			# Get demand in MWh
+			demand = float(self.demand_data[self.time_index]) * float(self.time_step_hrs)
 
-			# Decrement demand, stopping at 0.
-			demand = max(demand - dispatched, 0)
+			# Get a list of bids from the bid stack
+			bids = []
+			for gen_label in self.bid_stacks[self.time_index]:
+				bid = self.bid_stacks[self.time_index][gen_label]
+				bid['label'] = gen_label
+				bids.append(bid)
+			# Reset price
+			self.price = 0
+			# Sort the bids by price
+			sorted_bids = sorted(bids, key=lambda k: k['price'])
+			# dispatch until requirement satisfied.
+			
+			for bid in sorted_bids:
+				
+				gen_label = bid['label']
+				# Step the price up to match the bid, if there is still dispatch to do.
+				if demand > 0:
+					print "PRICE", bid['price']
+					self.price = bid['price']
+				# Find the amount dispatched. Either the demand or what's available. 
+				dispatched = min(bid['MWh'], demand)
+				# Record the amount dispatched.
+
+				self.bid_stacks[self.time_index][gen_label]['dispatched'] = dispatched
+				# Advise the generator to go to requested level
+
+				# Decrement demand, stopping at 0.
+				demand = max(demand - dispatched, 0)
 	
 	def _get_observations(self, generator_label):
-		generator = self.generators[generator_label]
-		observations = [
-			generator.type_idx,
-			self.demand_data[self.time_index+1], # Demand next time period
-			generator.get_maximum_next_output_MWh(self.time_step_mins), # Max dispatch this coming time period for the subject generator
-			generator.get_minimum_next_output_MWh(self.time_step_mins), # Min dispatch this coming time period for the subject generator
-			self.bid_stack[generator.label]['dispatched'], # dispatch level last time period for the subject generator
-			generator.get_srmc(),  # short-run marginal cost per MWh for the subject generator
-			generator.get_lrmc(),  # previous market price per MWh
-		]
-		# Record each generator's output.
-		for g in sorted(self.generators, key=lambda k: k):
-			observations.append(self.bid_stack[g]['dispatched'])
+		with self.bid_stack_lock:
+			generator = self.generators[generator_label]
+			observations = [
+				generator.type_idx,
+				self.demand_data[self.time_index+1], # Demand next time period
+				generator.get_maximum_next_output_MWh(self.time_step_mins), # Max dispatch this coming time period for the subject generator
+				generator.get_minimum_next_output_MWh(self.time_step_mins), # Min dispatch this coming time period for the subject generator
+				self.bid_stacks[self.time_index][generator.label]['dispatched'], # dispatch level last time period for the subject generator
+				generator.get_srmc(),  # short-run marginal cost per MWh for the subject generator
+				generator.get_lrmc(),  # previous market price per MWh
+			]
+			# Record each generator's output.
+			for g in sorted(self.generators, key=lambda k: k):
+				observations.append(self.bid_stacks[self.time_index][g]['dispatched'])
 		return np.array(observations)
+
+	def _reset_finished_register(self):
+		self.finished_register = []
+		for i in range(self.max_time_index):
+			dp = {}
+			for g in self.generators:
+				dp[g] = False
+			self.finished_register.append(dp)
+	
+
+	def _record_finished(self, generator_label):
+		self.finished_register[self.time_index][generator_label] = True
+		allFinished = True
+		for g in self.finished_register[self.time_index]:
+			if self.finished_register[self.time_index][g] == False:
+				allFinished = False
+				# Make other threads wait until all are done.
+				self.all_finished.clear()
+				
+		if allFinished:
+			self.time_index += 1
+			# Send out the notification that all can return their values. 
+			self.all_finished.set()
+			# Reset the bid stack finalisation variable, so all wait at the next step call.
+			self.bid_stack_finalised.clear()
+		
 
 
 def getDemandData(path):
