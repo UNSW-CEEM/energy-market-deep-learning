@@ -14,7 +14,7 @@ import pandas
 from collections import OrderedDict
 import threading
 from threading import Lock
-
+import time
 logger = logging.getLogger(__name__)
 
 
@@ -146,6 +146,7 @@ class ElectricityMarket(gym.Env):
 		self.max_time_index = len(self.demand_data)
 		
 		self.bid_stack_lock = threading.RLock()
+		self.reset_lock = threading.RLock()
 		
 
 		# Event used to tell if all bids have come in. Makes individual bidders wait for the last bid so we can calculate result of auction.
@@ -311,8 +312,11 @@ class ElectricityMarket(gym.Env):
 
 		return observations, reward, done, {}
 
+
 	def _reset(self):
 		print "RESETTING MARKET"
+		
+		print "Finished Reset Sleep"
 		if self.time_index != 0:
 			print "Time index has been stepped forward to we will reset all params."
 			self.demand_data = getDemandData('PRICE_AND_DEMAND_201701_QLD1.csv')
@@ -320,7 +324,7 @@ class ElectricityMarket(gym.Env):
 
 			# Event used to tell if all bids have come in. Makes individual bidders wait for the last bid so we can calculate result of auction.
 			self.bid_stack_finalised = threading.Event()
-			self.self.all_finished = threading.Event()
+			self.all_finished = threading.Event()
 			
 			# Define the participants as a list of generator objects.
 			self.generators = {
