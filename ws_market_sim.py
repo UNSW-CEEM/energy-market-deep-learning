@@ -15,8 +15,14 @@ def dispatched(result):
 	print "SERVER Emitting Dispatch Message"
 	emit('dispatched', result)
 	
+# Callback that notifies market participants of a dispatch event
+def market_reset(result):
+	# Contains details of generator dispatch
+	print "SERVER Emitting RESET Message"
+	emit('market_reset', result)
+	
 
-nem = electricity_market.Electricity_Market(dispatched)
+nem = electricity_market.Electricity_Market(dispatched, market_reset)
 
 
 @socketio.on('message')
@@ -44,6 +50,11 @@ def add_bid(bid):
 	print "adding bid", bid
 	nem.add_bid(bid['gen_label'], bid['price'], bid['volume'])
 
+
+@socketio.on('reset')
+def reset():
+	# Add the generator to the nem.
+	nem.reset(market_reset)
 
 @socketio.on('json')
 def handle_json(json):

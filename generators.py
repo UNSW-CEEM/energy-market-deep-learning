@@ -19,6 +19,9 @@ class Generator():
 	def get_lrmc(self):
 		return float(0)
 
+	def reset(self):
+		self.current_output_MW = 0
+
 	
 
 class Coal_Generator(Generator):

@@ -2,7 +2,7 @@
 
 class Electricity_Market():
 	# Called when a new electricity market object is created. 
-	def __init__(self, dispatch_callback):
+	def __init__(self, dispatch_callback, reset_callback):
 		# Keep track of the current time period. 
 		self.time_period = 0
 		# Store the number of minutes per time period
@@ -13,6 +13,8 @@ class Electricity_Market():
 		self.bidstack = {}
 		# Function that is called when dispatch is ready
 		self.dispatch_callback = dispatch_callback
+		# Function that is called when the market resets
+		self.reset_callback = reset_callback
 		print "SIM NEM initialised."
 	
 	# Adds a generator object to the list of generators.
@@ -66,7 +68,29 @@ class Electricity_Market():
 			'maximum_next_output_MWh':{g.label : g.get_maximum_next_output_MWh(self.period_length_mins) for g in self.generators}, 
 			'lrmc':{g.label : float(g.get_lrmc()) for g in self.generators}, 
 			'srmc':{g.label : float(g.get_srmc()) for g in self.generators}, 
-			'done':False
+			'done':False,
+			'fresh_reset':False
+		})
+	
+	def reset(self, reset_callback):
+		self.time_period = 0
+		self.bidstack = {}
+
+		for g in self.generators:
+			g.reset()
+		
+		self.reset_callback({
+			'price':0,
+			'unmet_demand':0,
+			'demand':self.get_current_demand(),
+			'next_demand':self.get_next_demand(),
+			'dispatch': { g.label : 0 for g in self.generators},
+			'minimum_next_output_MWh':{g.label : g.get_minimum_next_output_MWh(self.period_length_mins) for g in self.generators}, #dict comprehension, see: https://www.datacamp.com/community/tutorials/python-dictionary-comprehension
+			'maximum_next_output_MWh':{g.label : g.get_maximum_next_output_MWh(self.period_length_mins) for g in self.generators}, 
+			'lrmc':{g.label : float(g.get_lrmc()) for g in self.generators}, 
+			'srmc':{g.label : float(g.get_srmc()) for g in self.generators}, 
+			'done':False,
+			'fresh_reset':True
 		})
 	
 	def get_current_demand(self):

@@ -31,18 +31,17 @@ class Single_Ownership_Participant_Interface(gym.Env):
 		self.dispatch_event.clear()
 
 		# Holds info about reset
-		self.reset = None
 		self.reset_event = Event()
 		self.reset_event.clear()
 
 		self.hours_in_time_period = 0.5
 		
-		self.participant = Single_Ownership_Participant(generator_label, self.market_state_callback)
+		self.participant = Single_Ownership_Participant(generator_label, self.dispatch_callback, self.reset_callback)
 		# =========================
 		# DEFINING THE OBSERVATION SPACE
 		# =========================
 		observation_minimums = [
-			
+			0, # Fresh Reset Flag
 			0, # Demand next time period
 			0, # Max dispatch this time period
 			0, # Min dispatch this time period
@@ -52,7 +51,7 @@ class Single_Ownership_Participant_Interface(gym.Env):
 		]
 		
 		observation_maximums = [
-			
+			1,      # Fresh Reset Flag
 			100000, # Demand next time period
 			100000, # Max dispatch this time period for the subject generator
 			100000, # Min dispatch this time period for the subject generator
@@ -64,17 +63,12 @@ class Single_Ownership_Participant_Interface(gym.Env):
 		# For each generator, add a spot in the observation space for current output. 
 		# Minimum 0 maximum 10000 (arbitrary)
 		# Later, we will make this more relevant to each generator
-
-		# Hours in each time period. ie. 30 minute intervals assumed here.
-		for label in self.generators:
-			g = self.generators[label]
-			observation_minimums.append(0)
-			observation_maximums.append(float(g['capacity_MW']) * self.hours_in_time_period)
-
+		observation_minimums.extend([0 for g in self.generators])
+		observation_maximums.extend( [ float(self.generators[g]['capacity_MW']) * self.hours_in_time_period for g in self.generators ] )
+		
 		# Define the observation space, based on the minimums and maximums set. 
 		self.observation_space = spaces.Box(np.array(observation_minimums), np.array(observation_maximums))
 
-		
 		# =========================
 		# DEFINING THE ACTION SPACE
 		# =========================
@@ -121,15 +115,17 @@ class Single_Ownership_Participant_Interface(gym.Env):
 	def generate_observations(self, model_state):
 		# Create an observations array
 		observations = [
-				model_state['next_demand'], # Demand next time period
-				model_state['minimum_next_output_MWh'][self.generator_label], # Max dispatch this coming time period for the subject generator
-				model_state['maximum_next_output_MWh'][self.generator_label], # Min dispatch this coming time period for the subject generator
-				model_state['dispatch'][self.generator_label], # dispatch level last time period for the subject generator
-				model_state['srmc'][self.generator_label],  # short-run marginal cost per MWh for the subject generator
-				model_state['lrmc'][self.generator_label],  # previous market price per MWh
-			]
-		# Then add the dispatch of each generator.
+			1 if model_state['fresh_reset'] else 0,
+			model_state['next_demand'], # Demand next time period
+			model_state['minimum_next_output_MWh'][self.generator_label], # Max dispatch this coming time period for the subject generator
+			model_state['maximum_next_output_MWh'][self.generator_label], # Min dispatch this coming time period for the subject generator
+			model_state['dispatch'][self.generator_label], # dispatch level last time period for the subject generator
+			model_state['srmc'][self.generator_label],  # short-run marginal cost per MWh for the subject generator
+			model_state['lrmc'][self.generator_label],  # previous market price per MWh
+		]
+		# Then add the dispatch of each generator. Gens are pulled from an ordered list. 
 		observations.extend([model_state['dispatch'][g] for g in self.generators])
+		return observations
 
 	def dispatch_callback(self, state):
 		# print "ML", "Callback -> Dispatched", dispatch
@@ -175,4 +171,7 @@ if __name__ == "__main__":
 	
 	for i in range(100):
 		print p1.step([3000,i])
+	
+	print "Resetting"
+	print p1.reset()
 	

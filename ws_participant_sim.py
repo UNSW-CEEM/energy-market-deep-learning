@@ -34,7 +34,7 @@ class Single_Ownership_Participant():
 		self.socketIO = SocketIO('localhost', 5000, BaseNamespace)
 		# self.socketIO.get_namespace().set_participant(self)
 		self.socketIO.on('dispatched', self.dispatch)
-		self.socketIO.on('reset_complete', self.reset_callback)
+		self.socketIO.on('market_reset', self.reset_callback)
 		# Request to join the nem
 		self.socketIO.emit('join_nem', gen_name)
 
@@ -55,6 +55,7 @@ class Single_Ownership_Participant():
 		# time.sleep(5)
 	
 	def reset(self):
+		print "WS", "Resetting..."
 		self.socketIO.emit('reset')
 	
 		
