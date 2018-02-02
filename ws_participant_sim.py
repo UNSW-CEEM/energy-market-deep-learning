@@ -26,13 +26,15 @@ import sys
 # Uses websockets to talk to the market sim server
 # And also implements the OpenAI interface for talking to OpenAI Gym
 class Single_Ownership_Participant():
-	def __init__(self, gen_name, dispatch_callback):
+	def __init__(self, gen_name, dispatch_callback, reset_callback):
 		print "Initialising Single Ownership Participant"
 		self.dispatch_callback = dispatch_callback
+		self.reset_callback = reset_callback
 		self.gen_name = gen_name
 		self.socketIO = SocketIO('localhost', 5000, BaseNamespace)
 		# self.socketIO.get_namespace().set_participant(self)
 		self.socketIO.on('dispatched', self.dispatch)
+		self.socketIO.on('reset_complete', self.reset_callback)
 		# Request to join the nem
 		self.socketIO.emit('join_nem', gen_name)
 
@@ -51,6 +53,10 @@ class Single_Ownership_Participant():
 		# print "WS", "Emitted, waiting 5 secs."
 		# self.socketIO.wait()
 		# time.sleep(5)
+	
+	def reset(self):
+		self.socketIO.emit('reset')
+	
 		
 
 if __name__ == "__main__":

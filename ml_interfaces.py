@@ -26,13 +26,18 @@ class Single_Ownership_Participant_Interface(gym.Env):
 		self.generator_label = generator_label
 		
 		# Holds info about dispatch
-		self.dispatch = None
+		self.market_state = None
 		self.dispatch_event = Event()
 		self.dispatch_event.clear()
 
+		# Holds info about reset
+		self.reset = None
+		self.reset_event = Event()
+		self.reset_event.clear()
+
 		self.hours_in_time_period = 0.5
 		
-		self.participant = Single_Ownership_Participant(generator_label, self.dispatch_callback)
+		self.participant = Single_Ownership_Participant(generator_label, self.market_state_callback)
 		# =========================
 		# DEFINING THE OBSERVATION SPACE
 		# =========================
@@ -95,47 +100,57 @@ class Single_Ownership_Participant_Interface(gym.Env):
 	def step(self, action):
 		bid_MWh = action[0]
 		bid_price = action[1]
-
 		print self.generator_label, "Adding Bid", bid_price, bid_MWh
 		# Send the bid command to the participant
 		self.participant.add_bid(bid_price, bid_MWh)
-
 		# Wait for dispatch event.
 		self.dispatch_event.wait()
-		print "ML", "Step -> Dispatched", self.dispatch
+		# print "ML", "Step -> Dispatched", self.market_state
 		self.dispatch_event.clear()
-
 		# Create an observations array
-		observations = [
-				self.dispatch['next_demand'], # Demand next time period
-				self.dispatch['minimum_next_output_MWh'][self.generator_label], # Max dispatch this coming time period for the subject generator
-				self.dispatch['maximum_next_output_MWh'][self.generator_label], # Min dispatch this coming time period for the subject generator
-				self.dispatch['dispatch'][self.generator_label], # dispatch level last time period for the subject generator
-				self.dispatch['srmc'][self.generator_label],  # short-run marginal cost per MWh for the subject generator
-				self.dispatch['lrmc'][self.generator_label],  # previous market price per MWh
-			]
-		# Then add the dispatch of each generator.
-		observations.extend([self.dispatch['dispatch'][g] for g in self.generators])
-		
-
+		observations = self.generate_observations(self.market_state)
 		# Calculate reward - need to update later with penalties etc.
-		reward = self.dispatch['dispatch'][self.generator_label] * self.dispatch['price']
-		
+		reward = self.market_state['dispatch'][self.generator_label] * self.market_state['price']
 		# Check whether done
-		done = self.dispatch['done']
+		done = self.market_state['done']
 		# return the observation
 		return observations, reward, done, {}
 
-	def dispatch_callback(self, dispatch):
+	# Given a response from the model that contains general state information, generate a set of observations
+	# In the format requred by OpenAI Gym
+	def generate_observations(self, model_state):
+		# Create an observations array
+		observations = [
+				model_state['next_demand'], # Demand next time period
+				model_state['minimum_next_output_MWh'][self.generator_label], # Max dispatch this coming time period for the subject generator
+				model_state['maximum_next_output_MWh'][self.generator_label], # Min dispatch this coming time period for the subject generator
+				model_state['dispatch'][self.generator_label], # dispatch level last time period for the subject generator
+				model_state['srmc'][self.generator_label],  # short-run marginal cost per MWh for the subject generator
+				model_state['lrmc'][self.generator_label],  # previous market price per MWh
+			]
+		# Then add the dispatch of each generator.
+		observations.extend([model_state['dispatch'][g] for g in self.generators])
+
+	def dispatch_callback(self, state):
 		# print "ML", "Callback -> Dispatched", dispatch
-		self.dispatch = dispatch
+		self.market_state = state
 		self.dispatch_event.set()
 
+	# Send a reset request to the participant, which sends one to the market.
 	def reset(self):
 		self._seed()
-		# Send a reset request to the participant, which sends one to the market.
+		self.participant.reset()
+		# Wait for the callback to be called that indicates a reset has happened.
+		self.reset_event.wait()
+		print "ML","Successfully reset. State: ", self.market_state
+		self.reset_event.clear()
+
 		# Returns observations from the new (reset) state 
-		return None
+		return self.generate_observations(self.market_state)
+
+	def reset_callback(self, state):
+		self.market_state = state
+		self.reset_event.set()
 
 	def render(self, mode='human', close=False):
 		return None
