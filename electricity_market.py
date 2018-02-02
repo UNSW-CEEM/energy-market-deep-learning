@@ -5,6 +5,8 @@ class Electricity_Market():
 	def __init__(self, dispatch_callback):
 		# Keep track of the current time period. 
 		self.time_period = 0
+		# Store the number of minutes per time period
+		self.period_length_mins = 30
 		# generators is a list of generator objects.
 		self.generators = []
 		# bids is a dictthat stores a bid value for each generator
@@ -52,14 +54,24 @@ class Electricity_Market():
 			unmet_demand = max(unmet_demand - amount_dispatched, 0) #recalc unmet demand
 			price = bid['price']
 
+		
 		print "SIM Calling Dispatch Callback"
 		self.dispatch_callback({
 			'price':price,
 			'unmet_demand':unmet_demand,
 			'demand':demand,
-			'dispatch':dispatch
+			'next_demand':self.get_next_demand(),
+			'dispatch':dispatch,
+			'minimum_next_output_MWh':{g.label : g.get_minimum_next_output_MWh(self.period_length_mins) for g in self.generators}, #dict comprehension, see: https://www.datacamp.com/community/tutorials/python-dictionary-comprehension
+			'maximum_next_output_MWh':{g.label : g.get_maximum_next_output_MWh(self.period_length_mins) for g in self.generators}, 
+			'lrmc':{g.label : float(g.get_lrmc()) for g in self.generators}, 
+			'srmc':{g.label : float(g.get_srmc()) for g in self.generators}, 
+			'done':False
 		})
 	
 	def get_current_demand(self):
+		return 10
+
+	def get_next_demand(self):
 		return 10
 	

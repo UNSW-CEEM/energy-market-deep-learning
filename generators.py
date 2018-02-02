@@ -1,3 +1,4 @@
+import numpy as np
 
 class Generator():
 	def __init__(self, label, capacity_MW):
@@ -10,13 +11,13 @@ class Generator():
 		return 0
 
 	def get_maximum_next_output_MWh(self, time_step_mins):
-		return self.current_output + 1
+		return self.current_output_MW + 1
 
 	def get_srmc(self):
-		return np.float32(0)
+		return float(0)
 	
 	def get_lrmc(self):
-		return np.float32(0)
+		return float(0)
 
 	
 
@@ -50,10 +51,10 @@ class Coal_Generator(Generator):
 		return min(next_output, float(self.capacity_MW) * float(time_step_mins) / 60.0)
 
 	def get_srmc(self):
-		return np.float32(self.srmc)
+		return float(self.srmc)
 
 	def get_lrmc(self):
-		return np.float32(self.lrmc)
+		return float(self.lrmc)
 
 	def set_output_MW(self, MW, time_step_mins):
 		maximum = self.get_maximum_next_output_MWh(time_step_mins)
@@ -94,7 +95,7 @@ class Gas_Turbine_Generator(Generator):
 		return min(next_output, float(self.capacity_MW) * float(time_step_mins) / 60.0)
 
 	def get_srmc(self):
-		return np.float32(self.srmc)
+		return float(self.srmc)
 
 	def get_lrmc(self):
-		return np.float32(self.lrmc)
+		return float(self.lrmc)
