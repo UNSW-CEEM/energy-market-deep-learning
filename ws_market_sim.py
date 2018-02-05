@@ -8,6 +8,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
+# ===============================================
+# Callbacks
+# These are passed to the electricity market model and called on dispatch and reset events.
+# ===============================================
 
 # Callback that notifies market participants of a dispatch event
 def dispatched(result):
