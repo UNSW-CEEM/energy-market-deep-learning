@@ -1,12 +1,18 @@
-# From docs at https://pypi.python.org/pypi/socketIO-client
+# An OpenAI Gym implementation that enables OpenAI to communicate with a multi-agent based energy market model.
+# This uses websockets for the simple reason that many instances of Keras or Tensorflow cannot access the same 
+# environment thread, even via a wrapper. ie. They are not thread-safe in terms of the model.
+
+
+
+# SocketIO information from docs at https://pypi.python.org/pypi/socketIO-client
 
 import logging
-
 
 from socketIO_client import SocketIO, LoggingNamespace, BaseNamespace, SocketIONamespace
 import time
 import threading
 import sys
+
 # # This defines a set of functions that are used by websockets.
 # class ParticipantNamespace(BaseNamespace):
 # 	def on_nem_joined(self, *args):

@@ -174,4 +174,7 @@ if __name__ == "__main__":
 	
 	print "Resetting"
 	print p1.reset()
+
+	result = p1.step([3000,1])
+	print "Final result", result
 	

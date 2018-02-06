@@ -1,8 +1,4 @@
-"""
-Classic cart-pole system implemented by Rich Sutton et al.
-Copied from http://incompleteideas.net/sutton/book/code/pole.c
-permalink: https://perma.cc/C9ZM-652R
-"""
+
 
 import logging
 import math
@@ -37,7 +33,6 @@ class Generator():
 	def get_lrmc(self):
 		return np.float32(0)
 
-	
 
 class Coal_Generator(Generator):
 	def __init__(self, label, capacity_MW, ramp_rate_MW_per_min, srmc, lrmc):

@@ -15,6 +15,7 @@ class Electricity_Market():
 		self.dispatch_callback = dispatch_callback
 		# Function that is called when the market resets
 		self.reset_callback = reset_callback
+		
 		print "SIM NEM initialised."
 	
 	# Adds a generator object to the list of generators.
@@ -55,9 +56,9 @@ class Electricity_Market():
 			dispatch[bid['gen_label']] = amount_dispatched #record the generator's dispatch
 			unmet_demand = max(unmet_demand - amount_dispatched, 0) #recalc unmet demand
 			price = bid['price']
-
-		
+		# Return the Dispatch object by passing it to the calback for emission via websockets.
 		print "SIM Calling Dispatch Callback"
+		
 		self.dispatch_callback({
 			'price':price,
 			'unmet_demand':unmet_demand,
@@ -69,17 +70,18 @@ class Electricity_Market():
 			'lrmc':{g.label : float(g.get_lrmc()) for g in self.generators}, 
 			'srmc':{g.label : float(g.get_srmc()) for g in self.generators}, 
 			'done':False,
-			'fresh_reset':False
+			'fresh_reset':False,
 		})
 	
 	def reset(self, reset_callback):
 		self.time_period = 0
+		
 		self.bidstack = {}
 
 		for g in self.generators:
 			g.reset()
-		
-		self.reset_callback({
+
+		new_state = {
 			'price':0,
 			'unmet_demand':0,
 			'demand':self.get_current_demand(),
@@ -91,7 +93,12 @@ class Electricity_Market():
 			'srmc':{g.label : float(g.get_srmc()) for g in self.generators}, 
 			'done':False,
 			'fresh_reset':True
-		})
+		}
+		
+		# Call the callbacks to notify of a reset, 
+		self.reset_callback(new_state)
+		# Also send a dispatch callback to provide a response to the next decision.
+		self.dispatch_callback(new_state)
 	
 	def get_current_demand(self):
 		return 10
