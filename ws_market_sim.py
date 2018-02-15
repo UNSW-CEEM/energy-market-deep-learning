@@ -17,13 +17,13 @@ socketio = SocketIO(app)
 def dispatched(result):
 	# Contains details of generator dispatch
 	print "SERVER Emitting Dispatch Message"
-	emit('dispatched', result)
+	emit('dispatched', result, broadcast=True)
 	
 # Callback that notifies market participants of a dispatch event
 def market_reset(result):
 	# Contains details of generator dispatch
 	print "SERVER Emitting RESET Message"
-	emit('market_reset', result)
+	emit('market_reset', result, broadcast=True)
 	
 
 nem = electricity_market.Electricity_Market(dispatched)
@@ -45,7 +45,7 @@ def join_nem(gen_label):
 		lrmc = 40)
 	# Add the generator to the nem.
 	nem.add_generator(generator)
-	emit('nem_joined', generator.label)
+	emit('nem_joined', generator.label, broadcast=True)
 
 
 @socketio.on('add_bid')
@@ -69,7 +69,7 @@ def handle_json(json):
 def handle_my_custom_event(json):
 	print('received json: ' + str(json))
 	print 'value', json['value']
-	emit('my response', json)
+	emit('my response', json, broadcast=True)
 
 if __name__ == '__main__':
 	socketio.run(app)

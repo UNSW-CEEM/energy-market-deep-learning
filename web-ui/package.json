@@ -1,0 +1,16 @@
+{
+  "name": "web-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "monitor.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io": "^2.0.4",
+    "vue": "^2.5.13",
+    "vue-native-websocket": "^2.0.5"
+  }
+}

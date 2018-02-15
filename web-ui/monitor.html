@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js"></script>
+	<script src="/node_modules/engine.io-client/engine.io.js"></script>
+</head>
+<body>
+
+<h1>My First Heading</h1>
+<p>My first paragraph.</p>
+
+<div id="app">
+	{{ message }}
+	<ul id="example-1">
+		<li v-for="dispatch in dispatches">
+			{{ dispatch }}
+		</li>
+	</ul>
+</div>
+
+</body>
+
+<footer>
+	<script src="/monitor.js"></script>
+</footer>
+
+</html>
