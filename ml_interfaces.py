@@ -113,9 +113,10 @@ class Single_Ownership_Participant_Interface(gym.Env):
 	# Given a response from the model that contains general state information, generate a set of observations
 	# In the format requred by OpenAI Gym
 	def generate_observations(self, model_state):
+		print "Generating Observations. Model:", model_state
 		# Create an observations array
 		observations = [
-			1 if model_state['fresh_reset'] else 0,
+			0, # 1 if 'fresh_reset' in model_state else 0,
 			model_state['next_demand'], # Demand next time period
 			model_state['minimum_next_output_MWh'][self.generator_label], # Max dispatch this coming time period for the subject generator
 			model_state['maximum_next_output_MWh'][self.generator_label], # Min dispatch this coming time period for the subject generator
@@ -124,7 +125,7 @@ class Single_Ownership_Participant_Interface(gym.Env):
 			model_state['lrmc'][self.generator_label],  # previous market price per MWh
 		]
 		# Then add the dispatch of each generator. Gens are pulled from an ordered list. 
-		observations.extend([model_state['dispatch'][g] for g in self.generators])
+		observations.extend([model_state['dispatch'][g] if g in model_state['dispatch'] else 0 for g in self.generators])
 		return observations
 
 	def dispatch_callback(self, state):
@@ -134,6 +135,10 @@ class Single_Ownership_Participant_Interface(gym.Env):
 
 	# Send a reset request to the participant, which sends one to the market.
 	def reset(self):
+		print "RESET CALLED"
+		# I'm omitting actual reset in implementation
+		# - a lot of philosophical questions here, but effectively, there's no point resetting the market. 
+		# Any starting point is as good as any other. 
 		self._seed()
 		self.participant.reset()
 		# Wait for the callback to be called that indicates a reset has happened.

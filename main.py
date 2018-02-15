@@ -1,7 +1,7 @@
 import numpy as np
 import gym
 import market_env
-from market_env.market_env import ElectricityMarket, Single_Ownership_Market_Interface
+# from market_env.market_env import ElectricityMarket, Single_Ownership_Market_Interface
 from ml_interfaces import Single_Ownership_Participant_Interface
 
 import keras
@@ -24,13 +24,15 @@ from rl.random import OrnsteinUhlenbeckProcess
 
 import threading
 
+import sys
+
 tf_session = K.get_session()
 tf_graph = tf.get_default_graph()
-def train_generator(generator_label, gens):
+def train_generator(generator_label, gens, lrmc, capacity_MW):
     
 
     # Build an interface for the agent to access the shared environment
-    env = Single_Ownership_Market_Interface(generator_label, gens)
+    env = Single_Ownership_Participant_Interface(generator_label, gens, lrmc, capacity_MW)
     nb_actions = env.action_space.shape[0]
 
     actor = Sequential()
@@ -74,6 +76,7 @@ def train_generator(generator_label, gens):
     # slows down training quite a lot. You can always safely abort the training prematurely using
     # Ctrl + C.
     agent.fit(env, nb_steps=50000, visualize=True, verbose=2, nb_max_episode_steps=200)
+    return agent
 
 
 
@@ -85,37 +88,44 @@ ENV_NAME = 'MarketEnv-v0'
 # Get the environment and extract the number of actions.
 # env = gym.make(ENV_NAME)
 
-env = ElectricityMarket()
+# env = ElectricityMarket()
 
-np.random.seed(123)
-env.seed(123)
-assert len(env.action_space.shape) == 1
-
-
-gens = {
-    'Bayswater':{
-        'type':'coal',
-        'capacity_MW':3000,
-        'lrmc':30,
-    },
-    'Eraring':{
-        'type':'coal',
-        'capacity_MW':1000,
-        'lrmc':70
-    },
-    # 'Liddell',
-    # 'Mt Piper',
-    # 'Vales Point B' ,
-    # 'Colongra',
-    # 'Liddell',
-    # 'Tallawarra',
-    # 'Smithfield',
-    # 'Uraniquity',
-}
+def getopts(argv):
+    opts = {}  # Empty dictionary to store key-value pairs.
+    while argv:  # While there are arguments left to parse...
+        if argv[0][0] == '-':  # Found a "-name value" pair.
+            opts[argv[0]] = argv[1]  # Add key and value to the dictionary.
+        argv = argv[1:]  # Reduce the argument list by copying it starting from index 1.
+    return opts
 
 
-for g in gens:
-    train_generator(g, gens)
+# Usage python main.py -label <generator_label>
+if __name__ == '__main__':
+    myargs = getopts(sys.argv)
+    label = myargs['-label']
+
+    gens = {
+        'Bayswater':{
+            'type':'coal',
+            'capacity_MW':3000,
+            'lrmc':30,
+        },
+        'Eraring':{
+            'type':'coal',
+            'capacity_MW':1000,
+            'lrmc':70
+        },
+        # 'Liddell',
+        # 'Mt Piper',
+        # 'Vales Point B' ,
+        # 'Colongra',
+        # 'Liddell',
+        # 'Tallawarra',
+        # 'Smithfield',
+        # 'Uraniquity',
+    }
+
+    train_generator(label, gens, gens[label]['lrmc'], gens[label]['capacity_MW'])
     # At the start, multiple access to same model from different thread produces error, so we wait a little while
     # Hacky but solution found here https://github.com/fchollet/keras/issues/5223
     # time.sleep(5)

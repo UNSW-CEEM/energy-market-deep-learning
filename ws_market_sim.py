@@ -26,7 +26,7 @@ def market_reset(result):
 	emit('market_reset', result)
 	
 
-nem = electricity_market.Electricity_Market(dispatched, market_reset)
+nem = electricity_market.Electricity_Market(dispatched)
 
 
 @socketio.on('message')

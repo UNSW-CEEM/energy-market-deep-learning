@@ -2,7 +2,7 @@
 
 class Electricity_Market():
 	# Called when a new electricity market object is created. 
-	def __init__(self, dispatch_callback, reset_callback):
+	def __init__(self, dispatch_callback):
 		# Keep track of the current time period. 
 		self.time_period = 0
 		# Store the number of minutes per time period
@@ -13,8 +13,8 @@ class Electricity_Market():
 		self.bidstack = {}
 		# Function that is called when dispatch is ready
 		self.dispatch_callback = dispatch_callback
-		# Function that is called when the market resets
-		self.reset_callback = reset_callback
+		# Store the latest state
+		self.latest_state = None
 		
 		print "SIM NEM initialised."
 	
@@ -58,8 +58,8 @@ class Electricity_Market():
 			price = bid['price']
 		# Return the Dispatch object by passing it to the calback for emission via websockets.
 		print "SIM Calling Dispatch Callback"
-		
-		self.dispatch_callback({
+
+		self.latest_state = {
 			'price':price,
 			'unmet_demand':unmet_demand,
 			'demand':demand,
@@ -71,38 +71,36 @@ class Electricity_Market():
 			'srmc':{g.label : float(g.get_srmc()) for g in self.generators}, 
 			'done':False,
 			'fresh_reset':False,
-		})
-	
-	def reset(self, reset_callback):
-		self.time_period = 0
-		
-		self.bidstack = {}
-
-		for g in self.generators:
-			g.reset()
-
-		new_state = {
-			'price':0,
-			'unmet_demand':0,
-			'demand':self.get_current_demand(),
-			'next_demand':self.get_next_demand(),
-			'dispatch': { g.label : 0 for g in self.generators},
-			'minimum_next_output_MWh':{g.label : g.get_minimum_next_output_MWh(self.period_length_mins) for g in self.generators}, #dict comprehension, see: https://www.datacamp.com/community/tutorials/python-dictionary-comprehension
-			'maximum_next_output_MWh':{g.label : g.get_maximum_next_output_MWh(self.period_length_mins) for g in self.generators}, 
-			'lrmc':{g.label : float(g.get_lrmc()) for g in self.generators}, 
-			'srmc':{g.label : float(g.get_srmc()) for g in self.generators}, 
-			'done':False,
-			'fresh_reset':True
 		}
 		
+		self.dispatch_callback(self.latest_state)
+	
+	def reset(self, reset_callback):
+		
+
+		if not self.latest_state:
+			self.latest_state = {
+				'price':0,
+				'unmet_demand':0,
+				'demand':self.get_current_demand(),
+				'next_demand':self.get_next_demand(),
+				'dispatch': { g.label : 0 for g in self.generators},
+				'minimum_next_output_MWh':{g.label : g.get_minimum_next_output_MWh(self.period_length_mins) for g in self.generators}, #dict comprehension, see: https://www.datacamp.com/community/tutorials/python-dictionary-comprehension
+				'maximum_next_output_MWh':{g.label : g.get_maximum_next_output_MWh(self.period_length_mins) for g in self.generators}, 
+				'lrmc':{g.label : float(g.get_lrmc()) for g in self.generators}, 
+				'srmc':{g.label : float(g.get_srmc()) for g in self.generators}, 
+				'done':False,
+				'fresh_reset':True
+			}
+		
 		# Call the callbacks to notify of a reset, 
-		self.reset_callback(new_state)
+		reset_callback(self.latest_state)
 		# Also send a dispatch callback to provide a response to the next decision.
-		self.dispatch_callback(new_state)
+		# self.dispatch_callback(new_state)
 	
 	def get_current_demand(self):
-		return 10
+		return 100
 
 	def get_next_demand(self):
-		return 10
+		return 100
 	

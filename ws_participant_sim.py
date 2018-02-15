@@ -61,7 +61,8 @@ class Single_Ownership_Participant():
 		# time.sleep(5)
 	
 	def reset(self):
-		print "WS", "Resetting..."
+		print "WS", "Reset called."
+
 		self.socketIO.emit('reset')
 	
 		
