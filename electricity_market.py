@@ -1,4 +1,6 @@
 # An events-based electricity market simulator.
+import config
+import generators
 
 class Electricity_Market():
 	# Called when a new electricity market object is created. 
@@ -8,9 +10,9 @@ class Electricity_Market():
 		# Store the number of minutes per time period
 		self.period_length_mins = 30
 		# generators is a list of generator objects.
-		self.generators = []
+		self.generators = {g:generators.Coal_Generator(label=g, capacity_MW = 1, ramp_rate_MW_per_min = 0.1, srmc = 40, lrmc = 40) for g in config.generators}
 		# bids is a dictthat stores a bid value for each generator
-		self.bidstack = {}
+		self.bidstack = {g : None for g in config.generators}
 		# Function that is called when dispatch is ready
 		self.dispatch_callback = dispatch_callback
 		# Store the latest state
@@ -20,9 +22,9 @@ class Electricity_Market():
 	
 	# Adds a generator object to the list of generators.
 	def add_generator(self, generator):
-		self.generators.append(generator)
+		# self.generators.append(generator)
 		# bids is a dictthat stores a bid value for each generator
-		self.bidstack[generator.label] = None
+		# self.bidstack[generator.label] = None
 		print "SIM Generator added", generator.label
 	
 	# Add a bid for this time period.
@@ -44,7 +46,7 @@ class Electricity_Market():
 		print "SIM Dispatching"
 		demand = self.get_current_demand()
 		# Convert bidstack dict to a list of dicts containing names and dicts.
-		bids = [{'gen_label':gen_label, 'price':self.bidstack[gen_label]['price'], 'volume':self.bidstack[gen_label]['volume']} for gen_label in self.bidstack]
+		bids = [{'gen_label':gen_label, 'price': self.bidstack[gen_label]['price'], 'volume':self.bidstack[gen_label]['volume']} for gen_label in self.bidstack]
 		# Sort the list of bids from smallest to largest price
 		bids = sorted(bids, key=lambda bid: bid['price'])
 		# Perform economic dispatch
@@ -52,12 +54,19 @@ class Electricity_Market():
 		unmet_demand = demand #variable to store remaining unment demand
 		price = -1000.0
 		for bid in bids: #iterate through each bid in the bidstack
-			amount_dispatched = min(bid['volume'], unmet_demand) #calculate amount dispatched
+			amount_dispatch_requested = max(min(bid['volume'], unmet_demand),0) #calculate amount dispatched
+			required_generator_power_MW = amount_dispatch_requested * (60.0 / float(self.period_length_mins)) #Calculate required power.
+			amount_dispatched = self.generators[bid['gen_label']].request_output_MW(required_generator_power_MW, self.period_length_mins) #Request that the gen dispatch at this power.
 			dispatch[bid['gen_label']] = amount_dispatched #record the generator's dispatch
 			unmet_demand = max(unmet_demand - amount_dispatched, 0) #recalc unmet demand
 			price = bid['price']
-		# Return the Dispatch object by passing it to the calback for emission via websockets.
-		print "SIM Calling Dispatch Callback"
+		
+		# Price floor
+		price = max(-1000, price)
+		# Price ceiling
+		if price > 14200:
+			price = 0
+
 
 		self.latest_state = {
 			'price':price,
@@ -65,15 +74,22 @@ class Electricity_Market():
 			'demand':demand,
 			'next_demand':self.get_next_demand(),
 			'dispatch':dispatch,
-			'minimum_next_output_MWh':{g.label : g.get_minimum_next_output_MWh(self.period_length_mins) for g in self.generators}, #dict comprehension, see: https://www.datacamp.com/community/tutorials/python-dictionary-comprehension
-			'maximum_next_output_MWh':{g.label : g.get_maximum_next_output_MWh(self.period_length_mins) for g in self.generators}, 
-			'lrmc':{g.label : float(g.get_lrmc()) for g in self.generators}, 
-			'srmc':{g.label : float(g.get_srmc()) for g in self.generators}, 
+			'minimum_next_output_MWh':{label : g.get_minimum_next_output_MWh(self.period_length_mins) for label, g in self.generators.iteritems()}, #dict comprehension, see: https://www.datacamp.com/community/tutorials/python-dictionary-comprehension
+			'maximum_next_output_MWh':{label : g.get_maximum_next_output_MWh(self.period_length_mins) for label, g in self.generators.iteritems()}, 
+			'lrmc':{label : float(g.get_lrmc()) for label, g in self.generators.iteritems()}, 
+			'srmc':{label : float(g.get_srmc()) for label, g in self.generators.iteritems()}, 
 			'done':False,
 			'fresh_reset':False,
+			'bids':{b['gen_label']: b for b in bids},
 		}
 		
+		# Reset the bidstack
+		self.bidstack = {g : None for g in config.generators}
+		# Return the Dispatch object by passing it to the calback for emission via websockets.
+		print "SIM Calling Dispatch Callback"
 		self.dispatch_callback(self.latest_state)
+		
+		
 	
 	def reset(self, reset_callback):
 		
@@ -84,11 +100,11 @@ class Electricity_Market():
 				'unmet_demand':0,
 				'demand':self.get_current_demand(),
 				'next_demand':self.get_next_demand(),
-				'dispatch': { g.label : 0 for g in self.generators},
-				'minimum_next_output_MWh':{g.label : g.get_minimum_next_output_MWh(self.period_length_mins) for g in self.generators}, #dict comprehension, see: https://www.datacamp.com/community/tutorials/python-dictionary-comprehension
-				'maximum_next_output_MWh':{g.label : g.get_maximum_next_output_MWh(self.period_length_mins) for g in self.generators}, 
-				'lrmc':{g.label : float(g.get_lrmc()) for g in self.generators}, 
-				'srmc':{g.label : float(g.get_srmc()) for g in self.generators}, 
+				'dispatch': { label : 0 for label, g in self.generators.iteritems()},
+				'minimum_next_output_MWh':{label : g.get_minimum_next_output_MWh(self.period_length_mins) for label, g in self.generators.iteritems()}, #dict comprehension, see: https://www.datacamp.com/community/tutorials/python-dictionary-comprehension
+				'maximum_next_output_MWh':{label : g.get_maximum_next_output_MWh(self.period_length_mins) for label, g in self.generators.iteritems()}, 
+				'lrmc':{label : float(g.get_lrmc()) for label, g in self.generators.iteritems()}, 
+				'srmc':{label : float(g.get_srmc()) for label, g in self.generators.iteritems()}, 
 				'done':False,
 				'fresh_reset':True
 			}

@@ -2,22 +2,33 @@
 <html>
 
 <head>
-	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js"></script>
-	<script src="/node_modules/engine.io-client/engine.io.js"></script>
+	<link rel="stylesheet" type="text/css" href="/monitor.css">
+
+
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="/node_modules/vue/dist/vue.js"></script>
+	<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js"></script> -->
+	<!-- <script src="/node_modules/engine.io-client/engine.io.js"></script> -->
+	<script src="/node_modules/socket.io-client/dist/socket.io.js"></script>
 </head>
 <body>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+<h1>The Control Room</h1>
+
 
 <div id="app">
-	{{ message }}
-	<ul id="example-1">
-		<li v-for="dispatch in dispatches">
-			{{ dispatch }}
-		</li>
-	</ul>
+	<div v-if="sample_market_state">
+		<div v-for="(srmc, gen, index) in sample_market_state.srmc">
+			<h2>{{gen}}</h2>
+		</div>
+	</div>
+	
+	<div id="spot-chart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	<div id="demand-chart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	<div id="generation-chart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </div>
 
 </body>

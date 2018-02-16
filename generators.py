@@ -59,7 +59,8 @@ class Coal_Generator(Generator):
 	def get_lrmc(self):
 		return float(self.lrmc)
 
-	def set_output_MW(self, MW, time_step_mins):
+	# Requests a certain output in MW. Returns what the generator sets itself to in MW.
+	def request_output_MW(self, MW, time_step_mins):
 		maximum = self.get_maximum_next_output_MWh(time_step_mins)
 		minimum = self.get_minimum_next_output_MWh(time_step_mins)
 		if MW > maximum:
@@ -68,6 +69,7 @@ class Coal_Generator(Generator):
 			self.current_output_MW = minimum * 60.0 / time_step_mins
 		else:
 			self.current_output_MW = MW
+		return self.current_output_MW
 
 class Gas_Turbine_Generator(Generator):
 	def __init__(self, label, capacity_MW, ramp_rate_MW_per_min, srmc, lrmc):

@@ -1,6 +1,7 @@
 import numpy as np
 import gym
 import market_env
+import config
 # from market_env.market_env import ElectricityMarket, Single_Ownership_Market_Interface
 from ml_interfaces import Single_Ownership_Participant_Interface
 
@@ -104,26 +105,8 @@ if __name__ == '__main__':
     myargs = getopts(sys.argv)
     label = myargs['-label']
 
-    gens = {
-        'Bayswater':{
-            'type':'coal',
-            'capacity_MW':3000,
-            'lrmc':30,
-        },
-        'Eraring':{
-            'type':'coal',
-            'capacity_MW':1000,
-            'lrmc':70
-        },
-        # 'Liddell',
-        # 'Mt Piper',
-        # 'Vales Point B' ,
-        # 'Colongra',
-        # 'Liddell',
-        # 'Tallawarra',
-        # 'Smithfield',
-        # 'Uraniquity',
-    }
+    gens = config.generators
+    
 
     train_generator(label, gens, gens[label]['lrmc'], gens[label]['capacity_MW'])
     # At the start, multiple access to same model from different thread produces error, so we wait a little while

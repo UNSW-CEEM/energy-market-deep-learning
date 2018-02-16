@@ -16,10 +16,10 @@ import sys
 # # This defines a set of functions that are used by websockets.
 # class ParticipantNamespace(BaseNamespace):
 # 	def on_nem_joined(self, *args):
-# 		print "WS", "NEM Successfully Joined"
+# 		print "WSP", "NEM Successfully Joined"
 
 # 	def on_dispatched(self, *args):
-# 		print "WS", "Recieved Dispatch Message:"
+# 		print "WSP", "Recieved Dispatch Message:"
 	
 	
 # 	# Sets the participant object, so that commands via websocket can call participant functions.
@@ -50,18 +50,19 @@ class Single_Ownership_Participant():
 		t.start()
 	
 	def dispatch(self, result):
-		print "WS", "Dispatched", result
+		print "WSP", "Dispatched", result
 		self.dispatch_callback(result)
 
 	def add_bid(self, price, volume):
+		print "WSP adding bid", price, volume
 		self.socketIO.emit('add_bid', {'gen_label':self.gen_name, 'price':float(price), 'volume':float(volume) })
 		# self.socketIO.wait(1)
-		# print "WS", "Emitted, waiting 5 secs."
+		# print "WSP", "Emitted, waiting 5 secs."
 		# self.socketIO.wait()
 		# time.sleep(5)
 	
 	def reset(self):
-		print "WS", "Reset called."
+		print "WSP", "Reset called."
 
 		self.socketIO.emit('reset')
 	

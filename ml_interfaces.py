@@ -92,19 +92,20 @@ class Single_Ownership_Participant_Interface(gym.Env):
 		return [seed]
 
 	def step(self, action):
-		bid_MWh = action[0]
-		bid_price = action[1]
+		print "MLI step called", action 
+		bid_MWh = action[0] if not np.isnan(action[0])else 0
+		bid_price = action[1] if not np.isnan(action[1]) else 0
 		print self.generator_label, "Adding Bid", bid_price, bid_MWh
 		# Send the bid command to the participant
 		self.participant.add_bid(bid_price, bid_MWh)
 		# Wait for dispatch event.
 		self.dispatch_event.wait()
-		# print "ML", "Step -> Dispatched", self.market_state
+		# print "MLI", "Step -> Dispatched", self.market_state
 		self.dispatch_event.clear()
 		# Create an observations array
 		observations = self.generate_observations(self.market_state)
 		# Calculate reward - need to update later with penalties etc.
-		reward = self.market_state['dispatch'][self.generator_label] * self.market_state['price']
+		reward = self.market_state['dispatch'][self.generator_label] * (self.market_state['price'] - self.market_state['srmc'][self.generator_label])
 		# Check whether done
 		done = self.market_state['done']
 		# return the observation
@@ -129,7 +130,7 @@ class Single_Ownership_Participant_Interface(gym.Env):
 		return observations
 
 	def dispatch_callback(self, state):
-		# print "ML", "Callback -> Dispatched", dispatch
+		# print "MLI", "Callback -> Dispatched", dispatch
 		self.market_state = state
 		self.dispatch_event.set()
 
@@ -143,7 +144,7 @@ class Single_Ownership_Participant_Interface(gym.Env):
 		self.participant.reset()
 		# Wait for the callback to be called that indicates a reset has happened.
 		self.reset_event.wait()
-		print "ML","Successfully reset. State: ", self.market_state
+		print "MLI","Successfully reset. State: ", self.market_state
 		self.reset_event.clear()
 
 		# Returns observations from the new (reset) state 
