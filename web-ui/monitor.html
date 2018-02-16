@@ -3,7 +3,7 @@
 
 <head>
 	<link rel="stylesheet" type="text/css" href="/monitor.css">
-
+	<link href="https://fonts.googleapis.com/css?family=Karla|Poiret+One|Ropa+Sans|Source+Code+Pro" rel="stylesheet">
 
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://code.highcharts.com/highcharts.js"></script>
@@ -16,19 +16,39 @@
 </head>
 <body>
 
-<h1>The Control Room</h1>
+
 
 
 <div id="app">
-	<div v-if="sample_market_state">
-		<div v-for="(srmc, gen, index) in sample_market_state.srmc">
-			<h2>{{gen}}</h2>
-		</div>
+	<div class="header page-width"> 
+		<div><h1>The Control Room</h1> </div>
+		<div><span v-if="connected">Connected</span><span v-else>Not Connected</span></div>
 	</div>
 	
-	<div id="spot-chart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-	<div id="demand-chart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-	<div id="generation-chart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	<div class="row page-width">
+		<div class="col sidebar">
+			
+			
+			<div class="widget" v-if="sample_market_state">
+				<div v-for="(srmc, gen, index) in sample_market_state.srmc">
+					<h2>{{gen}}</h2>
+				</div>
+			</div>
+		</div>
+
+		<div class="col charts-area">
+
+			<div class="row">
+				<div class="widget" ><div id="spot-chart-container" class="chart"></div></div>
+			</div>
+
+			<div class="row">
+				<div class="widget" ><div id="demand-chart-container" class="chart"></div></div>
+				<div class="widget" ><div id="generation-chart-container" class="chart"></div></div>
+			</div>
+
+		</div>
+	</div>
 </div>
 
 </body>

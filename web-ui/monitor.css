@@ -1,3 +1,122 @@
+html{
+	box-sizing:border-box;
+}
+*, *:before, *:after{
+	box-sizing:inherit;
+}
+
+:root {
+	--header-color: #181A2B;
+	--main-bg-color: #181A2B;
+	--chart-bg-color: #24243E;
+	--widget-bg-color: #24243E;
+	--heading-text-color: #FFFCFF;
+	--text-color: #FFFCFF;
+	
+  }
+
 body{
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	
+	/* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
+	/* font-family: 'Source Code Pro', monospace; */
+	font-family: 'Karla', sans-serif;
+	 /* font-family: 'Poiret One', cursive; */
+	/* font-family: 'Ropa Sans', sans-serif; */
+
+	background-color: var(--main-bg-color);
+	color: var(--heading-text-color);
+}
+
+.header{
+	background-color: var(--header-color);
+	display:flex; 
+	flex-direction:row;
+	justify-content:space-between;
+	align-items:center;
+	flex-grow:1;
+	width:100%;
+	padding: 0 2vw 0 2vw;
+	/* padding:0 2vw 0 2vw; */
+
+}
+
+#app{
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+}
+
+.widget{
+	
+	/* box-sizing:border-box; */
+	background-color: var(--widget-bg-color);
+	border-radius:10px;
+	padding:1vh 1vw 1vh 1vw;
+	margin:1vh 0vw 1vh 0vw;
+	width:100%;
+}
+
+.randomthing{
+	
+	background-color:Blue;
+	border-radius:10px;
+	width:100%;
+	padding:1vh 1vw 1vh 1vw;
+	/* margin:1vh 1vw 1vh 1vw; */
+	
+	
+
+}
+
+.chart{
+	min-width: 25vw; 
+	height: 40vh; 
+	/* margin: 0 auto; */
+}
+
+.row{
+	
+	display:flex; 
+	flex-direction:row;
+	width:100%;
+	/* justify-content:space-between; */
+	flex-grow:1;
+	/* width:100%; */
+	/* margin:0 1vw 0 1vw */
+	/* flex-wrap:wrap; */
+}
+
+.page-width{
+	min-width:100vw;
+	max-width:100vw;
+}
+
+.col{
+	
+	display:flex; 
+	flex-direction:column;
+	/* flex-grow:1; */
+	/* width:100%; */
+	/* flex-wrap:wrap; */
+}
+
+
+
+.sidebar{
+	width:25vw;
+	min-width:25vw;
+	max-width:25vw;
+	/* background-color:red; */
+	padding:1vh 1vw 1vh 1vw;
+}
+
+.charts-area{
+	
+	padding:0 2vw 0 2vw;
+	width:75vw;
+	min-width:75vw;
+	max-width:75vw;
+	/* background-color:green; */
+
 }

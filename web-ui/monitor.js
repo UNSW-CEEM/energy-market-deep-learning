@@ -37,7 +37,7 @@ var app = new Vue({
 	el: '#app',
 	data: {
 	 	
-		
+		connected:false,
 		index :0,
 		spot_chart : null,
 		spot_chart_data: [],
@@ -46,6 +46,18 @@ var app = new Vue({
 		participants:[],
 		sample_market_state:null,
 		generation_chart_data: {},
+		// chart_background_color:'#E4DFDA'
+	},
+
+	computed:{
+		chart_background_color(){
+			var style = getComputedStyle(document.body);
+			return style.getPropertyValue('--chart-bg-color');
+		},
+		chart_text_color(){
+			var style = getComputedStyle(document.body);
+			return style.getPropertyValue('--text-color');
+		}
 	},
 	
 
@@ -78,16 +90,26 @@ var app = new Vue({
 			app.index = app.index+1;
 			
 		});
-		socket.on('connect', function(){console.log('connected')});
+		socket.on('connect', function(){
+			app.connected = true;
+			console.log('connected')
+		});
 		socket.on('nem_joined', function(data){console.log('nem_joined',data)});
-		socket.on('disconnect', function(){console.log('disconnected')});
+		socket.on('disconnect', function(){
+			app.connected = false;
+			console.log('disconnected')
+		});
 		
 		this.spot_chart = Highcharts.chart('spot-chart-container', {
 				chart: {
-						zoomType: 'x'
+						zoomType: 'x',
+						backgroundColor:this.chart_background_color,
 				},
 				title: {
-						text: 'Spot Price'
+						text: 'Spot Price',
+						style: {
+							color: this.chart_text_color
+						}
 				},
 				subtitle: {
 						text: document.ontouchstart === undefined ?
@@ -139,11 +161,16 @@ var app = new Vue({
 		});
 
 		this.demand_chart = Highcharts.chart('demand-chart-container', {
+			
 			chart: {
-					zoomType: 'x'
+					zoomType: 'x',
+					backgroundColor:this.chart_background_color,
 			},
 			title: {
-					text: 'Demand'
+					text: 'Demand',
+					style: {
+						color: this.chart_text_color
+					}
 			},
 			subtitle: {
 					text: document.ontouchstart === undefined ?
@@ -196,10 +223,14 @@ var app = new Vue({
 
 		this.generation_chart = Highcharts.chart('generation-chart-container', {
 			chart: {
-				type: 'area'
+				type: 'area',
+				backgroundColor:this.chart_background_color,
 			},
 			title: {
-				text: 'Generation (MW)'
+				text: 'Generation (MW)',
+				style: {
+					color: this.chart_text_color
+				}
 			},
 			subtitle: {
 				text: ''
