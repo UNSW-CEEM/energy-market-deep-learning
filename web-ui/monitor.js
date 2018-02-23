@@ -1,4 +1,4 @@
-// Vue.use(VueWebsocket, "localhost:5000");
+// Vue.use(VueWebsocket, "localhost:app.num_dps0");
 
 // io.on('connection', function(){
 // 	console.log('Connected!')
@@ -17,11 +17,11 @@
 // 	// an error occurred when sending/receiving data
 // 	console.log('websocket error', error)
 // };
-// var connection = io.connect('ws://0.0.0.0:5000');
+// var connection = io.connect('ws://0.0.0.0:app.num_dps0');
 
 
 
-// var socket = new eio.Socket('ws://localhost:5000/');
+// var socket = new eio.Socket('ws://localhost:app.num_dps0/');
 // socket.on('open', function(){
 // 	console.log('WS Open')
 // 	socket.on('message', function(data){});
@@ -43,6 +43,10 @@ var app = new Vue({
 		spot_chart_data: [],
 		demand_chart : null,
 		demand_chart_data: [],
+		unmet_demand_chart_data:[],
+		bid_scatter_chart_data:{},
+		num_dps:500,
+		
 		participants:[],
 		sample_market_state:null,
 		generation_chart_data: {},
@@ -59,6 +63,23 @@ var app = new Vue({
 			return style.getPropertyValue('--text-color');
 		}
 	},
+
+	methods:{
+		update_bid_scatter(){
+			// Bid Scatter Chart
+			var idx = 1; //we start from 1 because 0 is the unmet demand.
+			for(var gen in app.bid_scatter_chart_data){
+				if(app.bid_scatter_chart.series.length<=idx){
+					app.bid_scatter_chart.addSeries({name:gen, data:[], type:'scatter'});
+				}
+				// Get the last app.num_dps points so we dont crash the graphics engine
+				var latest_bid_scatter_chart_data = app.bid_scatter_chart_data[gen].slice(Math.max(app.bid_scatter_chart_data[gen].length - app.num_dps, 1))
+				// Chart the last app.num_dps points
+				app.bid_scatter_chart.series[idx].setData(latest_bid_scatter_chart_data)
+				idx ++;
+			}
+		}
+	},
 	
 
 	mounted(){
@@ -66,11 +87,12 @@ var app = new Vue({
 		socket.on('dispatched', function(market_state){
 			// console.log('market_stateed',data)
 			
-			// console.log('updateing chart')
+			// console.log('updating chart')
 			
 			// app.spot_chart_data.push();
 			app.spot_chart_data.push([app.index, market_state['price']]);
 			app.demand_chart_data.push([app.index, market_state['demand']]);
+			app.unmet_demand_chart_data.push([app.index, market_state['unmet_demand_MWh']]);
 			// Add to generation chart data
 			for(var gen in market_state['dispatch']){
 				// If the generator is not in the charting data, put it in. 
@@ -79,6 +101,16 @@ var app = new Vue({
 					app.generation_chart_data[gen] = []
 				}
 				app.generation_chart_data[gen].push([app.index, market_state['dispatch'][gen]] )
+			}
+
+			//Add to bid chart data
+			for(var gen in market_state['bids']){
+				// If the generator is not in the charting data, put it in. 
+				if(!(gen in app.bid_scatter_chart_data)){
+					console.log('adding gen to gen chart data', gen);
+					app.bid_scatter_chart_data[gen] = []
+				}
+				app.bid_scatter_chart_data[gen].push([market_state['bids'][gen].volume, market_state['bids'][gen].price] )
 			}
 			
 			//If it's been a while, update the sample market_state to provide metadata.
@@ -160,6 +192,66 @@ var app = new Vue({
 				}]
 		});
 
+		this.bid_scatter_chart = Highcharts.chart('bid-scatter-chart-container', {
+				chart: {
+						zoomType: 'x',
+						backgroundColor:this.chart_background_color,
+				},
+				title: {
+						text: 'Bid Scatter',
+						
+						style: {
+							color: this.chart_text_color
+						}
+				},
+			subtitle: {
+						text: document.ontouchstart === undefined ?
+										'Click to Update Data. Click and drag in the plot area to zoom in' : 'Tap to Update Data. Pinch the chart to zoom in'
+				},
+				xAxis: {
+						type: 'int',
+						title:{
+							text:'Volume (MWh)',
+						}
+				},
+				yAxis: {
+						title: {
+								text: 'Spot Price $/MWh'
+						}
+				},
+				legend: {
+						enabled: false
+				},
+				plotOptions: {
+						area: {
+								fillColor: {
+										linearGradient: {
+												x1: 0,
+												y1: 0,
+												x2: 0,
+												y2: 1
+										},
+										stops: [
+												[0, Highcharts.getOptions().colors[0]],
+												[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+										]
+								},
+								marker: {
+										radius: 2
+								},
+								lineWidth: 1,
+								states: {
+										hover: {
+												lineWidth: 1
+										}
+								},
+								threshold: null
+						}
+				},
+
+				series: []
+		});
+
 		this.demand_chart = Highcharts.chart('demand-chart-container', {
 			
 			chart: {
@@ -218,7 +310,10 @@ var app = new Vue({
 					type: 'area',
 					name: 'Demand MWh',
 					data: this.demand_chart_data
-			}]
+			},
+			
+		
+		]
 		});
 
 		this.generation_chart = Highcharts.chart('generation-chart-container', {
@@ -270,26 +365,36 @@ var app = new Vue({
 
 		setInterval(function(){
 			console.log('updating chart');
-			// Get the last 500 data points so we dont crash the graphics engine
-			var latest_spot_chart_data = app.spot_chart_data.slice(Math.max(app.spot_chart_data.length - 500, 1))
-			var latest_demand_chart_data = app.demand_chart_data.slice(Math.max(app.demand_chart_data.length - 500, 1))
-			// Chart the last 500 points
+			// Get the last app.num_dps data points so we dont crash the graphics engine
+			var latest_spot_chart_data = app.spot_chart_data.slice(Math.max(app.spot_chart_data.length - app.num_dps, 1))
+			var latest_demand_chart_data = app.demand_chart_data.slice(Math.max(app.demand_chart_data.length - app.num_dps, 1))
+			var latest_unmet_demand_chart_data = app.unmet_demand_chart_data.slice(Math.max(app.demand_chart_data.length - app.num_dps, 1))
+			// Chart the last app.num_dps points
 			app.spot_chart.series[0].setData(latest_spot_chart_data);
 			app.demand_chart.series[0].setData(latest_demand_chart_data);
 			
+			
 			// Generation Chart 
-			var idx = 0;
+			// If the unmet demand series hasn't been appended, append it. 
+			if(app.generation_chart.series.length == 0){
+				app.generation_chart.addSeries({name:'Unmet Demand', data:[]});
+			}
+			app.generation_chart.series[0].setData(latest_unmet_demand_chart_data);
+			var idx = 1; //we start from 1 because 0 is the unmet demand.
 			for(var gen in app.generation_chart_data){
 				if(app.generation_chart.series.length<=idx){
 					app.generation_chart.addSeries({name:gen, data:[]});
 				}
-				// Get the last 500 points so we dont crash the graphics engine
-				var latest_generation_chart_data = app.generation_chart_data[gen].slice(Math.max(app.generation_chart_data[gen].length - 500, 1))
-				// Chart the last 500 points
+				// Get the last app.num_dps points so we dont crash the graphics engine
+				var latest_generation_chart_data = app.generation_chart_data[gen].slice(Math.max(app.generation_chart_data[gen].length - app.num_dps, 1))
+				// Chart the last app.num_dps points
 				app.generation_chart.series[idx].setData(latest_generation_chart_data)
 				idx ++;
-				console.log
 			}
+
+
+			
+			
 			// app.generation_chart.categories.setData(new Array(app.index))
 		}, 1000);
 
@@ -300,161 +405,3 @@ var app = new Vue({
 
 
 
-
-
-/**
- * Create a constructor for sparklines that takes some sensible defaults and merges in the individual
- * chart options. This function is also available from the jQuery plugin as $(element).highcharts('SparkLine').
- */
-// Highcharts.SparkLine = function (a, b, c) {
-//     var hasRenderToArg = typeof a === 'string' || a.nodeName,
-//         options = arguments[hasRenderToArg ? 1 : 0],
-//         defaultOptions = {
-//             chart: {
-//                 renderTo: (options.chart && options.chart.renderTo) || this,
-//                 backgroundColor: null,
-//                 borderWidth: 0,
-//                 type: 'area',
-//                 margin: [2, 0, 2, 0],
-//                 width: 120,
-//                 height: 20,
-//                 style: {
-//                     overflow: 'visible'
-//                 },
-
-//                 // small optimalization, saves 1-2 ms each sparkline
-//                 skipClone: true
-//             },
-//             title: {
-//                 text: ''
-//             },
-//             credits: {
-//                 enabled: false
-//             },
-//             xAxis: {
-//                 labels: {
-//                     enabled: false
-//                 },
-//                 title: {
-//                     text: null
-//                 },
-//                 startOnTick: false,
-//                 endOnTick: false,
-//                 tickPositions: []
-//             },
-//             yAxis: {
-//                 endOnTick: false,
-//                 startOnTick: false,
-//                 labels: {
-//                     enabled: false
-//                 },
-//                 title: {
-//                     text: null
-//                 },
-//                 tickPositions: [0]
-//             },
-//             legend: {
-//                 enabled: false
-//             },
-//             tooltip: {
-//                 backgroundColor: null,
-//                 borderWidth: 0,
-//                 shadow: false,
-//                 useHTML: true,
-//                 hideDelay: 0,
-//                 shared: true,
-//                 padding: 0,
-//                 positioner: function (w, h, point) {
-//                     return { x: point.plotX - w / 2, y: point.plotY - h };
-//                 }
-//             },
-//             plotOptions: {
-//                 series: {
-//                     animation: false,
-//                     lineWidth: 1,
-//                     shadow: false,
-//                     states: {
-//                         hover: {
-//                             lineWidth: 1
-//                         }
-//                     },
-//                     marker: {
-//                         radius: 1,
-//                         states: {
-//                             hover: {
-//                                 radius: 2
-//                             }
-//                         }
-//                     },
-//                     fillOpacity: 0.25
-//                 },
-//                 column: {
-//                     negativeColor: '#910000',
-//                     borderColor: 'silver'
-//                 }
-//             }
-//         };
-
-//     options = Highcharts.merge(defaultOptions, options);
-
-//     return hasRenderToArg ?
-//         new Highcharts.Chart(a, options, c) :
-//         new Highcharts.Chart(options, b);
-// };
-
-// var start = +new Date(),
-//     $tds = $('td[data-sparkline]'),
-//     fullLen = $tds.length,
-//     n = 0;
-
-// // Creating 153 sparkline charts is quite fast in modern browsers, but IE8 and mobile
-// // can take some seconds, so we split the input into chunks and apply them in timeouts
-// // in order avoid locking up the browser process and allow interaction.
-// function doChunk() {
-//     var time = +new Date(),
-//         i,
-//         len = $tds.length,
-//         $td,
-//         stringdata,
-//         arr,
-//         data,
-//         chart;
-
-//     for (i = 0; i < len; i += 1) {
-//         $td = $($tds[i]);
-//         stringdata = $td.data('sparkline');
-//         arr = stringdata.split('; ');
-//         data = $.map(arr[0].split(', '), parseFloat);
-//         chart = {};
-
-//         if (arr[1]) {
-//             chart.type = arr[1];
-//         }
-//         $td.highcharts('SparkLine', {
-//             series: [{
-//                 data: data,
-//                 pointStart: 1
-//             }],
-//             tooltip: {
-//                 headerFormat: '<span style="font-size: 10px">' + $td.parent().find('th').html() + ', Q{point.x}:</span><br/>',
-//                 pointFormat: '<b>{point.y}.000</b> USD'
-//             },
-//             chart: chart
-//         });
-
-//         n += 1;
-
-//         // If the process takes too much time, run a timeout to allow interaction with the browser
-//         if (new Date() - time > 500) {
-//             $tds.splice(0, i + 1);
-//             setTimeout(doChunk, 0);
-//             break;
-//         }
-
-//         // Print a feedback on the performance
-//         if (n === fullLen) {
-//             $('#result').html('Generated ' + fullLen + ' sparklines in ' + (new Date() - start) + ' ms');
-//         }
-//     }
-// }
-// doChunk();

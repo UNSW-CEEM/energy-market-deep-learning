@@ -60,13 +60,16 @@ class Electricity_Market():
 		unmet_demand_MWh = demand #variable to store remaining unment demand
 		price = -1000.0
 		for bid in bids: #iterate through each bid in the bidstack
+			
 			amount_dispatch_requested = max(min(bid['volume'], unmet_demand_MWh),0) #calculate amount to requet from generator model
 			required_generator_power_MW = self.MWh_to_MW(amount_dispatch_requested) #Calculate required power.
 			amount_dispatched_MW = self.generators[bid['gen_label']].request_output_MW(required_generator_power_MW, self.period_length_mins) #Request that the gen dispatch at this power.
-			dispatch[bid['gen_label']] = self.MW_to_MWh(amount_dispatched_MW) #record the generator's dispatch
-			unmet_demand_MWh = max(unmet_demand_MWh - amount_dispatched_MW, 0) #recalc unmet demand
+			amount_dispatched_MWh = self.MW_to_MWh(amount_dispatched_MW)
+			dispatch[bid['gen_label']] = amount_dispatched_MWh #record the generator's dispatch
+			unmet_demand_MWh = max(unmet_demand_MWh - amount_dispatched_MWh, 0) #recalc unmet demand
 			price = bid['price']
-		
+			print "bid", bid, "dispatched", amount_dispatched_MWh, "unmet", unmet_demand_MWh
+		print "Finished Economic Dispatch"
 		# Price floor
 		price = max(0, price)
 		# Price ceiling

@@ -1,7 +1,7 @@
 generators = {
         'Bayswater':{
             'type':'coal',
-            'capacity_MW':50,
+            'capacity_MW':200,
             'lrmc':30,
             'srmc':30,
 			'label':'Bayswater',
@@ -10,7 +10,7 @@ generators = {
         },
         'Eraring':{
             'type':'coal',
-            'capacity_MW':50,
+            'capacity_MW':60,
             'lrmc':200,
             'srmc':200,
 			'label':'Eraring',

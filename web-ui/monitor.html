@@ -5,8 +5,8 @@
 	<link rel="stylesheet" type="text/css" href="/monitor.css">
 	<link href="https://fonts.googleapis.com/css?family=Karla|Poiret+One|Ropa+Sans|Source+Code+Pro" rel="stylesheet">
 
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="/jquery-3.1.1.min.js"></script>
+	<script src="/highcharts.js"></script>
 	<!-- <script src="https://code.highcharts.com/modules/exporting.js"></script> -->
 	<script src="/node_modules/vue/dist/vue.js"></script>
 	<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
@@ -65,6 +65,10 @@
 			<div class="row">
 				<div class="widget" ><div id="demand-chart-container" class="chart"></div></div>
 				<div class="widget" ><div id="generation-chart-container" class="chart"></div></div>
+			</div>
+			<div class="row">
+				
+				<div class="widget" v-on:click="update_bid_scatter()"><div id="bid-scatter-chart-container" class="chart"></div></div>
 			</div>
 
 		</div>
