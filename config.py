@@ -1,14 +1,22 @@
 generators = {
         'Bayswater':{
             'type':'coal',
-            'capacity_MW':3000,
+            'capacity_MW':50,
             'lrmc':30,
+            'srmc':30,
+			'label':'Bayswater',
+            'ramp_rate_MW_per_min':10,
+
         },
         'Eraring':{
             'type':'coal',
-            'capacity_MW':1000,
-            'lrmc':70
+            'capacity_MW':50,
+            'lrmc':200,
+            'srmc':200,
+			'label':'Eraring',
+            'ramp_rate_MW_per_min':10,
         },
+       
         # 'Liddell',
         # 'Mt Piper',
         # 'Vales Point B' ,

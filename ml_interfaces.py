@@ -74,8 +74,8 @@ class Single_Ownership_Participant_Interface(gym.Env):
 		# =========================
 		# These are representations of the min and max values for an action
 		# First col is  MWh, second is price. 
-		low_bid = np.array([ 0,-1000])
-		high_bid = np.array([ self.generators[generator_label]['capacity_MW'] * 0.5, 13100])
+		low_bid = np.array([ 0, -1000])
+		high_bid = np.array([ self.generators[generator_label]['capacity_MW'] * 0.5, 14900])
 
 		# Define the action space - can be any number from the mins in low_bid to the axes in high_bid
 		self.action_space = spaces.Box(low_bid,high_bid)
@@ -106,6 +106,14 @@ class Single_Ownership_Participant_Interface(gym.Env):
 		observations = self.generate_observations(self.market_state)
 		# Calculate reward - need to update later with penalties etc.
 		reward = self.market_state['dispatch'][self.generator_label] * (self.market_state['price'] - self.market_state['srmc'][self.generator_label])
+		
+		if bid_price < -1000:
+			reward = -1490000000 #if we set reward to 0 here, there's actually an improvement going below -1000 as opposed to getting a negative reward
+		if bid_MWh < 0:
+			reward = -1490000000
+		
+
+		print "Reward", reward
 		# Check whether done
 		done = self.market_state['done']
 		# return the observation

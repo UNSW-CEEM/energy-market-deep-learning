@@ -54,7 +54,7 @@ class Single_Ownership_Participant():
 		self.dispatch_callback(result)
 
 	def add_bid(self, price, volume):
-		print "WSP adding bid", price, volume
+		print "WSP wbid", price, volume
 		self.socketIO.emit('add_bid', {'gen_label':self.gen_name, 'price':float(price), 'volume':float(volume) })
 		# self.socketIO.wait(1)
 		# print "WSP", "Emitted, waiting 5 secs."

@@ -3,7 +3,7 @@ import numpy as np
 class Generator():
 	def __init__(self, label, capacity_MW):
 		self.capacity_MW = capacity_MW
-		self.current_output_MW = 0
+		self.current_output_MW = capacity_MW * 0.1
 		self.label = label
 		self.type_idx = 0
 	
@@ -27,6 +27,7 @@ class Generator():
 class Coal_Generator(Generator):
 	def __init__(self, label, capacity_MW, ramp_rate_MW_per_min, srmc, lrmc):
 		Generator.__init__(self, label, capacity_MW)
+		self.capacity_MW = capacity_MW
 		self.ramp_rate_MW_per_min = ramp_rate_MW_per_min
 		self.srmc = srmc
 		self.lrmc = lrmc
@@ -41,17 +42,23 @@ class Coal_Generator(Generator):
 		# Triangle calc to take into account ramping down.
 		next_output = next_output - 0.5 * float(maximum_change_MW) * float(time_step_mins) / 60.0
 		# Make sure if next min output is below zero, we just return 0
-		return max(next_output, 0)
+		# return max(next_output, 0)
+		return 0
 
 	def get_maximum_next_output_MWh(self, time_step_mins):
 		# Calculate the maximum output power change.
 		maximum_change_MW = float(time_step_mins) * float(self.ramp_rate_MW_per_min)
+		print "Max change", maximum_change_MW
 		# Calculate output if kept steady.
 		next_output = float(self.current_output_MW) *  float(time_step_mins) / 60.0
 		# Triangle calc to take into account ramping up.
 		next_output = next_output + 0.5 * float(maximum_change_MW) * float(time_step_mins) / 60.0
+
+		capacity_MWh = float(self.capacity_MW) * float(time_step_mins) / 60.0
+		print "next output", next_output, "capacity", capacity_MWh
 		# Make sure if next min output above the capacity, we just return the energy generated at capacity
-		return min(next_output, float(self.capacity_MW) * float(time_step_mins) / 60.0)
+		# return min(next_output, capacity_MWh)
+		return self.capacity_MW * float(time_step_mins) / 60.0
 
 	def get_srmc(self):
 		return float(self.srmc)
@@ -61,13 +68,19 @@ class Coal_Generator(Generator):
 
 	# Requests a certain output in MW. Returns what the generator sets itself to in MW.
 	def request_output_MW(self, MW, time_step_mins):
-		maximum = self.get_maximum_next_output_MWh(time_step_mins)
-		minimum = self.get_minimum_next_output_MWh(time_step_mins)
+		maximum = self.get_maximum_next_output_MWh(time_step_mins) * 60.0 / time_step_mins
+		minimum = self.get_minimum_next_output_MWh(time_step_mins) * 60.0 / time_step_mins
+		print "Current", self.current_output_MW, "Min", minimum, "Max", maximum
 		if MW > maximum:
-			self.current_output_MW = maximum * 60.0 / time_step_mins
+			
+			self.current_output_MW = maximum 
+			print "GEN: Request greater than max", MW, "setting output to ", self.current_output_MW
 		elif MW < minimum:
-			self.current_output_MW = minimum * 60.0 / time_step_mins
+			
+			self.current_output_MW = minimum 
+			print "GEN: Request less than min", MW, "setting output to ", self.current_output_MW
 		else:
+			print "GEN: Request fully satisfied", MW
 			self.current_output_MW = MW
 		return self.current_output_MW
 

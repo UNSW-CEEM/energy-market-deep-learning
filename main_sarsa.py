@@ -19,76 +19,63 @@ from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Flatten, Input, merge
 from keras.optimizers import Adam
 
-from rl.agents import DDPGAgent
+from rl.agents import DDPGAgent, NAFAgent, SARSAAgent
 from rl.memory import SequentialMemory
-from rl.random import OrnsteinUhlenbeckProcess, GaussianWhiteNoiseProcess
+from rl.random import OrnsteinUhlenbeckProcess
 
+from rl.keras_future import concatenate, Model
+from rl.core import Processor
 
 import threading
 
 import sys
 
+class PendulumProcessor(Processor):
+    def process_reward(self, reward):
+        # The magnitude of the reward can be important. Since each step yields a relatively
+        # high reward, we reduce the magnitude by two orders.
+        return reward 
+
+
 tf_session = K.get_session()
 tf_graph = tf.get_default_graph()
 def train_generator(generator_label, gens, lrmc, capacity_MW):
-    
 
-    # Build an interface for the agent to access the shared environment
-    env = Single_Ownership_Participant_Interface(generator_label, gens, lrmc, capacity_MW)
-    nb_actions = env.action_space.shape[0]
 
-    actor = Sequential()
-    actor.add(Flatten(input_shape=(1,) + env.observation_space.shape))
-    actor.add(Dense(16))
-    actor.add(Activation('relu'))
-    actor.add(Dense(16))
-    actor.add(Activation('relu'))
-    actor.add(Dense(16))
-    actor.add(Activation('relu'))
-    actor.add(Dense(nb_actions))
-    actor.add(Activation('linear'))
-    print(actor.summary())
+	# Build an interface for the agent to access the shared environment
+	env = Single_Ownership_Participant_Interface(generator_label, gens, lrmc, capacity_MW)
+	nb_actions = env.action_space.shape[0]
+		
+	# Next, we build a very simple model.
+	model = Sequential()
+	model.add(Flatten(input_shape=(1,) + env.observation_space.shape))
+	model.add(Dense(16))
+	model.add(Activation('relu'))
+	model.add(Dense(16))
+	model.add(Activation('relu'))
+	model.add(Dense(16))
+	model.add(Activation('relu'))
+	model.add(Dense(nb_actions))
+	model.add(Activation('linear'))
+	print(model.summary())
 
-    action_input = Input(shape=(nb_actions,), name='action_input')
-    observation_input = Input(shape=(1,) + env.observation_space.shape, name='observation_input')
-    flattened_observation = Flatten()(observation_input)
-    # x = keras.layers.concatenate([action_input, flattened_observation]) #NEW
-    x = merge([action_input, flattened_observation], mode='concat') #OLD
-    x = Dense(32)(x)
-    x = Activation('relu')(x)
-    x = Dense(32)(x)
-    x = Activation('relu')(x)
-    x = Dense(32)(x)
-    x = Activation('relu')(x)
-    x = Dense(1)(x)
-    x = Activation('linear')(x)
-    critic = Model(inputs=[action_input, observation_input], outputs=x)
-    print(critic.summary())
+	# SARSA does not require a memory.
+	policy = BoltzmannQPolicy()
+	agent = SARSAAgent(model=model, nb_actions=nb_actions, nb_steps_warmup=10, policy=policy)
+	agent.compile(Adam(lr=1e-3), metrics=['mae'])
 
-    # Finally, we configure and compile our agent. You can use every built-in Keras optimizer and
-    # even the metrics!
-    memory = SequentialMemory(limit=100000, window_length=1)
-    random_process = OrnsteinUhlenbeckProcess(size=nb_actions, theta=.15, mu=0., sigma=1000)
-    # random_process = GaussianWhiteNoiseProcess(size=nb_actions, sigma = 1000)
-    agent = DDPGAgent(
-        nb_actions=nb_actions, 
-        actor=actor, 
-        critic=critic, 
-        critic_action_input=action_input,
-        memory=memory, 
-        nb_steps_warmup_critic=100, 
-        nb_steps_warmup_actor=100,
-        random_process=random_process, 
-        gamma=.9, #Info: https://stackoverflow.com/questions/17336069/setting-gamma-and-lambda-in-reinforcement-learning
-        target_model_update=1e-3,
-        )
-    agent.compile(Adam(lr=.005, clipnorm=1., epsilon=1e5), metrics=['mae'])
+	# Okay, now it's time to learn something! We visualize the training here for show, but this
+	# slows down training quite a lot. You can always safely abort the training prematurely using
+	# Ctrl + C.
+	agent.fit(env, nb_steps=50000, visualize=False, verbose=2)
 
-    # Okay, now it's time to learn something! We visualize the training here for show, but this
-    # slows down training quite a lot. You can always safely abort the training prematurely using
-    # Ctrl + C.
-    agent.fit(env, nb_steps=5000000, visualize=True, verbose=2, nb_max_episode_steps=None)
-    return agent
+	# After training is done, we save the final weights.
+	# agent.save_weights('sarsa_{}_weights.h5f'.format(ENV_NAME), overwrite=True)
+
+	# Finally, evaluate our algorithm for 5 episodes.
+	# agent.test(env, nb_episodes=5, visualize=True)
+
+	return agent
 
 
 
