@@ -76,6 +76,10 @@ class Electricity_Market():
 		if price > 14200:
 			price = 0
 
+		done = False
+		if self.time_period % 250 == 0:
+			done = True
+
 		print "Gen states:", [self.generators[g].current_output_MW for g in self.generators]
 		self.latest_state = {
 			'price':price,

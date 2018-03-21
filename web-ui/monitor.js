@@ -392,9 +392,6 @@ var app = new Vue({
 				idx ++;
 			}
 
-
-			
-			
 			// app.generation_chart.categories.setData(new Array(app.index))
 		}, 1000);
 

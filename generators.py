@@ -82,6 +82,7 @@ class Coal_Generator(Generator):
 		else:
 			print "GEN: Request fully satisfied", MW
 			self.current_output_MW = MW
+		print ""
 		return self.current_output_MW
 
 class Gas_Turbine_Generator(Generator):

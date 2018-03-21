@@ -79,15 +79,15 @@ def train_generator(generator_label, gens, lrmc, capacity_MW):
         nb_steps_warmup_critic=100, 
         nb_steps_warmup_actor=100,
         random_process=random_process, 
-        gamma=.9, #Info: https://stackoverflow.com/questions/17336069/setting-gamma-and-lambda-in-reinforcement-learning
+        gamma=.9, # future reward discount i think, Info: https://stackoverflow.com/questions/17336069/setting-gamma-and-lambda-in-reinforcement-learning
         target_model_update=1e-3,
         )
-    agent.compile(Adam(lr=.005, clipnorm=1., epsilon=1e5), metrics=['mae'])
+    agent.compile(Adam(lr=.005, clipnorm=1., epsilon=1e5), metrics=['mae']) #The vals here https://keon.io/deep-q-learning/ mke this epsilon value look ridiculous
 
     # Okay, now it's time to learn something! We visualize the training here for show, but this
     # slows down training quite a lot. You can always safely abort the training prematurely using
     # Ctrl + C.
-    agent.fit(env, nb_steps=5000000, visualize=True, verbose=2, nb_max_episode_steps=None)
+    agent.fit(env, nb_steps=5000000, visualize=True, verbose=2, nb_max_episode_steps=250)
     return agent
 
 
