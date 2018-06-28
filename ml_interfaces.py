@@ -83,13 +83,15 @@ class Single_Ownership_Participant_Interface(gym.Env):
 		# =========================
 		# FINISHING SETUP
 		# =========================
-		self._seed()
+		self.seed()
 		self.viewer = None
 		# self.state = None
 
 	def seed(self, seed=None):
 		self.np_random, seed = seeding.np_random(seed)
 		return [seed]
+	
+	
 
 	def step(self, action):
 		print "MLI step called", action 
@@ -148,7 +150,7 @@ class Single_Ownership_Participant_Interface(gym.Env):
 		# I'm omitting actual reset in implementation
 		# - a lot of philosophical questions here, but effectively, there's no point resetting the market. 
 		# Any starting point is as good as any other. 
-		self._seed()
+		self.seed()
 		self.participant.reset()
 		# Wait for the callback to be called that indicates a reset has happened.
 		self.reset_event.wait()

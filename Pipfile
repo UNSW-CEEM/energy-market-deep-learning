@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+flask-socketio = "*"
+numpy = "*"
+"337f0f6" = {path = "./gym"}
+pandas = "*"
+socketio-client = "*"
+tensorflow = "*"
+"a573469" = {path = "./keras-rl"}
+keras = "==2.0.6"
+keras-rl = {path = "/Users/lukemarshall/Documents/Workspace/deeplearning/keras-rl"}
+
+[dev-packages]
+
+[requires]
+python_version = "2.7"

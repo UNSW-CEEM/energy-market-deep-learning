@@ -66,15 +66,19 @@ class Single_Ownership_Participant():
 
 		self.socketIO.emit('reset')
 	
+
+	
 		
 
 if __name__ == "__main__":
 	def dispatch_callback(result):
 		print "Dispatch Callback:", result
+	def reset_callback(result):
+		print "Reset Callback:", result
 
 	logging.getLogger('socketIO-client').setLevel(logging.DEBUG)
 	logging.basicConfig()
 
-	participant = Single_Ownership_Participant('Eraring', dispatch_callback)
+	participant = Single_Ownership_Participant('Eraring', dispatch_callback, reset_callback)
 	participant.add_bid(30, 50.5)
 	

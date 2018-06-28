@@ -1,4 +1,5 @@
-python ws_market_sim.py &
+pipenv run python ws_market_sim.py &
 wait 1
-python ws_participant_sim.py &
+pipenv run python main.py -label Bayswater &
+pipenv run python main.py -label Eraring &
 
