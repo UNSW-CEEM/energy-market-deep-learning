@@ -15,6 +15,7 @@ tensorflow = "*"
 keras = "==2.0.6"
 keras-rl = {path = "/Users/lukemarshall/Documents/Workspace/deeplearning/keras-rl"}
 httpserver = "*"
+gunicorn = "*"
 
 [dev-packages]
 
