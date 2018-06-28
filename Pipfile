@@ -14,6 +14,7 @@ tensorflow = "*"
 "a573469" = {path = "./keras-rl"}
 keras = "==2.0.6"
 keras-rl = {path = "/Users/lukemarshall/Documents/Workspace/deeplearning/keras-rl"}
+httpserver = "*"
 
 [dev-packages]
 
