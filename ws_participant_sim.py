@@ -37,7 +37,10 @@ class Single_Ownership_Participant():
 		self.dispatch_callback = dispatch_callback
 		self.reset_callback = reset_callback
 		self.gen_name = gen_name
-		self.socketIO = SocketIO('localhost', 5000, BaseNamespace)
+		# self.socketIO = SocketIO('localhost', 5000, BaseNamespace)
+		# self.socketIO = SocketIO('localhost', 8000, BaseNamespace)
+		
+		self.socketIO = SocketIO('nemsim.herokuapp.com', 80, BaseNamespace)
 		# self.socketIO.get_namespace().set_participant(self)
 		self.socketIO.on('dispatched', self.dispatch)
 		self.socketIO.on('market_reset', self.reset_callback)

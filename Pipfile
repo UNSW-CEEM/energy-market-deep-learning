@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
 flask-socketio = "*"
 numpy = "*"
 "337f0f6" = {path = "./gym"}
@@ -16,6 +15,7 @@ keras = "==2.0.6"
 keras-rl = {path = "/Users/lukemarshall/Documents/Workspace/deeplearning/keras-rl"}
 httpserver = "*"
 gunicorn = "*"
+flask = "*"
 
 [dev-packages]
 
