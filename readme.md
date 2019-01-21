@@ -10,6 +10,9 @@ The software consists of three components: The market simulation webserver, the 
 A video of the working UI and simulator can be found [here](https://youtu.be/-A0k6z4WAUY)
 A demo, which works based on whether or not simulations are currently running, can be found [here](https://nem-control.herokuapp.com/)
 
+![screenshot 1](https://user-images.githubusercontent.com/7201209/51462251-7917fa00-1da3-11e9-80c3-294284d20edb.png)
+
+![screenshot 2](https://user-images.githubusercontent.com/7201209/51462319-a4024e00-1da3-11e9-95f4-abe95922cdc2.png)
 
 ## Notes on machine learning outcomes
 Start with generators at >0 capacity - otherwise the many variables they have to optimise don't appear consistent with sending generation and price positive - it appears that by reducing generation at a negative price, score is improved.
