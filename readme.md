@@ -1,5 +1,5 @@
 # Electricity Market Deep Learning Framework.
-The aim of this software is to provide an adversarial reinforcement learning model of a restructured electricity market, specifically Australia's National Electricity Market.
+The aim of this software is to provide an adversarial reinforcement learning model of a restructured electricity market, specifically Australia's National Electricity Market. It is intended to work as an environment plugin for Elon Musk's OpenAi gym. 
 
 
 ## Usage
