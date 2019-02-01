@@ -48,14 +48,14 @@ class Coal_Generator(Generator):
 	def get_maximum_next_output_MWh(self, time_step_mins):
 		# Calculate the maximum output power change.
 		maximum_change_MW = float(time_step_mins) * float(self.ramp_rate_MW_per_min)
-		print "Max change", maximum_change_MW
+		print("Max change", maximum_change_MW)
 		# Calculate output if kept steady.
 		next_output = float(self.current_output_MW) *  float(time_step_mins) / 60.0
 		# Triangle calc to take into account ramping up.
 		next_output = next_output + 0.5 * float(maximum_change_MW) * float(time_step_mins) / 60.0
 
 		capacity_MWh = float(self.capacity_MW) * float(time_step_mins) / 60.0
-		print "next output", next_output, "capacity", capacity_MWh
+		print("next output", next_output, "capacity", capacity_MWh)
 		# Make sure if next min output above the capacity, we just return the energy generated at capacity
 		# return min(next_output, capacity_MWh)
 		return self.capacity_MW * float(time_step_mins) / 60.0
@@ -70,19 +70,19 @@ class Coal_Generator(Generator):
 	def request_output_MW(self, MW, time_step_mins):
 		maximum = self.get_maximum_next_output_MWh(time_step_mins) * 60.0 / time_step_mins
 		minimum = self.get_minimum_next_output_MWh(time_step_mins) * 60.0 / time_step_mins
-		print "Current", self.current_output_MW, "Min", minimum, "Max", maximum
+		print("Current", self.current_output_MW, "Min", minimum, "Max", maximum)
 		if MW > maximum:
 			
 			self.current_output_MW = maximum 
-			print "GEN: Request greater than max", MW, "setting output to ", self.current_output_MW
+			print("GEN: Request greater than max", MW, "setting output to ", self.current_output_MW)
 		elif MW < minimum:
 			
 			self.current_output_MW = minimum 
-			print "GEN: Request less than min", MW, "setting output to ", self.current_output_MW
+			print("GEN: Request less than min", MW, "setting output to ", self.current_output_MW)
 		else:
-			print "GEN: Request fully satisfied", MW
+			print("GEN: Request fully satisfied", MW)
 			self.current_output_MW = MW
-		print ""
+		print("")
 		return self.current_output_MW
 
 class Gas_Turbine_Generator(Generator):
