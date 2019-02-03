@@ -7,6 +7,7 @@
 #
 
 import zmq
+import json
 
 context = zmq.Context()
 
@@ -16,9 +17,15 @@ socket = context.socket(zmq.REQ)
 socket.connect("tcp://localhost:5555")
 
 #  Do 10 requests, waiting each time for a response
-for request in range(100000):
+for request in range(10):
     print("Sending request %s …" % request)
-    socket.send(b"Hello")
+    data = {
+        'id':'Nyngan',
+        'bids':[50,50,50,50,50,50,50,50,50,50],
+    }
+    data_str = json.dumps(data)
+    socket.send_string(data_str)
+    # socket.send(b"Hello")
 
     #  Get the reply.
     message = socket.recv()

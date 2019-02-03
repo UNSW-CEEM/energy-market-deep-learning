@@ -8,18 +8,29 @@
 
 import time
 import zmq
+import json
 
-context = zmq.Context()
-socket = context.socket(zmq.REP)
-socket.bind("tcp://*:5555")
+class Server():
+    def __init__(self):
+        context = zmq.Context()
+        self.socket = context.socket(zmq.REP)
+        self.socket.bind("tcp://*:5555")
+    
+    def run(self):
+        while True:
+            #  Wait for next request from client
+            message = self.socket.recv()
+            print("Received request: %s" % message)
+            data = json.loads(message)
 
-while True:
-    #  Wait for next request from client
-    message = socket.recv()
-    print("Received request: %s" % message)
+            #  Do some 'work'
+            time.sleep(1)
 
-    #  Do some 'work'
-    # time.sleep(1)
+            #  Send reply back to client
+            self.socket.send_string("Your Generator ID was %s" % data['id'])
 
-    #  Send reply back to client
-    socket.send(b"World")
+    
+
+if __name__ == "__main__":
+    s = Server()
+    s.run()

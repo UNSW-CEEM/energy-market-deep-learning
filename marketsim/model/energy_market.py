@@ -1,2 +1,4 @@
 
 
+class Market():
+    pass
