@@ -10,6 +10,7 @@ gym = {version = "*", extras = ["atari"]}
 pillow = "*"
 tensorflow = "==1.10.0"
 keras = "*"
+pyzmq = "*"
 
 [dev-packages]
 

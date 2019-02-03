@@ -91,7 +91,6 @@ class Single_Ownership_Participant_Interface(gym.Env):
 		self.np_random, seed = seeding.np_random(seed)
 		return [seed]
 	
-	
 
 	def step(self, action):
 		print "MLI step called", action 
