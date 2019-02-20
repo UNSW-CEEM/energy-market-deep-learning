@@ -11,16 +11,13 @@ class Bid():
     def copy(self):
         return Bid(self.label, self.price, self.quantity)
     
-class DispatchOrder():
-
-        
 
 class BidStack():
     """Provides an api that handles bidstack calculations."""
     def __init__(self):
         self.reset()
     
-     def reset(self):
+    def reset(self):
         self.stack = []
     
     def add_price_quantity_bid(self, bid_obj):

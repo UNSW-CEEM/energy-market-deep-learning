@@ -33,7 +33,7 @@ class ClientTask():
             # Dummy Bid Data
             data = {
                 'id': self.id,
-                'label':labels[i],
+                'label':labels[self.id],
                 'bids':[50,50,50,50,50,50,50,50,50,50],
             }
 

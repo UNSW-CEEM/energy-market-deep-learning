@@ -4,6 +4,8 @@ import sys
 import threading
 import time
 from random import randint, random
+from marketsim.simulations.simulation import Simulation
+import json
 
 
 __author__ = "Felipe Cruz <felipecruz@loogica.net>"
@@ -29,8 +31,11 @@ class ServerTask(threading.Thread):
         backend.bind('inproc://backend')
 
         workers = []
+
+        simulation = Simulation()
+
         for i in range(5):
-            worker = ServerWorker(context)
+            worker = ServerWorker(context, simulation)
             worker.start()
             workers.append(worker)
 
@@ -42,9 +47,10 @@ class ServerTask(threading.Thread):
 
 class ServerWorker(threading.Thread):
     """ServerWorker"""
-    def __init__(self, context):
+    def __init__(self, context, simulation):
         threading.Thread.__init__ (self)
         self.context = context
+        self.simulation = simulation
 
     def run(self):
         worker = self.context.socket(zmq.DEALER)
@@ -53,12 +59,15 @@ class ServerWorker(threading.Thread):
         while True:
             ident, msg = worker.recv_multipart()
             tprint('Worker received %s from %s' % (msg, ident))
+            data = json.loads(msg)
+            self.simulation.add_bid(data)
             replies = randint(0,4)
             for i in range(replies):
                 # time.sleep(0.1)
                 worker.send_multipart([ident, msg])
 
         worker.close()
+    
 
 
 def main():
