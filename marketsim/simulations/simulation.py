@@ -13,13 +13,15 @@ class Simulation():
     def __init__(self):
         # self.market = Market()
         print("Simulation Initialised")
+        
 
     def add_generator(self, label, type, nameplate_MW):
         """Add a generator to the simulation."""
         g = Generator(nameplate_MW)
     
-    def add_bid(self, bid):
+    def add_bid(self, bid, callback):
         tprint("Bid Added:"+str(bid), color= bid['id']+1)
+        callback({'success':True})
 
     
         

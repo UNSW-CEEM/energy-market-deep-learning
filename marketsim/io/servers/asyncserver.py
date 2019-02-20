@@ -47,22 +47,40 @@ class ServerWorker(threading.Thread):
         threading.Thread.__init__ (self)
         self.context = context
         self.simulation = simulation
+        self.sim_state = None
+        self.event = threading.Event()
 
     def run(self):
         worker = self.context.socket(zmq.DEALER)
         worker.connect('inproc://backend')
         tprint('Worker started', 101)
+        
         while True:
+            # Clear the event, so it blocks on wait.
+            self.event.clear()
+            
             ident, msg = worker.recv_multipart()
-            tprint('Worker received %s from %s' % (msg, ident))
+            # tprint('Worker received %s from %s' % (msg, ident), 200)
             data = json.loads(msg)
-            self.simulation.add_bid(data)
-            replies = randint(0,4)
-            for i in range(replies):
-                # time.sleep(0.1)
-                worker.send_multipart([ident, msg])
+            self.simulation.add_bid(data, self.callback)
+            # Wait for the data callback
+            self.event.wait()
+            reply = bytes(json.dumps(self.sim_state),'UTF-8')
+            # worker.send_multipart([ident, msg])
+            worker.send_multipart([ident, reply])
+            # worker.send_multipart([ident, self.sim_state])
 
         worker.close()
+    
+    def callback(self, data):
+        self.sim_state = data
+        # Set the event, so wait()
+        self.event.set()
+        # self.worker.send_multipart([ident, msg])
+        # Unlock
+
+    
+    
     
 
 
