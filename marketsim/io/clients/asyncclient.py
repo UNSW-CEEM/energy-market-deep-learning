@@ -5,12 +5,12 @@ import sys
 
 from random import randint, random
 import threading
-from colored import fg, bg, attr, stylize
 
-def tprint(msg, color=1):
-    """like print, but won't get newlines confused with multiple threads"""
-    sys.stdout.write(stylize( msg + '\n', fg(color)))
-    sys.stdout.flush()
+import json
+import time
+from ...util.logging import tprint
+
+labels = ['Nyngan', 'Bayswater', 'Moree']
 
 class ClientTask():
     """ClientTask"""
@@ -29,14 +29,26 @@ class ClientTask():
         reqs = 0
         while True:
             reqs = reqs + 1
-            tprint('Req #%d sent..' % (reqs),color=self.id+1)
-            socket.send_string(u'request #%d' % (reqs))
+            tprint(str(self.id)+'Req #%d sent..' % (reqs),color=self.id+1)
+            # Dummy Bid Data
+            data = {
+                'id': self.id,
+                'label':labels[i],
+                'bids':[50,50,50,50,50,50,50,50,50,50],
+            }
+
+            data_str = json.dumps(data)
+            socket.send_string(data_str)
+
+            # socket.send_string(u'request #%d' % (reqs))
             for i in range(5):
                 tprint("Polling Attempt: "+str(i), color=self.id+1)
                 sockets = dict(poll.poll(1000))
                 if socket in sockets:
                     msg = socket.recv()
                     tprint('Client %s received: %s' % (identity, msg),color=self.id+1)
+                    time.sleep(1)
+                    break
 
         socket.close()
         context.term()
