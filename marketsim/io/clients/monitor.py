@@ -19,9 +19,8 @@ socket.connect("tcp://localhost:5555")
 #  Do 10 requests, waiting each time for a response
 for request in range(10):
     print("Sending request %s …" % request)
-    
     data = {
-        'id':'Nyngan',
+        'id':'Holsworthy',
         'bids':[50,50,50,50,50,50,50,50,50,50],
     }
     data_str = json.dumps(data)

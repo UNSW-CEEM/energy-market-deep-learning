@@ -8,14 +8,17 @@ class Simulation():
         This api can then be used as a standalone package, or linked to a server (ie http/ws/zmq)
     """
     def __init__():
-        self.market = 
+        self.market = Market()
 
     def add_generator(label, type, nameplate_MW):
         """Add a generator to the simulation."""
         g = Generator(nameplate_MW)
+    
 
+    def run():
+        
 
 class SimulationFactory():
     
-    def get_scenario(scenario_type):
-        return Scenario()
+    def get_simulation(scenario_type):
+        return Simulation()

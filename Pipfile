@@ -5,12 +5,10 @@ name = "pypi"
 
 [packages]
 keras-rl = "*"
-gym = {version = "*", extras = ["atari"]}
+gym = {version = "*",extras = ["atari"]}
 "h5py" = "*"
 pillow = "*"
-tensorflow = "==1.10.0"
-keras = "*"
-pyzmq = "*"
+colored = "*"
 
 [dev-packages]
 

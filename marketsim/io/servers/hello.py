@@ -20,6 +20,7 @@ class Server():
         while True:
             #  Wait for next request from client
             message = self.socket.recv()
+            message2 = self.socket.recv()
             print("Received request: %s" % message)
             data = json.loads(message)
 
