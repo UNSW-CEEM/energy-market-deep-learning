@@ -51,7 +51,7 @@ class ServerWorker(threading.Thread):
     def run(self):
         worker = self.context.socket(zmq.DEALER)
         worker.connect('inproc://backend')
-        tprint('Worker started')
+        tprint('Worker started', 101)
         while True:
             ident, msg = worker.recv_multipart()
             tprint('Worker received %s from %s' % (msg, ident))
