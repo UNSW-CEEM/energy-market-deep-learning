@@ -1,20 +1,16 @@
-
+# Adapted from the ZMQ example code by Felipe Cruz <felipecruz@loogica.net> - released originally under the MIT/X11 License
 import zmq
 import sys
 import threading
 import time
 from random import randint, random
 from marketsim.simulations.simulation import Simulation
+from marketsim.util.logging import tprint
 import json
 
 
-__author__ = "Felipe Cruz <felipecruz@loogica.net>"
-__license__ = "MIT/X11"
 
-def tprint(msg):
-    """like print, but won't get newlines confused with multiple threads"""
-    sys.stdout.write(msg + '\n')
-    sys.stdout.flush()
+
 
 
 class ServerTask(threading.Thread):
