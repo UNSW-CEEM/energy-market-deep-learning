@@ -34,7 +34,13 @@ class ClientTask():
             data = {
                 'id': self.id,
                 'label':labels[self.id],
-                'bids':[50,50,50,50,50,50,50,50,50,50],
+                'bids' : [
+                    [10,1],
+                    [20,1],
+                    [30,1],
+                    [40,1],
+                    [50,1],
+                ],
             }
 
             data_str = json.dumps(data)
@@ -47,6 +53,7 @@ class ClientTask():
                 if socket in sockets:
                     msg = socket.recv()
                     tprint('Client %s received: %s' % (identity, msg),color=self.id+1)
+                    # For testing purposes - otherwise you'll do about a thousand a second. 
                     time.sleep(1)
                     break
 

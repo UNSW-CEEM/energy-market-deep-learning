@@ -24,14 +24,14 @@ class BidStack():
         """Adds a price <> quantity bid for a given participant."""
         self.stack.append( bid_obj )
     
-    def economic_dispatch(self, capactity_MW):
+    def economic_dispatch(self, capacity_MW):
         """Takes a capacity_MW and returns modified bids accepted under economic dispatch."""
-        meritorder = sorted(self.stack, key=lambda k: k['price'])
-        accepted = {}
+        meritorder = sorted(self.stack, key=lambda k: k.price)
+        accepted = []
         cumulative_cap_MW = 0
         # Loop through the sorted bids.
         for bid in meritorder:
-            if cumulative_cap_MW + bid.quantity < capactity_MW:
+            if cumulative_cap_MW + bid.quantity < capacity_MW:
                 accepted.append(bid)
                 cumulative_cap_MW += bid.quantity
             else:
@@ -39,6 +39,19 @@ class BidStack():
                 bid.quantity = capacity_MW - cumulative_cap_MW
                 accepted.append(bid)
                 break
+        return accepted
+
+class DispatchOrder():
+    def __init__(self, winning_bids):
+        self.winning_bids = winning_bids
+    
+    def get_generator_dispatch(self):
+        dispatch = {}
+        for bid in self.winning_bids:
+            if not bid.label in dispatch:
+                dispatch[bid.label] = 0
+            dispatch[bid.label] += bid.quantity
+        return dispatch
 
 class Market():
     
@@ -52,7 +65,7 @@ class Market():
         self.timestep = 0
         self.participant_labels = participant_labels
         self.demand_MW = initial_demand_MW
-        self.step()
+        self.step(initial_demand_MW)
     
     def step(self, demand_MW):
         """Called to step the market forward in time by one. """
@@ -90,11 +103,23 @@ class Market():
         
         # Perform economic dispatch to get a list of winning bids
         winning_bids = self.bidstack.economic_dispatch(self.demand_MW)
+        
         # Generate a dispatch order object that stores a queriable result of the dispatch. 
         dispatch_order = DispatchOrder(winning_bids)
+        dispatch = dispatch_order.get_generator_dispatch()
+        
+        # Calculate the market price - price of winning bid
+        marginal_price = winning_bids[-1].price
+
+        state = {
+            'dispatch':dispatch,
+            'marginal_price':marginal_price,
+            'demand': 3,
+        }
         
         # Call the dispatch callback, 
-        marginal_price = winning_bids[i].price
-        self.dispatch_callback(dispatch_order, marginal_price)
-        return True
         
+        self.dispatch_callback(state)
+        return True
+
+    
