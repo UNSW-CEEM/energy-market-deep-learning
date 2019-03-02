@@ -72,6 +72,7 @@ class Market():
         self.timestep += 1
         self.submitted = { p : False for p in self.participant_labels }
         self.demand_MW = demand_MW
+        self.bidstack = BidStack()
     
     def reset(self, demand_MW):
         self.timestep = 0
@@ -87,6 +88,28 @@ class Market():
             self.bidstack.add_price_quantity_bid(bid)
         
         self.check_finished()
+
+    def _get_state(self):
+
+        # Perform economic dispatch to get a list of winning bids
+        winning_bids = self.bidstack.economic_dispatch(self.demand_MW)
+        
+        # Generate a dispatch order object that stores a queriable result of the dispatch. 
+        dispatch_order = DispatchOrder(winning_bids)
+        
+        # Calculate the market price - price of winning bid
+        marginal_price = winning_bids[-1].price
+        
+        # Get a dict containing each gen and amount dispatched
+        dispatch = dispatch_order.get_generator_dispatch()
+
+        state = {
+            'dispatch':dispatch,
+            'marginal_price':marginal_price,
+            'demand': self.demand_MW,
+        }
+    
+        return state
     
     def check_finished(self):
         """
@@ -100,25 +123,10 @@ class Market():
                 return False
         
         # If we get to here, it means all submitted. 
+        # Get a dict to represent current market state.
+        state = self._get_state()
         
-        # Perform economic dispatch to get a list of winning bids
-        winning_bids = self.bidstack.economic_dispatch(self.demand_MW)
-        
-        # Generate a dispatch order object that stores a queriable result of the dispatch. 
-        dispatch_order = DispatchOrder(winning_bids)
-        dispatch = dispatch_order.get_generator_dispatch()
-        
-        # Calculate the market price - price of winning bid
-        marginal_price = winning_bids[-1].price
-
-        state = {
-            'dispatch':dispatch,
-            'marginal_price':marginal_price,
-            'demand': 3,
-        }
-        
-        # Call the dispatch callback, 
-        
+        # Call the simulation's dispatch callback and pass it the market state.
         self.dispatch_callback(state)
         return True
 

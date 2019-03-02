@@ -54,7 +54,7 @@ class ClientTask():
                     msg = socket.recv()
                     tprint('Client %s received: %s' % (identity, msg),color=self.id+1)
                     # For testing purposes - otherwise you'll do about a thousand a second. 
-                    time.sleep(1)
+                    # time.sleep(1)
                     break
 
         socket.close()

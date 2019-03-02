@@ -1,11 +1,15 @@
 from marketsim.model.generator import Generator
 from marketsim.model.energy_market import Market, Bid
+from marketsim.model.demand import Demand
 
 import inspect
 from ..util.logging import tprint
 from threading import Lock
 
-labels = ['Nyngan', 'Bayswater', 'Moree']
+import os
+
+
+demand_path = os.path.join('data', 'input', 'PRICE_AND_DEMAND_201901_TAS1.csv')
 
 class Simulation():
     """
@@ -20,7 +24,15 @@ class Simulation():
         print("Simulation Initialised")
         self.callbacks = []
         self.lock = Lock()
-        self.market = Market(labels, self.dispatch_callback, 3)
+
+        # List of participants
+        self.participant_list = ['Nyngan', 'Bayswater', 'Moree']
+        # Object that returns next demand in series. 
+        self.demand = Demand(demand_path)
+        # Object that simulates an electricity market
+        self.market = Market(self.participant_list, self.dispatch_callback, self.demand.next())
+        
+        
         
 
     def add_generator(self, label, type, nameplate_MW):
@@ -48,7 +60,7 @@ class Simulation():
             c(market_state)
         self.callbacks = []
 
-        self.market.step(demand_MW = 3)
+        self.market.step(demand_MW = self.demand.next())
 
 class SimulationFactory():
     
