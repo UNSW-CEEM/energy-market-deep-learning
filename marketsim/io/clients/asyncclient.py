@@ -12,20 +12,41 @@ from ...util.logging import tprint
 
 labels = ['Nyngan', 'Bayswater', 'Moree']
 
-class ClientTask():
-    """ClientTask"""
+class AsyncClient():
+    """AsyncClient"""
     def __init__(self, id):
         self.id = id
+        self.context = zmq.Context()
+        self.socket = self.context.socket(zmq.DEALER)
+        self.identity = u'worker-%d' % self.id
+        self.socket.identity = self.identity.encode('ascii')
+        self.socket.connect('tcp://localhost:5570')
+        tprint('Client %s started' % (self.identity),color=self.id+1)
+        self.poll = zmq.Poller()
+        self.poll.register(self.socket, zmq.POLLIN)
 
-    def run(self):
-        context = zmq.Context()
-        socket = context.socket(zmq.DEALER)
-        identity = u'worker-%d' % self.id
-        socket.identity = identity.encode('ascii')
-        socket.connect('tcp://localhost:5570')
-        tprint('Client %s started' % (identity),color=self.id+1)
-        poll = zmq.Poller()
-        poll.register(socket, zmq.POLLIN)
+    def send(self, data):
+        """ Sends data to the server. Returns the reply."""
+        data_str = json.dumps(data)
+        self.socket.send_string(data_str)
+
+
+        # Receive Reply
+        for i in range(5):
+            tprint("Polling Attempt: "+str(i), color=self.id+1)
+            sockets = dict(self.poll.poll(1000))
+            if self.socket in sockets:
+                msg = self.socket.recv()
+                tprint('Client %s received: %s' % (self.identity, msg),color=self.id+1)
+                # For testing purposes - otherwise you'll do about a thousand a second. 
+                time.sleep(1)
+                break
+        return json.loads(msg)
+
+        
+
+    def loop(self):
+        
         reqs = 0
         while True:
             reqs = reqs + 1
@@ -43,35 +64,24 @@ class ClientTask():
                 ],
             }
 
-            data_str = json.dumps(data)
-            socket.send_string(data_str)
+            self.send(data)
 
-            # socket.send_string(u'request #%d' % (reqs))
-            for i in range(5):
-                tprint("Polling Attempt: "+str(i), color=self.id+1)
-                sockets = dict(poll.poll(1000))
-                if socket in sockets:
-                    msg = socket.recv()
-                    tprint('Client %s received: %s' % (identity, msg),color=self.id+1)
-                    # For testing purposes - otherwise you'll do about a thousand a second. 
-                    # time.sleep(1)
-                    break
 
-        socket.close()
-        context.term()
+        self.socket.close()
+        self.context.term()
 
 def main():
     """main function"""
     
     for i in range(10):
-        client = ClientTask(i)
+        client = AsyncClient(i)
         client.start()
 
 
 if __name__ == "__main__":
     # Runs a multithreaded test set of clients. Not suitable for tensorflow - testing only. 
     for i in range(3):
-        client = ClientTask(i)
-        t = threading.Thread(target=client.run)
+        client = AsyncClient(i)
+        t = threading.Thread(target=client.loop)
         t.start()
         
