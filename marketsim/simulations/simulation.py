@@ -26,7 +26,7 @@ class Simulation():
         self.lock = Lock()
 
         # List of participants
-        self.participant_list = ['Nyngan', 'Bayswater', 'Moree']
+        self.participant_list = ['Nyngan', 'Bayswater']
         # Object that returns next demand in series. 
         self.demand = Demand(demand_path)
         # Object that simulates an electricity market

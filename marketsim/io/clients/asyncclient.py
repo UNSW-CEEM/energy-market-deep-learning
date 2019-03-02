@@ -11,7 +11,8 @@ import time
 from ...util.logging import tprint
 
 # labels = ['Nyngan', 'Bayswater', 'Moree']
-labels = ['Nyngan', 'Bayswater']
+# labels = ['Nyngan', 'Bayswater']
+labels = ['Nyngan']
 
 class AsyncClient():
     """AsyncClient"""
@@ -51,6 +52,10 @@ class AsyncClient():
                 time.sleep(1)
                 break
         return json.loads(msg)
+    
+    def close(self):
+        self.socket.close()
+        self.context.term()
 
         
 
@@ -64,19 +69,14 @@ class AsyncClient():
                 'id': self.id,
                 'label':labels[self.id],
                 'bids' : [
-                    [10,1],
-                    [20,1],
-                    [30,1],
-                    [40,1],
-                    [50,1],
+                    [10,1000],
+                    [100,1000],
                 ],
             }
 
             self.send(data)
 
-
-        self.socket.close()
-        self.context.term()
+        self.close()
 
 def main():
     """main function"""

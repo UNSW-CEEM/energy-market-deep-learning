@@ -23,13 +23,22 @@ class SimpleMarket(gym.Env):
     }
 
     def __init__(self):
-        high = np.array([
-                            3,
-                            np.finfo(np.float32).max,
-                            3,
-                            np.finfo(np.float32).max])
-        self.action_space = spaces.Discrete(2)
-        self.observation_space = spaces.Box(-high, high, dtype=np.float32)
+
+        # Define
+        obs_high = np.array([
+                            10000, #demand
+                            10, #available MW
+                        ])
+        obs_low = np.array([
+                            0, #demand
+                            0, #available MW
+                        ])
+        self.observation_space = spaces.Box(obs_low, obs_high, dtype=np.float32)
+
+        
+        self.action_space = spaces.Discrete(10000)
+
+
 
         self.seed()
         self.viewer = None
@@ -40,7 +49,7 @@ class SimpleMarket(gym.Env):
         # Need a way to assign or find id.
         self.id = 3
         self.io = AsyncClient(self.id)
-        self.label = 'Moree'
+        self.label = 'Bayswater'
 
     def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
@@ -50,29 +59,25 @@ class SimpleMarket(gym.Env):
         assert self.action_space.contains(action), "%r (%s) invalid"%(action, type(action))
         
         # self.state = (x,x_dot,theta,theta_dot)
-
+        print("Action:", action)
         data = {
                 'id': self.id,
                 'label':self.label,
                 'bids' : [
-                    [10,1],
-                    [20,1],
-                    [30,1],
-                    [40,1],
-                    [50,1],
+                    [int(action),10],
                 ],
             }
         self.io.send(data)
         
         # state should be a tuple of vals. 
-        next_state = (1,2,3,4)
+        next_state = (1,2)
         reward = 2
         done = True
         # the next next_state, the reward for the current next_state, a boolean representing whether the current episode of our model is done and some additional info on our problem
         return np.array(next_state), reward, done, {}
 
     def reset(self):
-        self.state = self.np_random.uniform(low=-0.05, high=0.05, size=(4,))
+        self.state = self.np_random.uniform(low=-0.05, high=0.05, size=(2,))
         return np.array(self.state)
 
     def render(self, mode='human'):
