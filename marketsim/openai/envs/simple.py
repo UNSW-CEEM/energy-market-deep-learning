@@ -10,6 +10,8 @@ from gym import spaces, logger
 from gym.utils import seeding
 import numpy as np
 
+from marketsim.io.clients.asyncclient import AsyncClient
+
 class SimpleMarket(gym.Env):
     """
     
