@@ -37,9 +37,6 @@ class SimpleMarket(gym.Env):
 
         
         self.action_space = spaces.Discrete(10000)
-
-
-
         self.seed()
         self.viewer = None
         self.state = None
@@ -50,6 +47,7 @@ class SimpleMarket(gym.Env):
         self.id = 3
         self.io = AsyncClient(self.id)
         self.label = 'Bayswater'
+        self.total_steps = 0
 
     def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
@@ -57,9 +55,9 @@ class SimpleMarket(gym.Env):
 
     def step(self, action):
         assert self.action_space.contains(action), "%r (%s) invalid"%(action, type(action))
-        
+        self.total_steps += 1
         # self.state = (x,x_dot,theta,theta_dot)
-        print("Action:", action)
+        # print("Action:", action)
         data = {
                 'id': self.id,
                 'label':self.label,
@@ -67,13 +65,20 @@ class SimpleMarket(gym.Env):
                     [int(action),10],
                 ],
             }
-        self.io.send(data)
+        reply = self.io.send(data)
         
         # state should be a tuple of vals. 
-        next_state = (1,2)
-        reward = 2
-        done = True
-        # the next next_state, the reward for the current next_state, a boolean representing whether the current episode of our model is done and some additional info on our problem
+        next_state = (reply['next_demand'],10)
+        # Reward is product of dispatched and 
+        reward = 0 if self.label not in reply['dispatch'] else float(reply['dispatch'][self.label]) * float(reply['price'])
+        
+        
+        # Every day, start a new epoch.
+        done = False
+        if self.total_steps % 48 == 0:
+            done = True
+
+        # the next next_state, the reward for the last action, the current next_state, a boolean representing whether the current episode of our model is done and some additional info on our problem
         return np.array(next_state), reward, done, {}
 
     def reset(self):

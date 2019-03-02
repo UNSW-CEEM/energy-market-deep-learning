@@ -56,11 +56,13 @@ class Simulation():
     
     def dispatch_callback(self, market_state):
         tprint("Sending Callbacks", 210)
+        next_demand = self.demand.next()
         for c in self.callbacks:
+            market_state['next_demand'] = next_demand
             c(market_state)
         self.callbacks = []
 
-        self.market.step(demand_MW = self.demand.next())
+        self.market.step(demand_MW = next_demand)
 
 class SimulationFactory():
     

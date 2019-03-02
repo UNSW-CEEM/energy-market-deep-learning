@@ -34,7 +34,7 @@ class AsyncClient():
         self.socket.send_string(data_str)
 
         self.reqs = self.reqs + 1
-        tprint(str(self.id)+'Req #%d sent..' % (self.reqs),color=self.id+1)
+        # tprint(str(self.id)+' Req #%d sent..' % (self.reqs),color=self.id+1)
 
 
         # Receive Reply
@@ -43,13 +43,13 @@ class AsyncClient():
         i = 0
         while True:
             i+= 1
-            tprint("Polling Attempt: "+str(i), color=self.id+1)
+            # tprint("Polling Attempt: "+str(i), color=self.id+1)
             sockets = dict(self.poll.poll(1000))
             if self.socket in sockets:
                 msg = self.socket.recv()
-                tprint('Client %s received: %s' % (self.identity, msg),color=self.id+1)
+                # tprint('Client %s received: %s' % (self.identity, msg),color=self.id+1)
                 # For testing purposes - otherwise you'll do about a thousand a second. 
-                time.sleep(1)
+                # time.sleep(1)
                 break
         return json.loads(msg)
     

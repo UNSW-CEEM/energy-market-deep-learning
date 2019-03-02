@@ -105,7 +105,7 @@ class Market():
 
         state = {
             'dispatch':dispatch,
-            'marginal_price':marginal_price,
+            'price':marginal_price,
             'demand': self.demand_MW,
         }
     
