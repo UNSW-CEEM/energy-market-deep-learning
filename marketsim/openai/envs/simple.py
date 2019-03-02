@@ -37,6 +37,11 @@ class SimpleMarket(gym.Env):
 
         self.steps_beyond_done = None
 
+        # Need a way to assign or find id.
+        self.id = 3
+        self.io = AsyncClient(self.id)
+        self.label = 'Moree'
+
     def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
         return [seed]
@@ -45,6 +50,19 @@ class SimpleMarket(gym.Env):
         assert self.action_space.contains(action), "%r (%s) invalid"%(action, type(action))
         
         # self.state = (x,x_dot,theta,theta_dot)
+
+        data = {
+                'id': self.id,
+                'label':self.label,
+                'bids' : [
+                    [10,1],
+                    [20,1],
+                    [30,1],
+                    [40,1],
+                    [50,1],
+                ],
+            }
+        self.io.send(data)
         
         # state should be a tuple of vals. 
         next_state = (1,2,3,4)
