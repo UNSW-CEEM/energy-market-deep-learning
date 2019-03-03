@@ -1,3 +1,0 @@
-numpy
-mkdocs
-python-markdown-math
