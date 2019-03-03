@@ -33,7 +33,8 @@ class SimpleMarket(gym.Env):
                             0, #demand
                             0, #available MW
                         ])
-        self.observation_space = spaces.Box(obs_low, obs_high, dtype=np.float32)
+        # self.observation_space = spaces.Box(obs_low, obs_high, dtype=np.float32)
+        self.observation_space = spaces.Box(obs_low, obs_high )
 
         
         self.action_space = spaces.Discrete(10000)
