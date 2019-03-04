@@ -50,6 +50,8 @@ class SimpleMarket(gym.Env):
         self.label = 'Bayswater'
         self.total_steps = 0
 
+        self.epoch_reward = 0
+
     def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
         return [seed]
@@ -59,6 +61,9 @@ class SimpleMarket(gym.Env):
         self.total_steps += 1
         # self.state = (x,x_dot,theta,theta_dot)
         # print("Action:", action)
+
+        
+        
         data = {
                 'id': self.id,
                 'label':self.label,
@@ -68,12 +73,14 @@ class SimpleMarket(gym.Env):
             }
         reply = self.io.send(data)
         
+        
         # state should be a tuple of vals. 
         next_state = (reply['next_demand'],10)
+        
         # Reward is product of dispatched and 
         reward = 0 if self.label not in reply['dispatch'] else float(reply['dispatch'][self.label]) * float(reply['price'])
         
-        
+        self.epoch_reward += reward
         # Every day, start a new epoch.
         done = False
         if self.total_steps % 48 == 0:
@@ -84,6 +91,10 @@ class SimpleMarket(gym.Env):
 
     def reset(self):
         self.state = self.np_random.uniform(low=-0.05, high=0.05, size=(2,))
+        # print(str({"metric": "epoch_reward", "value": self.epoch_reward, "step": self.total_steps}))
+        print('{"metric": "epoch_reward", "value": '+str(self.epoch_reward)+', "step":'+str(self.total_steps)+'}')
+
+        self.epoch_reward = 0
         return np.array(self.state)
 
     def render(self, mode='human'):

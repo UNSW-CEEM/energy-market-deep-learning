@@ -1,3 +1,4 @@
-python -m marketsim.io.servers.asyncserver &
-python -m marketsim.io.clients.asyncclient &
+python -m marketsim.io.servers.asyncserver > server.log &
+python -m marketsim.io.clients.asyncclient > client.log &
 python dqn_simplemarket.py
+# killall python
