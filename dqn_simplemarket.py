@@ -17,8 +17,9 @@ import pendulum
 
 # ENV_NAME = 'CartPole-v0'
 ENV_NAME = 'SimpleMarket-v0'
+extra_label = "Simple Shadow"
 
-logbook().set_label(ENV_NAME+" "+pendulum.now().format('ddd D/M HH:mm'))
+logbook().set_label(extra_label+" "+ENV_NAME+" "+pendulum.now().format('ddd D/M HH:mm'))
 logbook().record_metadata('Environment', ENV_NAME)
 
 # Get the environment and extract the number of actions.
@@ -65,8 +66,8 @@ dqn.compile(Adam(lr=1e-5), metrics=['mae'])
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
-# nb_steps = 50000
-nb_steps = 50
+nb_steps = 50000
+# nb_steps = 50
 dqn.fit(env, nb_steps=nb_steps, visualize=False, verbose=2)
 logbook().record_hyperparameter('nb_steps', nb_steps)
 
