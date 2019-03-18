@@ -28,7 +28,7 @@ class SimpleMarket(gym.Env):
         # Define
         obs_high = np.array([
                             10000, #demand
-                            10, #available MW
+                            1000, #available MW
                         ])
         obs_low = np.array([
                             0, #demand
@@ -71,7 +71,7 @@ class SimpleMarket(gym.Env):
                 'id': self.id,
                 'label':self.label,
                 'bids' : [
-                    [int(action),10],
+                    [int(action),1000],
                 ],
             }
         reply = self.io.send(data)
@@ -103,8 +103,13 @@ class SimpleMarket(gym.Env):
         return np.array(self.state)
 
     def render(self, mode='human'):
+        # Log bid/value in Floydhub
         print('{"metric": "bid", "value": '+str(self.last_action)+', "step":'+str(self.total_steps)+'}')
-        # logbook().record_bid(self.label, int(self.last_action), 10, self.total_steps)
+        
+        # Log in logbook suite
+        logbook().record_price(self._state_dict['price'])
+        logbook().record_demand(self._state_dict['demand'])
+        # Log bidstack in logbook suite.
         for bid in self._state_dict['all_bids']:
             logbook().record_bid(bid['label'], bid['price'], bid['quantity'], self.total_steps)
         return None

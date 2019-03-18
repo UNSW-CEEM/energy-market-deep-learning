@@ -14,13 +14,24 @@ class Log():
             'hyperparameters':{},
             'metadata':{},
             
+            
+            
             'timeseries':{
                 'epoch_reward':{
                     'label':'Epoch Reward',
                     'data':[]
                 },
+                'demand':{
+                    'label':'Demand',
+                    'data':[]
+                },
+                'price':{
+                    'label':'Price',
+                    'data':[]
+                }
             },
             'bids':{},
+            
             'bidstacks': {
                 # 0 :{
                 #     'nyngan': {
@@ -73,7 +84,12 @@ class Log():
         # Add the actual bid data. 
         self.data['bidstacks'][step_no][participant_label]['bands'].append({'price':price, 'volume':volume})
         
+    def record_demand(self, demand):
+        self.data['timeseries']['demand']['data'].append(demand)
     
+    def record_price(self, price):
+        self.data['timeseries']['price']['data'].append(price)
+
     def submit(self):
         print("Submitting to remote server")
         # try:
