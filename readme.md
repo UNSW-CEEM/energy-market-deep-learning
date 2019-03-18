@@ -1,7 +1,6 @@
 # Electricity Market Deep Learning Framework.
 The aim of this software is to provide an adversarial reinforcement learning model of a restructured electricity market, specifically Australia's National Electricity Market. It is intended to work as an environment plugin for Elon Musk & Sam Altman's [OpenAi Gym](https://gym.openai.com/). 
 
-
 ## Usage
 Keras, Tensorflow and Python 3.* are required to run the simulations. 
 The software consists of three components: The market simulation webserver, the keras machine reinforcement learning setup, and the user interface. These components communicate in real-time over websockets. 

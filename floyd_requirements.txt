@@ -1,3 +1,5 @@
 keras-rl
 pyzmq
 colored
+dependency_injector
+pendulum

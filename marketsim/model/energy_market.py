@@ -11,6 +11,13 @@ class Bid():
     def copy(self):
         return Bid(self.label, self.price, self.quantity)
     
+    def to_dict(self):
+        return {
+            'label':self.label,
+            'price':self.price,
+            'quantity':self.quantity
+        }
+    
 
 class BidStack():
     """Provides an api that handles bidstack calculations."""
@@ -40,6 +47,12 @@ class BidStack():
                 accepted.append(bid)
                 break
         return accepted
+
+    def get_all_bids_dict(self):
+        out = []
+        for bid in self.stack:
+            out.append(bid.to_dict())
+        return out
 
 class DispatchOrder():
     def __init__(self, winning_bids):
@@ -107,6 +120,7 @@ class Market():
             'dispatch':dispatch,
             'price':marginal_price,
             'demand': self.demand_MW,
+            'all_bids':self.bidstack.get_all_bids_dict()
         }
     
         return state

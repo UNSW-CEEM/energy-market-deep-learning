@@ -9,6 +9,7 @@ import gym
 from gym import spaces, logger
 from gym.utils import seeding
 import numpy as np
+from marketsim.logbook.logbook import logbook
 
 from marketsim.io.clients.asyncclient import AsyncClient
 
@@ -41,6 +42,7 @@ class SimpleMarket(gym.Env):
         self.seed()
         self.viewer = None
         self.state = None
+        self._state_dict = None
 
         self.steps_beyond_done = None
 
@@ -51,6 +53,7 @@ class SimpleMarket(gym.Env):
         self.total_steps = 0
 
         self.epoch_reward = 0
+        self.last_action = 0
 
     def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
@@ -61,7 +64,7 @@ class SimpleMarket(gym.Env):
         self.total_steps += 1
         # self.state = (x,x_dot,theta,theta_dot)
         # print("Action:", action)
-
+        self.last_action = action
         
         
         data = {
@@ -73,9 +76,11 @@ class SimpleMarket(gym.Env):
             }
         reply = self.io.send(data)
         
+        self._state_dict = reply
         
         # state should be a tuple of vals. 
         next_state = (reply['next_demand'],10)
+        
         
         # Reward is product of dispatched and 
         reward = 0 if self.label not in reply['dispatch'] else float(reply['dispatch'][self.label]) * float(reply['price'])
@@ -93,11 +98,15 @@ class SimpleMarket(gym.Env):
         self.state = self.np_random.uniform(low=-0.05, high=0.05, size=(2,))
         # print(str({"metric": "epoch_reward", "value": self.epoch_reward, "step": self.total_steps}))
         print('{"metric": "epoch_reward", "value": '+str(self.epoch_reward)+', "step":'+str(self.total_steps)+'}')
-
+        logbook().record_epoch_reward(self.epoch_reward)
         self.epoch_reward = 0
         return np.array(self.state)
 
     def render(self, mode='human'):
+        print('{"metric": "bid", "value": '+str(self.last_action)+', "step":'+str(self.total_steps)+'}')
+        # logbook().record_bid(self.label, int(self.last_action), 10, self.total_steps)
+        for bid in self._state_dict['all_bids']:
+            logbook().record_bid(bid['label'], bid['price'], bid['quantity'], self.total_steps)
         return None
 
     def close(self):

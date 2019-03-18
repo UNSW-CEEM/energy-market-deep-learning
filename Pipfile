@@ -9,6 +9,8 @@ gym = {version = "*",extras = ["atari"]}
 "h5py" = "*"
 pillow = "*"
 colored = "*"
+dependency-injector = "*"
+pendulum = "*"
 
 [dev-packages]
 
