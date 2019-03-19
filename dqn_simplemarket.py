@@ -21,12 +21,15 @@ extra_label = "Simple Shadow"
 
 logbook().set_label(extra_label+" "+ENV_NAME+" "+pendulum.now().format('ddd D/M HH:mm'))
 logbook().record_metadata('Environment', ENV_NAME)
+logbook().record_metadata('datetime', pendulum.now().isoformat())
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
 np.random.seed(123)
 env.seed(123)
 nb_actions = env.action_space.n
+logbook().record_hyperparameter('action_space', str(env.action_space))
+logbook().record_hyperparameter('action_space_size', str(env.action_space.n))
 
 # Next, we build a very simple model.
 model = Sequential()
@@ -41,14 +44,14 @@ model.add(Dense(nb_actions))
 model.add(Activation('linear'))
 print("MODEL SUMMARY",model.summary())
 
-logbook().record_metadata('Model Summary', str(model.summary()))
+logbook().record_hyperparameter('Model Config JSON', str(model.to_json()))
 
 
 # Finally, we configure and compile our agent. You can use every built-in Keras optimizer and
 # even the metrics!
 memory = SequentialMemory(limit=50000, window_length=1)
 policy = BoltzmannQPolicy()
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=10, target_model_update=1e-2, policy=policy, )
+dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100, target_model_update=1e-2, policy=policy, )
 # Record to logbook
 logbook().record_hyperparameter('Agent', str(type(dqn)))
 logbook().record_hyperparameter('Memory Type', str(type(memory)))
@@ -66,8 +69,8 @@ dqn.compile(Adam(lr=1e-5), metrics=['mae'])
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
-nb_steps = 50000
-# nb_steps = 50
+# nb_steps = 50000
+nb_steps = 50
 dqn.fit(env, nb_steps=nb_steps, visualize=False, verbose=2)
 logbook().record_hyperparameter('nb_steps', nb_steps)
 

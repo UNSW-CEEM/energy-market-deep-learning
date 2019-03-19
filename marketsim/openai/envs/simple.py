@@ -38,7 +38,7 @@ class SimpleMarket(gym.Env):
         self.observation_space = spaces.Box(obs_low, obs_high )
 
         
-        self.action_space = spaces.Discrete(10000)
+        self.action_space = spaces.Discrete(10)
         self.seed()
         self.viewer = None
         self.state = None
@@ -49,11 +49,13 @@ class SimpleMarket(gym.Env):
         # Need a way to assign or find id.
         self.id = 3
         self.io = AsyncClient(self.id)
-        self.label = 'Bayswater'
+        self.label = 'HAL'
         self.total_steps = 0
 
         self.epoch_reward = 0
         self.last_action = 0
+
+        
 
     def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)

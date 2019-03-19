@@ -69,7 +69,7 @@ class AsyncClient():
                 'id': self.id,
                 'label':labels[self.id],
                 'bids' : [
-                    [100,1050],
+                    [5,1050],
                 ],
             }
 
