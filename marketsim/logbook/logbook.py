@@ -72,20 +72,20 @@ class Log():
     
     def record_model_json(sellf, json):
         self.data['model_json'] = json
-        
+
     def record_metadata(self, label, value):
         self.data['metadata'][label] = value
 
     def record_epoch_reward(self, reward):
         self.data['timeseries']['epoch_reward']['data'].append(reward)
     
-    def record_bid(self, participant_label, price, volume, step_no):
+    def record_bid(self, participant_label, price, volume, demand, step_no):
         step_no = int(step_no)
         # Initialise if not in the dict. 
         self.data['bidstacks'][step_no] = {} if not step_no in self.data['bidstacks'] else self.data['bidstacks'][step_no]
         self.data['bidstacks'][step_no][participant_label] = { 'bands':[], 'meta':{'label':participant_label}} if not participant_label in  self.data['bidstacks'][step_no] else self.data['bidstacks'][step_no][participant_label]
         # Add the actual bid data. 
-        self.data['bidstacks'][step_no][participant_label]['bands'].append({'price':price, 'volume':volume})
+        self.data['bidstacks'][step_no][participant_label]['bands'].append({'price':price, 'volume':volume, 'demand':demand})
         
     def record_demand(self, demand):
         self.data['timeseries']['demand']['data'].append(demand)

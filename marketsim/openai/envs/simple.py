@@ -113,7 +113,7 @@ class SimpleMarket(gym.Env):
         logbook().record_demand(self._state_dict['demand'])
         # Log bidstack in logbook suite.
         for bid in self._state_dict['all_bids']:
-            logbook().record_bid(bid['label'], bid['price'], bid['quantity'], self.total_steps)
+            logbook().record_bid(bid['label'], bid['price'], bid['quantity'], self._state_dict['demand'], self.total_steps)
         return None
 
     def close(self):
