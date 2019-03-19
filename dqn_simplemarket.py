@@ -44,7 +44,7 @@ model.add(Dense(nb_actions))
 model.add(Activation('linear'))
 print("MODEL SUMMARY",model.summary())
 
-logbook().record_hyperparameter('Model Config JSON', str(model.to_json()))
+logbook().record_model_json(model.to_json())
 
 
 # Finally, we configure and compile our agent. You can use every built-in Keras optimizer and
@@ -69,8 +69,8 @@ dqn.compile(Adam(lr=1e-5), metrics=['mae'])
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
-# nb_steps = 50000
-nb_steps = 50
+nb_steps = 50000
+# nb_steps = 50
 dqn.fit(env, nb_steps=nb_steps, visualize=False, verbose=2)
 logbook().record_hyperparameter('nb_steps', nb_steps)
 

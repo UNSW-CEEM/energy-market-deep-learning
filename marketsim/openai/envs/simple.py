@@ -49,7 +49,7 @@ class SimpleMarket(gym.Env):
         # Need a way to assign or find id.
         self.id = 3
         self.io = AsyncClient(self.id)
-        self.label = 'HAL'
+        self.label = 'Bayswater'
         self.total_steps = 0
 
         self.epoch_reward = 0

@@ -70,6 +70,9 @@ class Log():
         print("Recording Hyperparameter", label, value)
         self.data['hyperparameters'][label] = value
     
+    def record_model_json(sellf, json):
+        self.data['model_json'] = json
+        
     def record_metadata(self, label, value):
         self.data['metadata'][label] = value
 
