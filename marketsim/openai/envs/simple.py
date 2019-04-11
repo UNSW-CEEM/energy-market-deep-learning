@@ -106,14 +106,14 @@ class SimpleMarket(gym.Env):
 
     def render(self, mode='human'):
         # Log bid/value in Floydhub
-        print('{"metric": "bid", "value": '+str(self.last_action)+', "step":'+str(self.total_steps)+'}')
+        # print('{"metric": "bid", "value": '+str(self.last_action)+', "step":'+str(self.total_steps)+'}')
         
         # Log in logbook suite
-        logbook().record_price(self._state_dict['price'])
-        logbook().record_demand(self._state_dict['demand'])
+        logbook().record_price(self._state_dict['price'], self.total_steps)
+        logbook().record_demand(self._state_dict['demand'], self.total_steps)
         # Log bidstack in logbook suite.
         for bid in self._state_dict['all_bids']:
-            logbook().record_bid(bid['label'], bid['price'], bid['quantity'], self._state_dict['demand'], self.total_steps)
+            logbook().record_bid(bid['label'], bid['price'], bid['quantity'], self.total_steps)
         return None
 
     def close(self):

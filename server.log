@@ -1,0 +1,869 @@
+Simulation Initialised
+[38;5;101mWorker started
+[0m[38;5;101mWorker started
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[7, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[0, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[8, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[8, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[8, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m[38;5;4mBid Added:{'id': 3, 'label': 'Bayswater', 'bids': [[3, 1000]]}
+[0m[38;5;210mSending Callbacks
+[0m[38;5;1mBid Added:{'id': 0, 'label': 'Nyngan', 'bids': [[5, 1050]]}
+[0m

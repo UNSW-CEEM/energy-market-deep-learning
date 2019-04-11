@@ -51,25 +51,32 @@ logbook().record_model_json(model.to_json())
 # even the metrics!
 memory = SequentialMemory(limit=50000, window_length=1)
 policy = BoltzmannQPolicy()
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100, target_model_update=1e-2, policy=policy, )
+
+dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100, target_model_update=1e-3, policy=policy)
 # Record to logbook
 logbook().record_hyperparameter('Agent', str(type(dqn)))
 logbook().record_hyperparameter('Memory Type', str(type(memory)))
 logbook().record_hyperparameter('Memory Limit', memory.limit)
 logbook().record_hyperparameter('Memory Window Length', memory.window_length)
-logbook().record_hyperparameter('nb_steps_warmup', dqn.nb_steps_warmup)
-logbook().record_hyperparameter('target_model_update', dqn.target_model_update)
+logbook().record_hyperparameter('nb_steps_warmup', dqn.nb_steps_warmup) #info on this parameter here: https://datascience.stackexchange.com/questions/46056/in-keras-library-what-is-the-meaning-of-nb-steps-warmup-in-the-dqnagent-objec
+logbook().record_hyperparameter('target_model_update', dqn.target_model_update) #info on this parameter here: https://github.com/keras-rl/keras-rl/issues/55
 logbook().record_hyperparameter('nb_actions', nb_actions)
+logbook().record_hyperparameter('batch_size', dqn.batch_size) #defaults to 32. Info here: https://radiopaedia.org/articles/batch-size-machine-learning
+logbook().record_hyperparameter('gamma', dqn.gamma) #defaults to 0.99. 'Discount rate' according to Advanced Deep Learning with Keras
+
 
 
 # dqn.compile(Adam(lr=1e-3), metrics=['mae'])
-dqn.compile(Adam(lr=1e-5), metrics=['mae'])
+# learning_rate = 1e-6
+learning_rate = 1e-3
+dqn.compile(Adam(lr=learning_rate), metrics=['mae'])
+logbook().record_hyperparameter('Learning Rate', learning_rate)
 
 # Okay, now it's time to learn something! We visualize the training here for show, but this
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
-nb_steps = 50000
+nb_steps = 500000
 # nb_steps = 50
 dqn.fit(env, nb_steps=nb_steps, visualize=False, verbose=2)
 logbook().record_hyperparameter('nb_steps', nb_steps)
@@ -81,4 +88,8 @@ dqn.save_weights('dqn_{}_weights.h5f'.format(ENV_NAME), overwrite=True)
 nb_episodes = 5
 logbook().record_metadata('nb_episodes (testing)', nb_episodes)
 dqn.test(env, nb_episodes=5, visualize=True)
+
+
+
+logbook().record_notes("Testing with 10x more steps (500,000). Learning rate and target model update at 1e-3.")
 logbook().submit()

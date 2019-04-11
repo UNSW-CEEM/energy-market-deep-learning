@@ -13,7 +13,7 @@ class Log():
             'label':None,
             'hyperparameters':{},
             'metadata':{},
-            
+            'notes':"",
             
             
             'timeseries':{
@@ -31,6 +31,7 @@ class Log():
                 }
             },
             'bids':{},
+            # 'demand':{},
             
             'bidstacks': {
                 # 0 :{
@@ -70,7 +71,7 @@ class Log():
         print("Recording Hyperparameter", label, value)
         self.data['hyperparameters'][label] = value
     
-    def record_model_json(sellf, json):
+    def record_model_json(self, json):
         self.data['model_json'] = json
 
     def record_metadata(self, label, value):
@@ -79,19 +80,22 @@ class Log():
     def record_epoch_reward(self, reward):
         self.data['timeseries']['epoch_reward']['data'].append(reward)
     
-    def record_bid(self, participant_label, price, volume, demand, step_no):
+    def record_notes(self, notes):
+        self.data['notes'] += notes+"\n"
+    
+    def record_bid(self, participant_label, price, volume,  step_no):
         step_no = int(step_no)
         # Initialise if not in the dict. 
         self.data['bidstacks'][step_no] = {} if not step_no in self.data['bidstacks'] else self.data['bidstacks'][step_no]
         self.data['bidstacks'][step_no][participant_label] = { 'bands':[], 'meta':{'label':participant_label}} if not participant_label in  self.data['bidstacks'][step_no] else self.data['bidstacks'][step_no][participant_label]
         # Add the actual bid data. 
-        self.data['bidstacks'][step_no][participant_label]['bands'].append({'price':price, 'volume':volume, 'demand':demand})
+        self.data['bidstacks'][step_no][participant_label]['bands'].append({'price':price, 'volume':volume})
         
-    def record_demand(self, demand):
-        self.data['timeseries']['demand']['data'].append(demand)
+    def record_demand(self, demand, step_no):
+        self.data['timeseries']['demand']['data'].append([step_no, demand]) #record for basic chart
     
-    def record_price(self, price):
-        self.data['timeseries']['price']['data'].append(price)
+    def record_price(self, price, step_no):
+        self.data['timeseries']['price']['data'].append([step_no,price])
 
     def submit(self):
         print("Submitting to remote server")
