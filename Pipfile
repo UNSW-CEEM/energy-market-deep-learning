@@ -11,6 +11,7 @@ pillow = "*"
 colored = "*"
 dependency-injector = "*"
 pendulum = "*"
+space-wrappers = {git = "https://github.com/ngc92/space-wrappers"}
 
 [dev-packages]
 
