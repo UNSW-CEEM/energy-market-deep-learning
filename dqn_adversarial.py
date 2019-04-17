@@ -62,7 +62,7 @@ logbook().record_metadata('datetime', pendulum.now().isoformat())
 # gets a CUDA_ERROR_OUT_OF_MEMORY message and crashes.
 config = tf.ConfigProto()
 # config.gpu_options.allow_growth = True #Set automatically - takes some time. 
-config.gpu_options.per_process_gpu_memory_fraction = 0.4 # Alternatively, allocate as a fraction of the available memory:
+config.gpu_options.per_process_gpu_memory_fraction = 0.95 / float(len(possible_participants)) # Alternatively, allocate as a fraction of the available memory:
 sess = tf.Session(config=config)
 K.set_session(sess)
 
