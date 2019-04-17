@@ -9,6 +9,9 @@ from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten
 from keras.optimizers import Adam
 
+import tensorflow as tf
+from keras import backend as K
+
 from rl.agents.dqn import DQNAgent
 from rl.policy import BoltzmannQPolicy
 from rl.memory import SequentialMemory
@@ -52,6 +55,18 @@ logbook().set_label(extra_label+" "+ENV_NAME+" "+participant_name+" "+pendulum.n
 logbook().record_metadata('Environment', ENV_NAME)
 logbook().record_metadata('datetime', pendulum.now().isoformat())
 
+
+
+# Set the tensorflow memory growth to auto - this is important when running two simultaneous models
+# Otherwise, the first process hogs all the memory and the second (the one that we watch the output of)
+# gets a CUDA_ERROR_OUT_OF_MEMORY message and crashes.
+config = tf.ConfigProto()
+# config.gpu_options.allow_growth = True #Set automatically - takes some time. 
+config.gpu_options.per_process_gpu_memory_fraction = 0.4 # Alternatively, allocate as a fraction of the available memory:
+sess = tf.Session(config=config)
+K.set_session(sess)
+
+
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
 # Wrap so that we have a discrete action space - maps the internal MultiDiscrete action space to a Discrete action space.
@@ -85,7 +100,7 @@ logbook().record_model_json(model.to_json())
 memory = SequentialMemory(limit=50000, window_length=1)
 policy = BoltzmannQPolicy()
 
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100, target_model_update=1e-3, policy=policy)
+dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=10000, target_model_update=1e-3, policy=policy)
 # Record to logbook
 logbook().record_hyperparameter('Agent', str(type(dqn)))
 logbook().record_hyperparameter('Memory Type', str(type(memory)))

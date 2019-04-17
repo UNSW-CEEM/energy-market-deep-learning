@@ -40,8 +40,11 @@ class MultiBidMarket(gym.Env):
         
         
         # self.action_space = spaces.Discrete(10)
-        
-        self.action_space = spaces.MultiDiscrete([10,10,10,10,10]) #5 bands of $0 - $9 bids. 
+        try:
+            self.action_space = spaces.MultiDiscrete([10,10,10,10,10]) #5 bands of $0 - $9 bids. 
+        except: # It seems that in some versions of openai gym, the MultiDiscrete constructor needs an array of high/lows.
+            self.action_space = spaces.MultiDiscrete([[0,10],[0,10],[0,10],[0,10],[0,10]]) #5 bands of $0 - $9 bids. 
+
         self.seed()
         self.viewer = None
         self.state = None
@@ -68,7 +71,7 @@ class MultiBidMarket(gym.Env):
         return [seed]
 
     def step(self, action):
-        print("ACTION: ", action)
+        # print("ACTION: ", action)
         # print(self.action_space)
         # assert self.action_space.contains(action), "%r (%s) invalid"%(action, type(action))
         self.total_steps += 1

@@ -3,3 +3,5 @@ pyzmq
 colored
 dependency_injector
 pendulum
+gym>=0.10.5
+-e git://github.com/ngc92/space-wrappers#egg=space_wrapper
