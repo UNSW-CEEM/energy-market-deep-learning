@@ -96,7 +96,10 @@ class MultiBidMarket(gym.Env):
         self._state_dict = reply
         
         # state should be a tuple of vals. 
-        next_state = (reply['next_demand'],10)
+        # next_state = (reply['next_demand'],10) 
+        next_state = (1000) #taking out next demand
+        
+
         
         
         # Reward is product of dispatched and 
