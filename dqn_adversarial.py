@@ -25,8 +25,11 @@ import space_wrappers
 
 notes = """
 Adversarial network. 
-Attempting to do first multi-bid. Using wrapper to change MultiDiscrete into a Discrete space - nice mapping library I found on Github. 
-Wish me luck. 
+First go, with deterministic and oscillating (and repeating) demand looked hopeful. 
+I'm not an advanced enough intelligence to know whether it's sensible though. 
+This run will thus have one change:
+- Demand will be pseudo-random, between max and min.
+
 """
 
 possible_participants = ['Nyngan', 'Bayswater']
