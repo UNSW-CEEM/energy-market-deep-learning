@@ -27,11 +27,11 @@ class MultiBidMarket(gym.Env):
 
         # Define
         obs_high = np.array([
-                            10000, #demand
+                            # 10000, #demand
                             1000, #available MW
                         ])
         obs_low = np.array([
-                            0, #demand
+                            # 0, #demand
                             0, #available MW
                         ])
         # self.observation_space = spaces.Box(obs_low, obs_high, dtype=np.float32)

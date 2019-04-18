@@ -1,6 +1,6 @@
 from marketsim.model.generator import Generator
 from marketsim.model.energy_market import Market, Bid
-from marketsim.model.demand import Demand
+from marketsim.model.demand import Demand, RandomDemand
 
 import inspect
 from ..util.logging import tprint
@@ -28,11 +28,10 @@ class Simulation():
         # List of participants
         self.participant_list = ['Nyngan', 'Bayswater']
         # Object that returns next demand in series. 
-        self.demand = Demand(demand_path)
+        # self.demand = Demand(demand_path)
+        self.demand = RandomDemand(max=1999)
         # Object that simulates an electricity market
         self.market = Market(self.participant_list, self.dispatch_callback, self.demand.next())
-        
-        
         
 
     def add_generator(self, label, type, nameplate_MW):

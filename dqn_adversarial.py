@@ -29,7 +29,7 @@ First go, with deterministic and oscillating (and repeating) demand looked hopef
 I'm not an advanced enough intelligence to know whether it's sensible though. 
 This run will thus have one change:
 - Demand will be pseudo-random, between max and min.
-
+- The agent will not be notified of the demand at the next timestep (when they are bidding) - ie. they will be bidding blind. 
 """
 
 possible_participants = ['Nyngan', 'Bayswater']
