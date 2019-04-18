@@ -128,7 +128,8 @@ logbook().record_hyperparameter('Learning Rate', learning_rate)
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
 # nb_steps = 500000
-nb_steps = 50000
+# nb_steps = 50000
+nb_steps = 25000
 # nb_steps = 50
 dqn.fit(env, nb_steps=nb_steps, visualize=False, verbose=2)
 logbook().record_hyperparameter('nb_steps', nb_steps)
