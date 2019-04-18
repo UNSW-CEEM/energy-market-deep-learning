@@ -25,11 +25,20 @@ import space_wrappers
 
 notes = """
 Adversarial network. 
-First go, with deterministic and oscillating (and repeating) demand looked hopeful. 
-I'm not an advanced enough intelligence to know whether it's sensible though. 
-This run will thus have one change:
-- Demand will be pseudo-random, between max and min.
+
+This run has:
+- Demand as pseudo-random, between max and min.
 - The agent will not be notified of the demand at the next timestep (when they are bidding) - ie. they will be bidding blind. 
+
+Changes:
+- Modified target_model_update from 1e-3 to 1e-2. 
+From the source code (https://github.com/keras-rl/keras-rl/blob/master/rl/agents/dqn.py#L89, line ~25),
+when target_model_update < 1, the policy uses a soft update:  
+
+`(1 - target_model_update) * old + target_model_update * new`.
+
+Also made it 1000 warmup steps not 10,000.
+
 """
 
 possible_participants = ['Nyngan', 'Bayswater']
@@ -103,7 +112,7 @@ logbook().record_model_json(model.to_json())
 memory = SequentialMemory(limit=50000, window_length=1)
 policy = BoltzmannQPolicy()
 
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=10000, target_model_update=1e-3, policy=policy)
+dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=1000, target_model_update=1e-2, policy=policy)
 # Record to logbook
 logbook().record_hyperparameter('Agent', str(type(dqn)))
 logbook().record_hyperparameter('Memory Type', str(type(memory)))
@@ -130,6 +139,7 @@ logbook().record_hyperparameter('Learning Rate', learning_rate)
 # nb_steps = 500000
 # nb_steps = 50000
 nb_steps = 25000
+# nb_steps = 5000
 # nb_steps = 50
 dqn.fit(env, nb_steps=nb_steps, visualize=False, verbose=2)
 logbook().record_hyperparameter('nb_steps', nb_steps)
