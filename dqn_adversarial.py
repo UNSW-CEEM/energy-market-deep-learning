@@ -26,18 +26,16 @@ import space_wrappers
 notes = """
 Adversarial network. 
 
+Added last price as a parameter in the observations. 
+
 This run has:
 - Demand as pseudo-random, between max and min.
-- The agent will not be notified of the demand at the next timestep (when they are bidding) - ie. they will be bidding blind. 
+- Non-blind bidding, ie. the agent is aware of demand in the next time period. 
 
 Changes:
-- Modified target_model_update from 1e-3 to 1e-2. 
-From the source code (https://github.com/keras-rl/keras-rl/blob/master/rl/agents/dqn.py#L89, line ~25),
-when target_model_update < 1, the policy uses a soft update:  
+- Set target_model_update back to 1e-3.
+- Tweaked the learning rate here to 1e-2 rather than 1e-3.
 
-`(1 - target_model_update) * old + target_model_update * new`.
-
-Also made it 1000 warmup steps not 10,000.
 
 """
 
@@ -112,7 +110,8 @@ logbook().record_model_json(model.to_json())
 memory = SequentialMemory(limit=50000, window_length=1)
 policy = BoltzmannQPolicy()
 
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=1000, target_model_update=1e-2, policy=policy)
+# DQN Agent Source here: https://github.com/keras-rl/keras-rl/blob/master/rl/agents/dqn.py#L89
+dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=1000, target_model_update=1e-3, policy=policy)
 # Record to logbook
 logbook().record_hyperparameter('Agent', str(type(dqn)))
 logbook().record_hyperparameter('Memory Type', str(type(memory)))
@@ -127,8 +126,10 @@ logbook().record_hyperparameter('gamma', dqn.gamma) #defaults to 0.99. 'Discount
 
 
 # dqn.compile(Adam(lr=1e-3), metrics=['mae'])
+# Needs general tuning, usually model-specific - https://machinelearningmastery.com/learning-rate-for-deep-learning-neural-networks/
 # learning_rate = 1e-6
-learning_rate = 1e-3
+# learning_rate = 1e-3
+learning_rate = 1e-2
 dqn.compile(Adam(lr=learning_rate), metrics=['mae'])
 logbook().record_hyperparameter('Learning Rate', learning_rate)
 

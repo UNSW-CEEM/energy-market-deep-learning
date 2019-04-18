@@ -28,11 +28,13 @@ class MultiBidMarket(gym.Env):
         # Define
         obs_high = np.array([
                             10000, #demand
-                            1000, #available MW
+                            1000, #Amount Dispatched
+                            10, #Last Price
                         ])
         obs_low = np.array([
                             0, #demand
-                            0, #available MW
+                            0, #Amount Dispatched
+                            0, #Last Price
                         ])
         # self.observation_space = spaces.Box(obs_low, obs_high, dtype=np.float32)
         self.observation_space = spaces.Box(obs_low, obs_high )
@@ -96,10 +98,14 @@ class MultiBidMarket(gym.Env):
         self._state_dict = reply
         
         # state should be a tuple of vals. 
-        # next_state = (reply['next_demand'],10)
-        next_state = (10, 10) #Fixed next demand and available energy here.
+        next_state = (
+            int(reply['next_demand']), #Next Demand
+            int(reply['dispatch'][self.label]), #Amount Dispatched
+            int(reply['price']), # Last Price
+        )
+
         
-        
+        print(reply)
         
         # Reward is product of dispatched and 
         reward = 0 if self.label not in reply['dispatch'] else float(reply['dispatch'][self.label]) * float(reply['price'])
