@@ -22,11 +22,12 @@ import sys
 
 import space_wrappers
 
+import market_config
 
 notes = """
 Adversarial network. 
 
-Added last price as a parameter in the observations. 
+Competitor bid
 
 This run has:
 - Demand as pseudo-random, between max and min.
@@ -37,20 +38,20 @@ Changes:
 - Tweaked the learning rate here to 1e-2 rather than 1e-3.
 
 
+
 """
 
-possible_participants = ['Nyngan', 'Bayswater']
 
 # Make sure that a participant name is provided.
 if len(sys.argv) < 2:
     print('Error: Participant name not provided - usage: python dqn_adversarial.py <participant_name>')
     print('Possible participant names:')
-    [print(" -"+p) for p in possible_participants]
+    [print(" -"+p) for p in market_config.PARTICIPANTS]
     sys.exit()
 # Make sure that the participant name is one of hte allowed ones. 
-elif sys.argv[1] not in possible_participants:
+elif sys.argv[1] not in market_config.PARTICIPANTS:
     print('Error: Participant not in list of possible participants. Must be one of:')
-    [print(" -"+p) for p in possible_participants]
+    [print(" -"+p) for p in market_config.PARTICIPANTS]
     sys.exit()
 else:
     participant_name = sys.argv[1]
@@ -72,7 +73,7 @@ logbook().record_metadata('datetime', pendulum.now().isoformat())
 # gets a CUDA_ERROR_OUT_OF_MEMORY message and crashes.
 config = tf.ConfigProto()
 # config.gpu_options.allow_growth = True #Set automatically - takes some time. 
-config.gpu_options.per_process_gpu_memory_fraction = 0.95 / float(len(possible_participants)) # Alternatively, allocate as a fraction of the available memory:
+config.gpu_options.per_process_gpu_memory_fraction = 0.95 / float(len(market_config.PARTICIPANTS)) # Alternatively, allocate as a fraction of the available memory:
 sess = tf.Session(config=config)
 K.set_session(sess)
 
@@ -81,7 +82,7 @@ K.set_session(sess)
 env = gym.make(ENV_NAME)
 # Wrap so that we have a discrete action space - maps the internal MultiDiscrete action space to a Discrete action space.
 env = space_wrappers.FlattenedActionWrapper(env)
-env.connect(participant_name, possible_participants.index(participant_name))
+env.connect(participant_name, market_config.PARTICIPANTS.index(participant_name))
 np.random.seed(123)
 env.seed(123)
 nb_actions = env.action_space.n #use this one if Discrete action space
@@ -138,8 +139,8 @@ logbook().record_hyperparameter('Learning Rate', learning_rate)
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
 # nb_steps = 500000
-# nb_steps = 50000
-nb_steps = 25000
+nb_steps = 50000
+# nb_steps = 25000
 # nb_steps = 5000
 # nb_steps = 50
 dqn.fit(env, nb_steps=nb_steps, visualize=False, verbose=2)

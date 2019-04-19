@@ -47,9 +47,10 @@ class Simulation():
             
             tprint("Bid Added:"+str(bid_data), color= bid_data['id']+1)
             bids = []
-            for bid in bid_data['bids']:
+
+            for band, bid in enumerate(bid_data['bids']):
                 # Assemble a bid object from the data.
-                b = Bid(label=bid_data['label'], price=bid[0], quantity = bid[1])
+                b = Bid(label=bid_data['label'], price=bid[0], quantity = bid[1], band=band)
                 bids.append(b)
             self.market.add_bid(participant_label = bid_data['label'], bids = bids)
     

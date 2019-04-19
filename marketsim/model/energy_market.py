@@ -3,19 +3,21 @@
 
 class Bid():
     """A bid that represents a price-quantity pair in the system."""
-    def __init__(self, label, price, quantity):
+    def __init__(self, label, price, quantity, band):
         self.label = label
         self.price = price
         self.quantity = quantity
+        self.band = band
     
     def copy(self):
-        return Bid(self.label, self.price, self.quantity)
+        return Bid(self.label, self.price, self.quantity, self.band)
     
     def to_dict(self):
         return {
             'label':self.label,
             'price':self.price,
-            'quantity':self.quantity
+            'quantity':self.quantity,
+            'band':self.band,
         }
     
 
@@ -49,9 +51,11 @@ class BidStack():
         return accepted
 
     def get_all_bids_dict(self):
-        out = []
+        out = {}
         for bid in self.stack:
-            out.append(bid.to_dict())
+            label = bid.label
+            out[label] = [] if not label in out else out[label]
+            out[label].append(bid.to_dict())
         return out
 
 class DispatchOrder():

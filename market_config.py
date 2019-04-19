@@ -1,0 +1,1 @@
+PARTICIPANTS = sorted(['Nyngan', 'Bayswater'])
