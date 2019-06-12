@@ -1,5 +1,6 @@
 import csv
 import random
+from market_config import params as market_config
 
 class Demand():
     def __init__(self, file_path):
@@ -18,7 +19,7 @@ class Demand():
 
 class RandomDemand():
     def __init__(self, max):
-        self.max = max
+        self.max = market_config['MAX_DEMAND']
     
     def next(self): 
         return random.random() * float(self.max)

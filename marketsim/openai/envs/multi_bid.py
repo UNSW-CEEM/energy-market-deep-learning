@@ -12,13 +12,17 @@ import numpy as np
 from marketsim.logbook.logbook import logbook
 
 from marketsim.io.clients.asyncclient import AsyncClient
-import market_config
+from market_config import params as market_config
 
 
-NUM_BANDS = 5
+NUM_BANDS = 6
 MIN_PRICE = 0
 MAX_PRICE = 10
 
+REVEAL_PREVIOUS_BIDS = market_config['REVEAL_PREVIOUS_BIDS']
+
+
+TOTAL_CAPACITY = float(market_config['MAX_DEMAND']) / float(len(market_config['PARTICIPANTS']))
 
 class MultiBidMarket(gym.Env):
     """
@@ -32,9 +36,9 @@ class MultiBidMarket(gym.Env):
 
     def __init__(self):
         obs_high = [
-            10000, #demand
-            1000, #Amount Dispatched
-            10, #Last Price
+            market_config['MAX_DEMAND'], #demand
+            TOTAL_CAPACITY, #Amount Dispatched
+            MAX_PRICE, #Last Price
         ]
 
         obs_low = [
@@ -44,10 +48,11 @@ class MultiBidMarket(gym.Env):
         ]
 
         # Create a spot in the observation space for each participant other than this one. 
-        for i in range(len(market_config.PARTICIPANTS) - 1):
-            for band in range(NUM_BANDS):
-                obs_high.append(MAX_PRICE)
-                obs_low.append(MIN_PRICE)
+        if REVEAL_PREVIOUS_BIDS:
+            for i in range(len(market_config['PARTICIPANTS']) - 1):
+                for band in range(NUM_BANDS):
+                    obs_high.append(MAX_PRICE)
+                    obs_low.append(MIN_PRICE)
 
         # Define
         obs_high = np.array(obs_high)
@@ -62,9 +67,9 @@ class MultiBidMarket(gym.Env):
         
         # self.action_space = spaces.Discrete(10)
         try:
-            self.action_space = spaces.MultiDiscrete([10,10,10,10,10]) #5 bands of $0 - $9 bids. 
+            self.action_space = spaces.MultiDiscrete([MAX_PRICE for b in range(NUM_BANDS)]) #5 bands of $0 - $9 bids. 
         except: # It seems that in some versions of openai gym, the MultiDiscrete constructor needs an array of high/lows.
-            self.action_space = spaces.MultiDiscrete([[0,10],[0,10],[0,10],[0,10],[0,10]]) #5 bands of $0 - $9 bids. 
+            self.action_space = spaces.MultiDiscrete([ [0,MAX_PRICE] for b in range(NUM_BANDS)]) #5 bands of $0 - $9 bids. 
 
         self.seed()
         self.viewer = None
@@ -104,14 +109,9 @@ class MultiBidMarket(gym.Env):
         data = {
                 'id': self.id,
                 'label':self.label,
-                'bids' : [
-                    [int(action[0]),200],
-                    [int(action[1]),200],
-                    [int(action[2]),200],
-                    [int(action[3]),200],
-                    [int(action[4]),200],
-                ],
+                'bids' : [ [int(a), TOTAL_CAPACITY / NUM_BANDS] for a in action ],
             }
+        
         reply = self.io.send(data)
         
         self._state_dict = reply
@@ -119,20 +119,22 @@ class MultiBidMarket(gym.Env):
         amount_dispatched = 0 if self.label not in reply['dispatch'] else float(reply['dispatch'][self.label])
 
         next_state = [
-            int(reply['next_demand']), #Next Demand
+            # int(reply['next_demand']), #Next Demand
+            0,
             int(amount_dispatched), #Amount Dispatched
             int(reply['price']), # Last Price,
         ]
 
         # Add each participant's previous bids to the observation space. 
         # Loop through each participant in the sorted participant list
-        for p in market_config.PARTICIPANTS:
-            if p != self.label:
-                prices = [0] * NUM_BANDS
-                for bid in reply['all_bids'][p]:
-                    prices[bid['band']] = int(bid['price'])
-                # Add the bid info to the observation
-                next_state += prices
+        if REVEAL_PREVIOUS_BIDS:
+            for p in market_config['PARTICIPANTS']:
+                if p != self.label:
+                    prices = [0] * NUM_BANDS
+                    for bid in reply['all_bids'][p]:
+                        prices[bid['band']] = int(bid['price'])
+                    # Add the bid info to the observation
+                    next_state += prices
         
         
         
