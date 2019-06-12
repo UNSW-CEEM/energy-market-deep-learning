@@ -15,11 +15,8 @@ from marketsim.io.clients.asyncclient import AsyncClient
 from market_config import params as market_config
 
 
-NUM_BANDS = 6
-MIN_PRICE = 0
-MAX_PRICE = 10
 
-REVEAL_PREVIOUS_BIDS = market_config['REVEAL_PREVIOUS_BIDS']
+
 
 
 TOTAL_CAPACITY = float(market_config['MAX_DEMAND']) / float(len(market_config['PARTICIPANTS']))
@@ -38,7 +35,7 @@ class MultiBidMarket(gym.Env):
         obs_high = [
             market_config['MAX_DEMAND'], #demand
             TOTAL_CAPACITY, #Amount Dispatched
-            MAX_PRICE, #Last Price
+            market_config['MAX_PRICE'], #Last Price
         ]
 
         obs_low = [
@@ -48,11 +45,20 @@ class MultiBidMarket(gym.Env):
         ]
 
         # Create a spot in the observation space for each participant other than this one. 
-        if REVEAL_PREVIOUS_BIDS:
+        if market_config['REVEAL_PREVIOUS_BIDS']:
             for i in range(len(market_config['PARTICIPANTS']) - 1):
-                for band in range(NUM_BANDS):
-                    obs_high.append(MAX_PRICE)
-                    obs_low.append(MIN_PRICE)
+                for band in range(market_config['NUM_BANDS']):
+                    obs_high.append(market_config['MAX_PRICE'])
+                    obs_low.append(market_config['MIN_PRICE'])
+        
+        # Create a spot in the observation space for each participant other than this one
+        # These spots are used to deliver the way the other participants last bid in this context. 
+        if market_config['PROVIDE_HISTORICAL_CONTEXT']:
+            for i in range(len(market_config['PARTICIPANTS']) - 1):
+                self._saved_history = {}
+                for band in range(market_config['NUM_BANDS']):
+                    obs_high.append(market_config['MAX_PRICE'])
+                    obs_low.append(market_config['MIN_PRICE'])
 
         # Define
         obs_high = np.array(obs_high)
@@ -67,9 +73,9 @@ class MultiBidMarket(gym.Env):
         
         # self.action_space = spaces.Discrete(10)
         try:
-            self.action_space = spaces.MultiDiscrete([MAX_PRICE for b in range(NUM_BANDS)]) #5 bands of $0 - $9 bids. 
+            self.action_space = spaces.MultiDiscrete([market_config['MAX_PRICE'] for b in range(market_config['NUM_BANDS'])]) #5 bands of $0 - $9 bids. 
         except: # It seems that in some versions of openai gym, the MultiDiscrete constructor needs an array of high/lows.
-            self.action_space = spaces.MultiDiscrete([ [0,MAX_PRICE] for b in range(NUM_BANDS)]) #5 bands of $0 - $9 bids. 
+            self.action_space = spaces.MultiDiscrete([ [0,market_config['MAX_PRICE']] for b in range(market_config['NUM_BANDS'])]) #5 bands of $0 - $9 bids. 
 
         self.seed()
         self.viewer = None
@@ -79,9 +85,7 @@ class MultiBidMarket(gym.Env):
         self.steps_beyond_done = None
 
         # Need a way to assign or find id.
-       
         self.total_steps = 0
-
         self.epoch_reward = 0
         self.last_action = 0
 
@@ -109,7 +113,7 @@ class MultiBidMarket(gym.Env):
         data = {
                 'id': self.id,
                 'label':self.label,
-                'bids' : [ [int(a), TOTAL_CAPACITY / NUM_BANDS] for a in action ],
+                'bids' : [ [int(a), TOTAL_CAPACITY / market_config['NUM_BANDS']] for a in action ],
             }
         
         reply = self.io.send(data)
@@ -119,24 +123,34 @@ class MultiBidMarket(gym.Env):
         amount_dispatched = 0 if self.label not in reply['dispatch'] else float(reply['dispatch'][self.label])
 
         next_state = [
-            # int(reply['next_demand']), #Next Demand
-            0,
+            int(reply['next_demand']) if market_config['SHOW_NEXT_DEMAND'] else 0, #Next Demand
             int(amount_dispatched), #Amount Dispatched
             int(reply['price']), # Last Price,
         ]
 
         # Add each participant's previous bids to the observation space. 
         # Loop through each participant in the sorted participant list
-        if REVEAL_PREVIOUS_BIDS:
+        if market_config['REVEAL_PREVIOUS_BIDS']:
             for p in market_config['PARTICIPANTS']:
                 if p != self.label:
-                    prices = [0] * NUM_BANDS
+                    prices = [0] * market_config['NUM_BANDS']
                     for bid in reply['all_bids'][p]:
                         prices[bid['band']] = int(bid['price'])
                     # Add the bid info to the observation
                     next_state += prices
         
+        # Add each participant's previous bids in a similar demand situation.
+        if market_config['PROVIDE_HISTORICAL_CONTEXT']:
+            for p in market_config['PARTICIPANTS']:
+                if p != self.label:
+                    prices = [0] * market_config['NUM_BANDS']
+                    if reply['next_demand'] in self._saved_history:
+                        for bid in reply['all_bids'][p]:
+                            prices[bid['band']] = int(bid['price'])
+                    # Add the bid info to the observation
+                    next_state += prices
         
+        self._saved_history[reply['next_demand']] = reply['all_bids']
         
         # Reward is product of dispatched and 
         reward = amount_dispatched * float(reply['price'])

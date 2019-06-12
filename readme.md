@@ -30,3 +30,10 @@ Extremely good explanation: https://keon.io/deep-q-learning/
 ## References
 
 At the moment, based on examples and code from Matthias Plappert, repo found here: https://github.com/matthiasplappert/keras-rl
+
+
+## Notes
+Make demand discrete in a tiny range
+Then show each participant their opponents moves last time demand was at that level. 
+
+What if we kept demand constant? This would really show the equilibrium. Next.

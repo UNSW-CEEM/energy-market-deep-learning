@@ -25,10 +25,10 @@ import space_wrappers
 from market_config import params as market_config
 
 notes = """
-    Testing CPU Instead. 
-    Going back to play with EPS-Greedy Q-Policy. It showed the most promise from previous policy-selection experiments. 
-    Blind bidding.
-    6 bands each.
+    Signalling next demand and providing historical context (bids last time demand was at this level)
+    EPS-Greedy Policy.
+    Non-Blind bidding.
+    5 bands each.
 """
 
 

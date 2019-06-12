@@ -18,8 +18,15 @@ class Demand():
         return demand
 
 class RandomDemand():
-    def __init__(self, max):
+    def __init__(self):
         self.max = market_config['MAX_DEMAND']
     
     def next(self): 
         return random.random() * float(self.max)
+
+class RandomDiscreteDemand():
+    def __init__(self):
+        self.max = market_config['MAX_DEMAND']
+    
+    def next(self): 
+        return int(random.random() * float(self.max))
