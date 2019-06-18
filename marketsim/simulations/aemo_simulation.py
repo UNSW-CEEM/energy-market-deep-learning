@@ -3,6 +3,8 @@ from marketsim.model.energy_market import Market, Bid
 from marketsim.model.demand import Demand, RandomDemand, RandomDiscreteDemand
 from aemo_config import params
 import pendulum
+import os
+import pickle
 
 
 # Jenga Stuff
@@ -45,7 +47,7 @@ class AEMOSimulation():
         self.aemo_state = ["NSW", "QLD", "SA", "VIC", "TAS"][0]
 
         self.loop_start_date = pendulum.datetime(2018,6,5)
-        self.loop_end_date = pendulum.datetime(2018,6,5)
+        self.loop_end_date = pendulum.datetime(2018,6,6)
         self.current_date = self.loop_start_date
 
         # List of market participants connecting via zmq.
@@ -57,11 +59,33 @@ class AEMOSimulation():
         print("Participants",self.participant_list)
         # Object that returns next demand in series. 
         # self.demand = Demand(demand_path)
-        demand = get_demand(self.aemo_state, self.current_date)
+        
+        
+        # Pre-assemble bids into memory (stops slow db calls in learning period and double-calls to db.)
+        print("Assembling Historical bids")
+        self.historical = {'bids':{}, 'demand':{}}
+        # Check if there is a historical bids pickle object corresponding to our parameters
+        historical_filename = self.loop_start_date.isoformat() + self.loop_end_date.isoformat()+self.aemo_state+".pkl"
+        historical_path = os.path.join('pickles', historical_filename)
+        if os.path.isfile(os.path.join(historical_path)):
+            print("Found pickle! Loading historical bids. ")
+            self.historical = pickle.load( open( historical_path, "rb" ) )
+        else:
+            print("Pickle not found - assembling bids from database.")
+            date = self.loop_start_date
+            while date <= self.loop_end_date:
+                print(date)
+                self.historical['bids'][date.isoformat()] = get_bids(self.aemo_participant_list, date)
+                self.historical['demand'][date.isoformat()] = get_demand(self.aemo_state, date)
+                date = date.add(minutes=30)
+            pickle.dump( self.historical, open( historical_path, "wb" ) )
+            print("Finished assembling historical bids")
+
+        
         # Object that simulates an electricity market
+        demand = get_demand(self.aemo_state, self.current_date)
         self.market = Market(self.participant_list, self.dispatch_callback, demand)
         self.add_non_agent_bids(self.current_date)
-        
 
     def add_generator(self, label, type, nameplate_MW):
         """Add a generator to the simulation."""
@@ -86,7 +110,12 @@ class AEMOSimulation():
     def dispatch_callback(self, market_state):
         tprint("Sending Callbacks", 210)
         self.current_date = self.current_date.add(minutes=30) if self.current_date.add(minutes=30) < self.loop_end_date else self.loop_start_date
-        next_demand = get_demand(self.aemo_state, self.current_date)
+        
+        # Get next demand from db
+        # next_demand = get_demand(self.aemo_state, self.current_date)
+        # Get next demand from historical file
+        next_demand = self.historical['demand'][self.current_date.isoformat()]
+        
 
         
         # Callback 
@@ -106,7 +135,11 @@ class AEMOSimulation():
 
     def add_non_agent_bids(self, dt):
         print("Adding Non-Agent Bids")
-        jenga_bidstack_data = get_bids(self.aemo_participant_list, dt)
+        # read from db
+        # jenga_bidstack_data = get_bids(self.aemo_participant_list, dt)
+        # read from historical in memory
+        jenga_bidstack_data = self.historical['bids'][dt.isoformat()]
+        # go through each participant, submit a bid. Read from historical where they submitted a bid. 
         for participant_label in self.aemo_participant_list:
             bids = []
             if participant_label in jenga_bidstack_data:
@@ -120,6 +153,7 @@ class AEMOSimulation():
             self.market.add_bid(participant_label = participant_label, bids = bids)
 
         # print(bids)
+    
 
 
 class SimulationFactory():
