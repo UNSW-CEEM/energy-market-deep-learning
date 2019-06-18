@@ -37,3 +37,4 @@ Make demand discrete in a tiny range
 Then show each participant their opponents moves last time demand was at that level. 
 
 What if we kept demand constant? This would really show the equilibrium. Next.
+No it wouldn't. They would get stuck in wack scenarios for each one max bidding and no competition.
