@@ -58,10 +58,17 @@ class AEMOSimulation():
         
         print("Participants",self.participant_list)
         # Object that returns next demand in series. 
-        # self.demand = Demand(demand_path)
         
-        
+    
         # Pre-assemble bids into memory (stops slow db calls in learning period and double-calls to db.)
+        self.load_historical()
+
+        # Object that simulates an electricity market
+        demand = self.historical['demand'][self.current_date.isoformat()]
+        self.market = Market(self.participant_list, self.dispatch_callback, demand)
+        self.add_non_agent_bids(self.current_date)
+
+    def load_historical(self):
         print("Assembling Historical bids")
         self.historical = {'bids':{}, 'demand':{}}
         # Check if there is a historical bids pickle object corresponding to our parameters
@@ -80,12 +87,6 @@ class AEMOSimulation():
                 date = date.add(minutes=30)
             pickle.dump( self.historical, open( historical_path, "wb" ) )
             print("Finished assembling historical bids")
-
-        
-        # Object that simulates an electricity market
-        demand = get_demand(self.aemo_state, self.current_date)
-        self.market = Market(self.participant_list, self.dispatch_callback, demand)
-        self.add_non_agent_bids(self.current_date)
 
     def add_generator(self, label, type, nameplate_MW):
         """Add a generator to the simulation."""
