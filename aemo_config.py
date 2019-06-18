@@ -1,7 +1,7 @@
-
+import os
 params = {
     # Sorted list of participants. 
-    'PARTICIPANTS' : sorted(['Nyngan', 'Bayswater']),
+    'PARTICIPANTS' : sorted(['Luke']),
     
 
     # This needs to be more than or equal to no_participants * no_bands. 
@@ -16,5 +16,12 @@ params = {
     'NUM_BANDS' : 5,
     'MIN_PRICE' : 0,
     'MAX_PRICE' : 10,
+
+    'DB_NAME':os.environ['DB_NAME'],
+    'MONGO_USER':os.environ['MONGO_USER'],
+    'MONGO_PASSWORD':os.environ['MONGO_PASSWORD'],
+    'MONGO_HOST':os.environ['MONGO_HOST'],
+    'MONGO_PORT':os.environ['MONGO_PORT'],
+    'MONGO_AUTH_SOURCE':os.environ['MONGO_AUTH_SOURCE'],
 
 }

@@ -12,6 +12,8 @@ colored = "*"
 dependency-injector = "*"
 pendulum = "*"
 space-wrappers = {git = "https://github.com/ngc92/space-wrappers"}
+lazy = "*"
+mongoengine = "*"
 
 [dev-packages]
 
