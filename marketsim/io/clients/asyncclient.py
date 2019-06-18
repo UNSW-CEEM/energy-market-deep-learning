@@ -12,7 +12,7 @@ from ...util.logging import tprint
 
 # labels = ['Nyngan', 'Bayswater', 'Moree']
 # labels = ['Nyngan', 'Bayswater']
-labels = ['Nyngan']
+labels = ['Luke']
 
 class AsyncClient():
     """AsyncClient"""

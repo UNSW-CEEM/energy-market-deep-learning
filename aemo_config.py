@@ -9,7 +9,7 @@ params = {
     # Include the last set of bids in the observation space.
     'REVEAL_PREVIOUS_BIDS':True,
     # Give the agent an example of how bidders behaved last time next demand was seen. 
-    'PROVIDE_HISTORICAL_CONTEXT':True,
+    'PROVIDE_HISTORICAL_CONTEXT':False,
     # In observation, give the agent an accurate forecast of the next demand
     'SHOW_NEXT_DEMAND':True,
 

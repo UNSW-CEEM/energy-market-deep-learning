@@ -12,7 +12,7 @@ import numpy as np
 from marketsim.logbook.logbook import logbook
 
 from marketsim.io.clients.asyncclient import AsyncClient
-from market_config import params as market_config
+from aemo_config import params as market_config
 
 
 
@@ -149,8 +149,9 @@ class MultiBidAEMOMarket(gym.Env):
                             prices[bid['band']] = int(bid['price'])
                     # Add the bid info to the observation
                     next_state += prices
+            self._saved_history[reply['next_demand']] = reply['all_bids']
         
-        self._saved_history[reply['next_demand']] = reply['all_bids']
+            
         
         # Reward is product of dispatched and 
         reward = amount_dispatched * float(reply['price'])
