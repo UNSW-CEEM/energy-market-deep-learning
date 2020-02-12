@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "energy-market-deep-learning"
+version = "0.1.0"
+description = "Energy market Simulator for Open AI"
+authors = ["Luke Marshall <lukasmarshall@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+keras-rl = "^0.4.2"
+h5py = "^2.10.0"
+gym = "^0.16.0"
+colored = "^1.4.2"
+dependency-injector = "^3.15.4"
+pendulum = "^2.0.5"
+lazy = "^1.4"
+mongoengine = "^0.19.1"
+numpy = "^1.18.1"
+requests = "^2.22.0"
+space-wrappers = {git = "https://github.com/ngc92/space-wrappers"}
+zmq = "^0.0.0"
+tensorflow = "2.0.0-beta"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

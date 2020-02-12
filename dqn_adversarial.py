@@ -63,11 +63,11 @@ for param in market_config:
 # Set the tensorflow memory growth to auto - this is important when running two simultaneous models
 # Otherwise, the first process hogs all the memory and the second (the one that we watch the output of)
 # gets a CUDA_ERROR_OUT_OF_MEMORY message and crashes.
-config = tf.ConfigProto()
-# config.gpu_options.allow_growth = True #Set automatically - takes some time. 
-config.gpu_options.per_process_gpu_memory_fraction = 0.95 / float(len(market_config['PARTICIPANTS'])) # Alternatively, allocate as a fraction of the available memory:
-sess = tf.Session(config=config)
-K.set_session(sess)
+# config = tf.compat.v1.ConfigProto()
+# # config.gpu_options.allow_growth = True #Set automatically - takes some time. 
+# config.gpu_options.per_process_gpu_memory_fraction = 0.95 / float(len(market_config['PARTICIPANTS'])) # Alternatively, allocate as a fraction of the available memory:
+# sess = tf.compat.v1.Session(config=config)
+# K.set_session(sess)
 
 
 # Get the environment and extract the number of actions.

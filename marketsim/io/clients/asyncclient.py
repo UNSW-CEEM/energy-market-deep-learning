@@ -22,7 +22,8 @@ class AsyncClient():
         self.socket = self.context.socket(zmq.DEALER)
         self.identity = u'worker-%d' % self.id
         self.socket.identity = self.identity.encode('ascii')
-        self.socket.connect('tcp://localhost:5570')
+        # self.socket.connect('tcp://localhost:5570')
+        self.socket.connect('tcp://138.68.254.184:5570')
         tprint('Client %s started' % (self.identity),color=self.id+1)
         self.poll = zmq.Poller()
         self.poll.register(self.socket, zmq.POLLIN)

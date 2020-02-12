@@ -14,8 +14,11 @@ pendulum = "*"
 space-wrappers = {git = "https://github.com/ngc92/space-wrappers"}
 lazy = "*"
 mongoengine = "*"
+numpy = "*"
+requests = "*"
+tensorflow = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
