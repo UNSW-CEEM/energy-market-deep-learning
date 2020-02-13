@@ -5,7 +5,7 @@ description = "Energy market Simulator for Open AI"
 authors = ["Luke Marshall <lukasmarshall@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6"
 keras-rl = "^0.4.2"
 h5py = "^2.10.0"
 gym = "^0.16.0"
