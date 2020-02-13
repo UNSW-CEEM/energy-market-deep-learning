@@ -17,4 +17,7 @@ params = {
     'MIN_PRICE' : 0,
     'MAX_PRICE' : 10,
 
+    'MARKET_SERVER':'tcp://localhost:5570',
+    # 'MARKET_SERVER':'tcp://138.68.254.184:5570',
+
 }
