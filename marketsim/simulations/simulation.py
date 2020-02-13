@@ -1,7 +1,7 @@
 from marketsim.model.generator import Generator
 from marketsim.model.energy_market import Market, Bid
 from marketsim.model.demand import Demand, RandomDemand, RandomDiscreteDemand
-
+import market_config
 import inspect
 from ..util.logging import tprint
 from threading import Lock
@@ -26,7 +26,8 @@ class Simulation():
         self.lock = Lock()
 
         # List of participants
-        self.participant_list = ['Nyngan', 'Bayswater']
+        # self.participant_list = ['Nyngan', 'Bayswater']
+        self.participant_list = market_config.params['PARTICIPANTS']
         # Object that returns next demand in series. 
         # self.demand = Demand(demand_path)
         self.demand = RandomDiscreteDemand()

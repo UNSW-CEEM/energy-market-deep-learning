@@ -18,7 +18,7 @@ numpy = "^1.18.1"
 requests = "^2.22.0"
 space-wrappers = {git = "https://github.com/ngc92/space-wrappers"}
 zmq = "^0.0.0"
-tensorflow = "2.0.0-beta"
+tensorflow = "1.13.1"
 
 [tool.poetry.dev-dependencies]
 

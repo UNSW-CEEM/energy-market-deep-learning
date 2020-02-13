@@ -173,17 +173,30 @@ class MultiBidMarket(gym.Env):
         
         # print(str({"metric": "epoch_reward", "value": self.epoch_reward, "step": self.total_steps}))
         print('{"metric": "epoch_reward", "value": '+str(self.epoch_reward)+', "step":'+str(self.total_steps)+'}')
+        
+        print('{"metric": "unique_bids", "value": '+str(logbook().get_num_unique_bids(previous_steps=50))+', "step":'+str(self.total_steps)+'}')
+        
         logbook().record_epoch_reward(self.epoch_reward)
         self.epoch_reward = 0
+
+
+        
+        # Every X steps, write results to file in case of dramatic failure. 
+        if self.total_steps % 20000 == 0:
+        # if self.total_steps % 100 == 0:
+            logbook().save_json(label=str(self.label))
+        
         return np.array(self.state)
 
     def render(self, mode='human'):
         # Log bid/value in Floydhub
         # print('{"metric": "bid", "value": '+str(self.last_action)+', "step":'+str(self.total_steps)+'}')
-        
+        # print("Rendering")
         # Log in logbook suite
         logbook().record_price(self._state_dict['price'], self.total_steps)
         logbook().record_demand(self._state_dict['demand'], self.total_steps)
+
+        
         # Log bidstack in logbook suite.
         for label in self._state_dict['all_bids']:
             for bid in self._state_dict['all_bids'][label]:

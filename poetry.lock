@@ -78,17 +78,6 @@ version = "0.3.3"
 
 [[package]]
 category = "main"
-description = "pasta is an AST-based Python refactoring library"
-name = "google-pasta"
-optional = false
-python-versions = "*"
-version = "0.1.8"
-
-[package.dependencies]
-six = "*"
-
-[[package]]
-category = "main"
 description = "HTTP/2-based RPC framework"
 name = "grpcio"
 optional = false
@@ -228,6 +217,19 @@ setuptools = ">=36"
 
 [package.extras]
 testing = ["coverage", "pyyaml"]
+
+[[package]]
+category = "main"
+description = "Rolling backport of unittest.mock for all Pythons"
+name = "mock"
+optional = false
+python-versions = ">=3.6"
+version = "4.0.1"
+
+[package.extras]
+build = ["twine", "wheel", "blurb"]
+docs = ["sphinx"]
+test = ["pytest", "pytest-cov"]
 
 [[package]]
 category = "main"
@@ -387,13 +389,14 @@ gym = "*"
 reference = "714a3ec8082fc4ce32c534264ea9d39c8da98d71"
 type = "git"
 url = "https://github.com/ngc92/space-wrappers"
+
 [[package]]
 category = "main"
 description = "TensorBoard lets you watch Tensors Flow"
-name = "tb-nightly"
+name = "tensorboard"
 optional = false
 python-versions = ">= 2.7, != 3.0.*, != 3.1.*"
-version = "1.14.0a20190603"
+version = "1.13.1"
 
 [package.dependencies]
 absl-py = ">=0.4"
@@ -401,7 +404,6 @@ grpcio = ">=1.6.3"
 markdown = ">=2.6.8"
 numpy = ">=1.12.0"
 protobuf = ">=3.6.0"
-setuptools = ">=41.0.0"
 six = ">=1.10.0"
 werkzeug = ">=0.11.15"
 
@@ -415,24 +417,36 @@ description = "TensorFlow is an open source machine learning framework for every
 name = "tensorflow"
 optional = false
 python-versions = "*"
-version = "2.0.0b0"
+version = "1.13.1"
 
 [package.dependencies]
-absl-py = ">=0.7.0"
+absl-py = ">=0.1.6"
 astor = ">=0.6.0"
 gast = ">=0.2.0"
-google-pasta = ">=0.1.6"
 grpcio = ">=1.8.6"
 keras-applications = ">=1.0.6"
 keras-preprocessing = ">=1.0.5"
-numpy = ">=1.14.5,<2.0"
+numpy = ">=1.13.3"
 protobuf = ">=3.6.1"
 six = ">=1.10.0"
-tb-nightly = ">=1.14.0a20190603,<1.14.0a20190604"
+tensorboard = ">=1.13.0,<1.14.0"
+tensorflow-estimator = ">=1.13.0,<1.14.0rc0"
 termcolor = ">=1.1.0"
-tf-estimator-nightly = ">=1.14.0.dev2019060501,<1.14.0.dev2019060502"
 wheel = ">=0.26"
-wrapt = ">=1.11.1"
+
+[[package]]
+category = "main"
+description = "TensorFlow Estimator."
+name = "tensorflow-estimator"
+optional = false
+python-versions = "*"
+version = "1.13.0"
+
+[package.dependencies]
+absl-py = ">=0.1.6"
+mock = ">=2.0.0"
+numpy = ">=1.13.3"
+six = ">=1.10.0"
 
 [[package]]
 category = "main"
@@ -441,14 +455,6 @@ name = "termcolor"
 optional = false
 python-versions = "*"
 version = "1.1.0"
-
-[[package]]
-category = "main"
-description = "TensorFlow Estimator."
-name = "tf-estimator-nightly"
-optional = false
-python-versions = "*"
-version = "1.14.0.dev2019060501"
 
 [[package]]
 category = "main"
@@ -488,14 +494,6 @@ test = ["pytest (>=3.0.0)", "pytest-cov"]
 
 [[package]]
 category = "main"
-description = "Module for decorators, wrappers and monkey patching."
-name = "wrapt"
-optional = false
-python-versions = "*"
-version = "1.11.2"
-
-[[package]]
-category = "main"
 description = "You are probably looking for pyzmq."
 name = "zmq"
 optional = false
@@ -506,7 +504,7 @@ version = "0.0.0"
 pyzmq = "*"
 
 [metadata]
-content-hash = "d48572a4bdaf2cf76b1cd0f0b5b6aaca2c58e8cb67676454ef966e11bcd150dc"
+content-hash = "e46e115e637f613866dfe551cec094a1b355fc3e5d5340ab31bd9549c12b79c2"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -541,11 +539,6 @@ future = [
 gast = [
     {file = "gast-0.3.3-py2.py3-none-any.whl", hash = "sha256:8f46f5be57ae6889a4e16e2ca113b1703ef17f2b0abceb83793eaba9e1351a45"},
     {file = "gast-0.3.3.tar.gz", hash = "sha256:b881ef288a49aa81440d2c5eb8aeefd4c2bb8993d5f50edae7413a85bfdb3b57"},
-]
-google-pasta = [
-    {file = "google-pasta-0.1.8.tar.gz", hash = "sha256:713813a9f7d6589e5defdaf21e80e4392eb124662f8bd829acd51a4f8735c0cb"},
-    {file = "google_pasta-0.1.8-py2-none-any.whl", hash = "sha256:41bbe63bab92408452585ff2e1673ec1e35b88e163371cbed2a18510be4e8bc5"},
-    {file = "google_pasta-0.1.8-py3-none-any.whl", hash = "sha256:644dcf3784cf7147ab01de5dc22e60a638d219d4e4a3a7464eb98997ae2fe66f"},
 ]
 grpcio = [
     {file = "grpcio-1.27.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:9fc0d666dbefcec490fc19282ea60111de56974537353bb74725a2c4f74f9922"},
@@ -652,6 +645,10 @@ lazy = [
 markdown = [
     {file = "Markdown-3.2.1-py2.py3-none-any.whl", hash = "sha256:e4795399163109457d4c5af2183fbe6b60326c17cfdf25ce6e7474c6624f725d"},
     {file = "Markdown-3.2.1.tar.gz", hash = "sha256:90fee683eeabe1a92e149f7ba74e5ccdc81cd397bd6c516d93a8da0ef90b6902"},
+]
+mock = [
+    {file = "mock-4.0.1-py3-none-any.whl", hash = "sha256:5e48d216809f6f393987ed56920305d8f3c647e6ed35407c1ff2ecb88a9e1151"},
+    {file = "mock-4.0.1.tar.gz", hash = "sha256:2a572b715f09dd2f0a583d8aeb5bb67d7ed7a8fd31d193cf1227a99c16a67bc3"},
 ]
 mongoengine = [
     {file = "mongoengine-0.19.1-py2-none-any.whl", hash = "sha256:6796df3f7458fb1643812c0b58ccad201da0af935ddd4159604c5ca769b9abb6"},
@@ -854,32 +851,32 @@ six = [
     {file = "six-1.14.0.tar.gz", hash = "sha256:236bdbdce46e6e6a3d61a337c0f8b763ca1e8717c03b369e87a7ec7ce1319c0a"},
 ]
 space-wrappers = []
-tb-nightly = [
-    {file = "tb_nightly-1.14.0a20190603-py2-none-any.whl", hash = "sha256:8dc02a7ccc1ddbf6b471874aa378500fd888b442b0de08daa10ac0bad4971007"},
-    {file = "tb_nightly-1.14.0a20190603-py3-none-any.whl", hash = "sha256:60c159328310a56de128e89660dd3bd019583a5bb8e9c40d16e29d374ecaa7ce"},
+tensorboard = [
+    {file = "tensorboard-1.13.1-py2-none-any.whl", hash = "sha256:53d8f40589c903dae65f39a799c2bc49defae3703754984d90613d26ebd714a4"},
+    {file = "tensorboard-1.13.1-py3-none-any.whl", hash = "sha256:b664fe7772be5670d8b04200342e681af7795a12cd752709aed565c06c0cc196"},
 ]
 tensorflow = [
-    {file = "tensorflow-2.0.0b0-cp27-cp27m-macosx_10_11_x86_64.whl", hash = "sha256:44e292eba9524cdca5e4faa4fe3cbdfa512f48df69b54a32aac81d9e54c163f4"},
-    {file = "tensorflow-2.0.0b0-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:a0a27ea6ee6cce7da83e599d06580155876c3baf7e5731e53b060b2e2398cdcc"},
-    {file = "tensorflow-2.0.0b0-cp33-cp33m-macosx_10_11_x86_64.whl", hash = "sha256:390534274da10207fe742095e09bf9ea7281410c6e1e6b6de9e6a312d6e4018a"},
-    {file = "tensorflow-2.0.0b0-cp33-cp33m-manylinux1_x86_64.whl", hash = "sha256:0956f3f83fd750805164670c2b97ed7a93b0e14e3c4efad9bd8335fcdf0472e1"},
-    {file = "tensorflow-2.0.0b0-cp34-cp34m-macosx_10_11_x86_64.whl", hash = "sha256:690d9825169dcd7305443c187f1e813fe93ef44876e41ce9ac3d63866b66b856"},
-    {file = "tensorflow-2.0.0b0-cp34-cp34m-manylinux1_x86_64.whl", hash = "sha256:beb09ac6fdc8e276004134b34ec20e53ad229663305ed91e96b05d258820d53c"},
-    {file = "tensorflow-2.0.0b0-cp35-cp35m-macosx_10_11_x86_64.whl", hash = "sha256:3c0cd320e542f318b58e5bfa4bffd21477050635f51f2d914b3f7b63f0d98126"},
-    {file = "tensorflow-2.0.0b0-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:3514d65ef5625177688feaa11866e459c9cde53e18dcff17630ac3be4af6da5f"},
-    {file = "tensorflow-2.0.0b0-cp35-cp35m-win_amd64.whl", hash = "sha256:73d881a5793a2182ff38a7a62ed87adb63a6ab178c78f2bf748a0aaa5576d978"},
-    {file = "tensorflow-2.0.0b0-cp36-cp36m-macosx_10_11_x86_64.whl", hash = "sha256:f86c768f3e8ae54a5353357de86b6139f6bca2fb8b75a4579b7761b5d350f72b"},
-    {file = "tensorflow-2.0.0b0-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:b75cfa72e858ebaeb9c4edbaef8a51bac5304846e92f13ff8d87b7a891629da5"},
-    {file = "tensorflow-2.0.0b0-cp36-cp36m-win_amd64.whl", hash = "sha256:4efaa874ea70cd254d76deca369fce533eab1d2bb422a0f20f0ff615251a8697"},
-    {file = "tensorflow-2.0.0b0-cp37-cp37m-macosx_10_11_x86_64.whl", hash = "sha256:5b71e21d20cdde1b91aacc927474a95475afb661f769adfe2ff8a694460e687e"},
-    {file = "tensorflow-2.0.0b0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:dda5d9c6e6d651308044ea5dc41ab86726bd7ad30c431da5079a81a23974de84"},
-    {file = "tensorflow-2.0.0b0-cp37-cp37m-win_amd64.whl", hash = "sha256:f930720299527ef04c1d1402e7abfed7749bd2448c66ea58cfefc1cc45dedaf9"},
+    {file = "tensorflow-1.13.1-cp27-cp27m-macosx_10_11_x86_64.whl", hash = "sha256:0f305f3c461ed2ce5e0b65fccc7b7452f483c7935dd8a52a466d622e642fdea8"},
+    {file = "tensorflow-1.13.1-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:f21fb65c8e874f40c654bc9b3ff3db3ec26f98f03fe64a541bc768f6f5c52ac2"},
+    {file = "tensorflow-1.13.1-cp33-cp33m-macosx_10_11_x86_64.whl", hash = "sha256:bcf86966b7554e407bb7d73341f2e108df62a910d40b4cd2a914867f2a5de51c"},
+    {file = "tensorflow-1.13.1-cp33-cp33m-manylinux1_x86_64.whl", hash = "sha256:de0425b58cb34006e4500565239b4c3a3055b95bff132f097fa46c87d8e463c9"},
+    {file = "tensorflow-1.13.1-cp34-cp34m-macosx_10_11_x86_64.whl", hash = "sha256:6b0a0a413390302ce7c22c98695983d6fb8406861cfb418b25536f57a96c0b89"},
+    {file = "tensorflow-1.13.1-cp34-cp34m-manylinux1_x86_64.whl", hash = "sha256:bc374f5a662b6e164cd1c4da61ccc752ec208a44893d2f9dcf47d2a0a2cef311"},
+    {file = "tensorflow-1.13.1-cp35-cp35m-macosx_10_11_x86_64.whl", hash = "sha256:c3abffd51c168cfd62a557243c47a29ab48deb52a64465e6818060f20755ddb4"},
+    {file = "tensorflow-1.13.1-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:87bf719a564f11d63e4f614e933e5a612dd4e67c88266b774236e0982f5fcf69"},
+    {file = "tensorflow-1.13.1-cp35-cp35m-win_amd64.whl", hash = "sha256:4c86be0e476b64cedf4ffa059d71b764e75b895effb697345687e3057929a7b5"},
+    {file = "tensorflow-1.13.1-cp36-cp36m-macosx_10_11_x86_64.whl", hash = "sha256:ba29e66331cd2a8f824e0fa937ce44bd624bc37739f2f083694e473051d89ace"},
+    {file = "tensorflow-1.13.1-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:77eec2351d0a9b5312ea01ee4c78c13996f249cf1bead2e68256a65e533f45ef"},
+    {file = "tensorflow-1.13.1-cp36-cp36m-win_amd64.whl", hash = "sha256:d7341617aedd73c2c847755e87697e9c19eb625c73da26d6cd669220c5565119"},
+    {file = "tensorflow-1.13.1-cp37-cp37m-macosx_10_11_x86_64.whl", hash = "sha256:0de5887495c20e1130ae4d9bcfaf80cec87f579a9c27a84141a588a46e5aa853"},
+    {file = "tensorflow-1.13.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:c41862c65628261229db22e33f9e570d845eeb5cea66dcbaebe404405edaa69b"},
+    {file = "tensorflow-1.13.1-cp37-cp37m-win_amd64.whl", hash = "sha256:4325f20b5a703b80a5f7a8807f07ad8735025bd2a947093ffff1c26fbdc7980b"},
+]
+tensorflow-estimator = [
+    {file = "tensorflow_estimator-1.13.0-py2.py3-none-any.whl", hash = "sha256:7cfdaa3e83e3532f31713713feb98be7ea9f3065722be4267e49b6c301271419"},
 ]
 termcolor = [
     {file = "termcolor-1.1.0.tar.gz", hash = "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"},
-]
-tf-estimator-nightly = [
-    {file = "tf_estimator_nightly-1.14.0.dev2019060501-py2.py3-none-any.whl", hash = "sha256:99818ef0c70c23ce6417085c960ca2d275db9bd248abeb63da1b4f138aa00cf0"},
 ]
 urllib3 = [
     {file = "urllib3-1.25.8-py2.py3-none-any.whl", hash = "sha256:2f3db8b19923a873b3e5256dc9c2dedfa883e33d87c690d9c7913e1f40673cdc"},
@@ -892,9 +889,6 @@ werkzeug = [
 wheel = [
     {file = "wheel-0.34.2-py2.py3-none-any.whl", hash = "sha256:df277cb51e61359aba502208d680f90c0493adec6f0e848af94948778aed386e"},
     {file = "wheel-0.34.2.tar.gz", hash = "sha256:8788e9155fe14f54164c1b9eb0a319d98ef02c160725587ad60f14ddc57b6f96"},
-]
-wrapt = [
-    {file = "wrapt-1.11.2.tar.gz", hash = "sha256:565a021fd19419476b9362b05eeaa094178de64f8361e44468f9e9d7843901e1"},
 ]
 zmq = [
     {file = "zmq-0.0.0.tar.gz", hash = "sha256:6b1a1de53338646e8c8405803cffb659e8eb7bb02fff4c9be62a7acfac8370c9"},

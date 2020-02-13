@@ -25,8 +25,12 @@ import space_wrappers
 from market_config import params as market_config
 
 notes = """
-    Back on the job - new setups, central server, using the internet!
-    Thursday morning.
+    Afternoon of Thursday 13th Feb.
+    Doing a 50,000 step one with my new unique bids metric, to see whether it could be a measure of convergende.
+    Recognise that 50k steps may not be enough, but also want to see if gpu2 is worth the money.
+    This will test if our bottleneck is the network or not.
+    
+    
     
     Blind bidding.
     Providing Historical context.
@@ -139,12 +143,13 @@ logbook().record_hyperparameter('Learning Rate', learning_rate)
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
-nb_steps = 500000
-# nb_steps = 50000
+# nb_steps = 500000
+nb_steps = 50000
 # nb_steps = 25000
 # nb_steps = 5000
+# nb_steps = 1500
 # nb_steps = 50
-dqn.fit(env, nb_steps=nb_steps, visualize=False, verbose=2)
+dqn.fit(env, nb_steps=nb_steps, visualize=True, verbose=2)
 logbook().record_hyperparameter('nb_steps', nb_steps)
 
 # After training is done, we save the final weights.

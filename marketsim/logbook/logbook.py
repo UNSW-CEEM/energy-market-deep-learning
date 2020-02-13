@@ -39,16 +39,16 @@ class Log():
                 #         'meta': {
                 #             'label': 'nyngan',
                 #         },
-                #         'bands': {
-                #             1: {
+                #         'bands': []
+                #             {
                 #             'price': 30,
                 #             'volume': 10
                 #             },
-                #             2: {
+                #             {
                 #             'price': 2,
                 #             'volume': 5
                 #             }
-                #         }
+                #         ]
                 #     }
                 # },
                 
@@ -110,8 +110,30 @@ class Log():
         # except:
         #     print("Logbook submission failed.")
     
-    def save_json(self):
-        with open('result.json', 'w') as f:
+    def get_num_unique_bids(self, previous_steps):
+        all_step_nums = sorted([x for x in self.data['bidstacks']])
+        relevant_step_nums = all_step_nums[-previous_steps:]
+        
+        previously_seen_bids = []
+        for i in relevant_step_nums:
+            bid_string = ""
+            for participant_label in self.data['bidstacks'][i]:
+                temp_bid_list = []
+                
+                for b in self.data['bidstacks'][i][participant_label]['bands']:
+                    # print(b, participant_label, self.data['bidstacks'][i]['participant_label']['bands'][b])
+                    temp_bid_list.append(b)
+                sortedbids = sorted(temp_bid_list, key = lambda bid: (bid['price']))
+                for bid in sortedbids:
+                    bid_string += str(bid['price'])
+                    bid_string += str(bid['volume'])
+            if not bid_string in previously_seen_bids:
+                previously_seen_bids.append(bid_string)
+        
+        return len(previously_seen_bids)
+    
+    def save_json(self, label=""):
+        with open('result_'+label+'.json', 'w') as f:
             json.dump(self.data, f)
 
     def trim(self):
