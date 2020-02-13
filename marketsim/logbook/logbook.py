@@ -98,12 +98,41 @@ class Log():
         self.data['timeseries']['price']['data'].append([step_no,price])
 
     def submit(self):
+        """
+            Attempts to send the logbook data to the logbook server.
+            For anything more than a test, it is worth calling trim() before this function.
+        """
+
         print("Submitting to remote server")
         # try:
         requests.post(POST_URL, data=json.dumps(self.data))
         print("Successfully submitted")
         # except:
         #     print("Logbook submission failed.")
+    
+    def save_json(self):
+        with open('result.json', 'w') as f:
+            json.dump(self.data, f)
+
+    def trim(self):
+        """
+            This function trims the timeseries output of the logbook 
+            so that it can be sent via a single http request to the logbook server.
+        """
+        TRIM_LENGTH = 50
+        # Trim the simple timeseries arrays
+        for key in self.data['timeseries']:
+            self.data['timeseries'][key]['data'] = self.data['timeseries'][key]['data'][-TRIM_LENGTH:]
+        
+        # Trim the bidstack arrays.
+        step_nos = [x for x in self.data['bidstacks']]
+        step_nos = step_nos[-TRIM_LENGTH:]
+        new_bidstacks = {}
+        for i in range(len(step_nos)):
+            new_bidstacks[i] = self.data['bidstacks'][step_nos[i]]
+        # Done
+        pass
+    
         
 # Need to use a dependency injector version so that in all imports/calls, we get the same object.
 

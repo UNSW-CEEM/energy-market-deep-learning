@@ -25,9 +25,15 @@ import space_wrappers
 from market_config import params as market_config
 
 notes = """
+    Back on the job - new setups, central server, using the internet!
+    Thursday morning.
+    
+    Blind bidding.
+    Providing Historical context.
+    Revealing previous bids.
     Signalling next demand and providing historical context (bids last time demand was at this level)
     EPS-Greedy Policy.
-    Non-Blind bidding.
+    
     5 bands each.
 """
 
@@ -133,23 +139,24 @@ logbook().record_hyperparameter('Learning Rate', learning_rate)
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
-# nb_steps = 500000
+nb_steps = 500000
 # nb_steps = 50000
 # nb_steps = 25000
-nb_steps = 5000
+# nb_steps = 5000
 # nb_steps = 50
 dqn.fit(env, nb_steps=nb_steps, visualize=False, verbose=2)
 logbook().record_hyperparameter('nb_steps', nb_steps)
 
 # After training is done, we save the final weights.
-dqn.save_weights('dqn_{}_weights.h5f'.format(ENV_NAME), overwrite=True)
+dqn.save_weights('dqn_{}_{}_weights.h5f'.format(ENV_NAME,participant_name), overwrite=True)
 
 # Finally, evaluate our algorithm for 5 episodes.
 nb_episodes = 5
 logbook().record_metadata('nb_episodes (testing)', nb_episodes)
 dqn.test(env, nb_episodes=5, visualize=True)
 
-
-
 logbook().record_notes(notes)
+
+logbook().save_json()
+logbook().trim()
 logbook().submit()
