@@ -25,14 +25,17 @@ import space_wrappers
 from market_config import params as market_config
 
 notes = """
-    EM 116 and 117
+    EM 120 and 121
     Afternoon of Friday 14th Feb.
+    Below but with longer testing period, and more reporting.
+    Took max demand to 10 not 20, lower obs space. 
     Trying something different now. Evolving demand. Signalling next demand. No guidance on previous bids under these conditions (because superflous) BUT
     shouwing previous bids. The idea here is that the equilibrium might come out to be that for any given demand, over a number of rounds, participants adjust their bids
     such that demand is split between them, and price is maximised.
     Same as 112/113, but bumped warmup steps up to 30,000 (from 1000) - hopefully that gives it a more decent sample size. 
     
-    Just doing a small batch to see if we get anything relevant - 30k warmups, 20k learning. 
+    Just doing a small batch to see if we get anything relevant - 10k warmups, 40k learning. 
+    Also bumped the Learning Rate up to 1e-2
 
     EPS-Greedy Policy.
     
@@ -57,7 +60,8 @@ else:
 
 
 # ENV_NAME = 'CartPole-v0'
-ENV_NAME = 'MultiBidMarket-v0'
+# ENV_NAME = 'MultiBidMarket-v0'
+ENV_NAME = 'MultiBidMarketEfficient-v0'
 extra_label = "Simple Adversarial"
 
 logbook().set_label(extra_label+" "+ENV_NAME+" "+participant_name+" "+pendulum.now().format('D/M HH:mm'))
@@ -116,7 +120,7 @@ policy = EpsGreedyQPolicy()
 # policy = BoltzmannGumbelQPolicy()
 
 # DQN Agent Source here: https://github.com/keras-rl/keras-rl/blob/master/rl/agents/dqn.py#L89
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=30000, target_model_update=1e-3, policy=policy)
+dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=10000, target_model_update=1e-3, policy=policy)
 # Record to logbook
 logbook().record_hyperparameter('Agent', str(type(dqn)))
 logbook().record_hyperparameter('Memory Type', str(type(memory)))
@@ -133,8 +137,8 @@ logbook().record_hyperparameter('gamma', dqn.gamma) #defaults to 0.99. 'Discount
 # Needs general tuning, usually model-specific - https://machinelearningmastery.com/learning-rate-for-deep-learning-neural-networks/
 # learning_rate = 1e-6
 # learning_rate = 1e-3
-# learning_rate = 1e-1
-learning_rate = 1e-3
+# learning_rate = 1e-3
+learning_rate = 1e-2
 dqn.compile(Adam(lr=learning_rate), metrics=['mae'])
 logbook().record_hyperparameter('Learning Rate', learning_rate)
 
@@ -157,7 +161,7 @@ logbook().record_hyperparameter('nb_steps', nb_steps)
 dqn.save_weights('dqn_{}_{}_weights.h5f'.format(ENV_NAME,participant_name), overwrite=True)
 
 # Finally, evaluate our algorithm for 5 episodes.
-nb_episodes = 5
+nb_episodes = 20
 logbook().record_metadata('nb_episodes (testing)', nb_episodes)
 dqn.test(env, nb_episodes=5, visualize=True)
 

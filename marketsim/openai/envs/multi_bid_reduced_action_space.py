@@ -13,13 +13,16 @@ from marketsim.logbook.logbook import logbook
 
 from marketsim.io.clients.asyncclient import AsyncClient
 from market_config import params as market_config
-
+import itertools
 
 
 
 
 
 TOTAL_CAPACITY = float(market_config['MAX_DEMAND']) / float(len(market_config['PARTICIPANTS']))
+
+
+
 
 class MultiBidMarket(gym.Env):
     """
@@ -47,18 +50,17 @@ class MultiBidMarket(gym.Env):
         # Create a spot in the observation space for each participant other than this one. 
         if market_config['REVEAL_PREVIOUS_BIDS']:
             for i in range(len(market_config['PARTICIPANTS']) - 1):
-                for band in range(market_config['NUM_BANDS']):
-                    obs_high.append(market_config['MAX_PRICE'])
-                    obs_low.append(market_config['MIN_PRICE'])
+                
+                obs_high.append(market_config['MAX_PRICE'])
+                obs_low.append(market_config['MIN_PRICE'])
         
         # Create a spot in the observation space for each participant other than this one
         # These spots are used to deliver the way the other participants last bid in this context. 
         if market_config['PROVIDE_HISTORICAL_CONTEXT']:
+            self._saved_history = {}
             for i in range(len(market_config['PARTICIPANTS']) - 1):
-                self._saved_history = {}
-                for band in range(market_config['NUM_BANDS']):
-                    obs_high.append(market_config['MAX_PRICE'])
-                    obs_low.append(market_config['MIN_PRICE'])
+                obs_high.append(market_config['MAX_PRICE'])
+                obs_low.append(market_config['MIN_PRICE'])
 
         # Define
         obs_high = np.array(obs_high)
@@ -70,12 +72,30 @@ class MultiBidMarket(gym.Env):
         self.observation_space = spaces.Box(obs_low, obs_high )
 
         
-        
-        # self.action_space = spaces.Discrete(10)
-        try:
-            self.action_space = spaces.MultiDiscrete([market_config['MAX_PRICE'] for b in range(market_config['NUM_BANDS'])]) #5 bands of $0 - $9 bids. 
-        except: # It seems that in some versions of openai gym, the MultiDiscrete constructor needs an array of high/lows.
-            self.action_space = spaces.MultiDiscrete([ [0,market_config['MAX_PRICE']] for b in range(market_config['NUM_BANDS'])]) #5 bands of $0 - $9 bids. 
+        # Lower the size of the action space by brute forcing a mapping between action space integers and combinations of bids. 
+        # Because if you just do a multidiscrete array of bids and bands, you end up with an action space that is larger than it needs to be.
+        # Because we care about combinations (ordering doesnt matter) rather than permutations (ordering matters)
+        prices = range(market_config['MAX_PRICE'])
+        bands = range(market_config['NUM_BANDS'])
+        # Cartesian product gives you permutations with replacement, as at https://stackoverflow.com/questions/14006867/python-itertools-permutations-how-to-include-repeating-characters
+        bid_permutations = itertools.product(prices, repeat=len(bands))
+        bid_permutations = [x for x in bid_permutations]
+        self.bid_to_idx = {}
+        self.idx_to_bid = {}
+        counter = 0
+        for perm in bid_permutations:
+            perm = tuple(sorted(perm))
+
+            if not perm in self.bid_to_idx:
+                self.bid_to_idx[perm] = counter
+                self.idx_to_bid[counter] = perm
+                counter += 1
+
+        self.action_space = spaces.Discrete(len(self.bid_to_idx))
+        # try:
+        #     self.action_space = spaces.MultiDiscrete([market_config['MAX_PRICE'] for b in range(market_config['NUM_BANDS'])]) #5 bands of $0 - $9 bids. 
+        # except: # It seems that in some versions of openai gym, the MultiDiscrete constructor needs an array of high/lows.
+        #     self.action_space = spaces.MultiDiscrete([ [0,market_config['MAX_PRICE']] for b in range(market_config['NUM_BANDS'])]) #5 bands of $0 - $9 bids. 
 
         self.seed()
         self.viewer = None
@@ -113,7 +133,7 @@ class MultiBidMarket(gym.Env):
         data = {
                 'id': self.id,
                 'label':self.label,
-                'bids' : [ [int(a), TOTAL_CAPACITY / market_config['NUM_BANDS']] for a in action ],
+                'bids' : [ [int(a), TOTAL_CAPACITY / market_config['NUM_BANDS']] for a in self.idx_to_bid[action] ],
             }
         
         reply = self.io.send(data)
@@ -133,11 +153,14 @@ class MultiBidMarket(gym.Env):
         if market_config['REVEAL_PREVIOUS_BIDS']:
             for p in market_config['PARTICIPANTS']:
                 if p != self.label:
+                    # create an array of zeros with length equal to the number of bands. 
                     prices = [0] * market_config['NUM_BANDS']
                     for bid in reply['all_bids'][p]:
                         prices[bid['band']] = int(bid['price'])
+                    prices = tuple(prices)
+                    bid_idx = self.bid_to_idx[prices]
                     # Add the bid info to the observation
-                    next_state += prices
+                    next_state.append(bid_idx)
         
         # Add each participant's previous bids in a similar demand situation.
         if market_config['PROVIDE_HISTORICAL_CONTEXT']:
@@ -147,8 +170,11 @@ class MultiBidMarket(gym.Env):
                     if reply['next_demand'] in self._saved_history:
                         for bid in reply['all_bids'][p]:
                             prices[bid['band']] = int(bid['price'])
+                    prices = tuple(prices)
+                    bid_idx = self.bid_to_idx[prices]
                     # Add the bid info to the observation
-                    next_state += prices
+                    next_state.append(bid_idx)
+                    
         
             self._saved_history[reply['next_demand']] = reply['all_bids']
         

@@ -5,7 +5,7 @@ params = {
     
 
     # This needs to be more than or equal to no_participants * no_bands. 
-    'MAX_DEMAND' : 20,
+    'MAX_DEMAND' : 10,
     # Include the last set of bids in the observation space.
     'REVEAL_PREVIOUS_BIDS':True,
     # Give the agent an example of how bidders behaved last time next demand was seen. 

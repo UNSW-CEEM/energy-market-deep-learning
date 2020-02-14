@@ -141,7 +141,7 @@ class Log():
             This function trims the timeseries output of the logbook 
             so that it can be sent via a single http request to the logbook server.
         """
-        TRIM_LENGTH = 200
+        TRIM_LENGTH = 960
         # Trim the simple timeseries arrays
         for key in self.data['timeseries']:
             self.data['timeseries'][key]['data'] = self.data['timeseries'][key]['data'][-TRIM_LENGTH:]

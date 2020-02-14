@@ -12,3 +12,4 @@ var
 *.pyc
 *.swp
 .DS_Store
+results
