@@ -38,7 +38,7 @@ class EvolvingDemand():
         self.probability = probability
     
     def next(self): 
-        if(random.random() < probability):
+        if(random.random() < self.probability):
             # If its already max, can only go down.
             if self.previous == self.max:
                 self.previous = self.max - 1

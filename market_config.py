@@ -25,7 +25,7 @@ params = {
     
     # 'MARKET_SERVER':'tcp://localhost:5570', #local
     # 'MARKET_SERVER':'tcp://138.68.254.184:5570', #digitalocean market-server
-    'MARKET_SERVER':'tcp://178.128.15.200:5570', #digitalocean market-server-test
-    # 'MARKET_SERVER':'tcp://206.189.213.129:5570', #digitalocean market-server-test-2
+    # 'MARKET_SERVER':'tcp://178.128.15.200:5570', #digitalocean market-server-test
+    'MARKET_SERVER':'tcp://206.189.213.129:5570', #digitalocean market-server-test-2 - updated with new demand config options.
 
 }
