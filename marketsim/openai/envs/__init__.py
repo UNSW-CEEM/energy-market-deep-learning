@@ -10,6 +10,7 @@ register(
     entry_point='marketsim.openai.envs.multi_bid:MultiBidMarket',
 )
 
+
 register(
     id='MultiBidAEMOMarket-v0',
     entry_point='marketsim.openai.envs.multi_bid_aemo:MultiBidAEMOMarket',

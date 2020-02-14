@@ -25,17 +25,15 @@ import space_wrappers
 from market_config import params as market_config
 
 notes = """
-    Afternoon of Thursday 13th Feb.
-    Doing a 50,000 step one with my new unique bids metric, to see whether it could be a measure of convergende.
-    Recognise that 50k steps may not be enough, but also want to see if gpu2 is worth the money.
-    This will test if our bottleneck is the network or not.
+    EM 116 and 117
+    Afternoon of Friday 14th Feb.
+    Trying something different now. Evolving demand. Signalling next demand. No guidance on previous bids under these conditions (because superflous) BUT
+    shouwing previous bids. The idea here is that the equilibrium might come out to be that for any given demand, over a number of rounds, participants adjust their bids
+    such that demand is split between them, and price is maximised.
+    Same as 112/113, but bumped warmup steps up to 30,000 (from 1000) - hopefully that gives it a more decent sample size. 
     
-    
-    
-    Blind bidding.
-    Providing Historical context.
-    Revealing previous bids.
-    Signalling next demand and providing historical context (bids last time demand was at this level)
+    Just doing a small batch to see if we get anything relevant - 30k warmups, 20k learning. 
+
     EPS-Greedy Policy.
     
     5 bands each.
@@ -118,7 +116,7 @@ policy = EpsGreedyQPolicy()
 # policy = BoltzmannGumbelQPolicy()
 
 # DQN Agent Source here: https://github.com/keras-rl/keras-rl/blob/master/rl/agents/dqn.py#L89
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=1000, target_model_update=1e-3, policy=policy)
+dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=30000, target_model_update=1e-3, policy=policy)
 # Record to logbook
 logbook().record_hyperparameter('Agent', str(type(dqn)))
 logbook().record_hyperparameter('Memory Type', str(type(memory)))
@@ -135,7 +133,8 @@ logbook().record_hyperparameter('gamma', dqn.gamma) #defaults to 0.99. 'Discount
 # Needs general tuning, usually model-specific - https://machinelearningmastery.com/learning-rate-for-deep-learning-neural-networks/
 # learning_rate = 1e-6
 # learning_rate = 1e-3
-learning_rate = 1e-1
+# learning_rate = 1e-1
+learning_rate = 1e-3
 dqn.compile(Adam(lr=learning_rate), metrics=['mae'])
 logbook().record_hyperparameter('Learning Rate', learning_rate)
 
@@ -144,7 +143,9 @@ logbook().record_hyperparameter('Learning Rate', learning_rate)
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
 # nb_steps = 500000
+# nb_steps = 100000
 nb_steps = 50000
+
 # nb_steps = 25000
 # nb_steps = 5000
 # nb_steps = 1500
