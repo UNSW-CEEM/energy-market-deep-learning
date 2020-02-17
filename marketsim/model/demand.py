@@ -34,23 +34,23 @@ class RandomDiscreteDemand():
 class EvolvingDemand():
     def __init__(self, probability=0.1):
         self.max = market_config['MAX_DEMAND']
-        self.previous = int(self.max / 2.0)
+        self.demand = int(self.max / 2.0)
         self.probability = probability
     
     def next(self): 
         if(random.random() < self.probability):
             # If its already max, can only go down.
-            if self.previous == self.max:
-                self.previous = self.max - 1
-            elif self.previous == 0: #If minimum can only go up.
-                self.previous = min(1, self.max)
+            if self.demand >= self.max:
+                self.demand = self.max - 1
+            elif self.demand == 0: #If minimum can only go up.
+                self.demand = min(1, self.max)
             else:
                 # With 50% probability, move up or down
                 if(random.random() < 0.5):
-                    self.previous  = self.previous - 1
+                    self.demand  = self.demand - 1
                 else:
-                    self.previous = self.previous + 1
-        return self.previous
+                    self.demand = self.demand + 1
+        return self.demand
 
 class FixedDemand():
     def __init__(self):

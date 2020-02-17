@@ -21,6 +21,9 @@ from market_config import params as market_config
 
 TOTAL_CAPACITY = float(market_config['MAX_DEMAND']) / float(len(market_config['PARTICIPANTS']))
 
+
+REDUCE_ACTION_SPACE_SIZE = True
+
 class MultiBidMarket(gym.Env):
     """
     
@@ -182,7 +185,7 @@ class MultiBidMarket(gym.Env):
 
         
         # Every X steps, write results to file in case of dramatic failure. 
-        if self.total_steps % 20000 == 0:
+        if self.total_steps % 200000 == 0:
         # if self.total_steps % 100 == 0:
             logbook().save_json(label=str(self.label))
         

@@ -25,17 +25,24 @@ import space_wrappers
 from market_config import params as market_config
 
 notes = """
-    EM 120 and 121
-    Afternoon of Friday 14th Feb.
-    Below but with longer testing period, and more reporting.
+    EM 130 and 131
+    Night of Sun 16 Feb
+
+    Small batch - 50k. 
+    I have changed the number of prices from 10 to 5. This means that the action space has been reduced from 2002 to 126. Which is significant. 
+
+    Learning Rate 1e-2
+
+    
+
+    
     Took max demand to 10 not 20, lower obs space. 
-    Trying something different now. Evolving demand. Signalling next demand. No guidance on previous bids under these conditions (because superflous) BUT
+    Evolving demand. Signalling next demand. No guidance on previous bids under these conditions (because superflous) BUT
     shouwing previous bids. The idea here is that the equilibrium might come out to be that for any given demand, over a number of rounds, participants adjust their bids
     such that demand is split between them, and price is maximised.
-    Same as 112/113, but bumped warmup steps up to 30,000 (from 1000) - hopefully that gives it a more decent sample size. 
     
-    Just doing a small batch to see if we get anything relevant - 10k warmups, 40k learning. 
-    Also bumped the Learning Rate up to 1e-2
+    
+     
 
     EPS-Greedy Policy.
     
@@ -120,7 +127,7 @@ policy = EpsGreedyQPolicy()
 # policy = BoltzmannGumbelQPolicy()
 
 # DQN Agent Source here: https://github.com/keras-rl/keras-rl/blob/master/rl/agents/dqn.py#L89
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=10000, target_model_update=1e-3, policy=policy)
+dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=20000, target_model_update=1e-3, policy=policy)
 # Record to logbook
 logbook().record_hyperparameter('Agent', str(type(dqn)))
 logbook().record_hyperparameter('Memory Type', str(type(memory)))
@@ -139,6 +146,7 @@ logbook().record_hyperparameter('gamma', dqn.gamma) #defaults to 0.99. 'Discount
 # learning_rate = 1e-3
 # learning_rate = 1e-3
 learning_rate = 1e-2
+# learning_rate = 1e-1
 dqn.compile(Adam(lr=learning_rate), metrics=['mae'])
 logbook().record_hyperparameter('Learning Rate', learning_rate)
 
@@ -146,9 +154,11 @@ logbook().record_hyperparameter('Learning Rate', learning_rate)
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
+nb_steps = 1300000
 # nb_steps = 500000
+# nb_steps = 200000
 # nb_steps = 100000
-nb_steps = 50000
+# nb_steps = 50000
 
 # nb_steps = 25000
 # nb_steps = 5000

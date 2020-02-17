@@ -5,11 +5,15 @@ import itertools
 
 # First, we generate every possible bid.
 # for band in bands:
+# num_prices = market_config['MAX_PRICE']
+num_prices = 5
+
+# num_bands = market_config['NUM_BANDS']
+num_bands = 5
 
 
-
-prices = range(market_config['MAX_PRICE'])
-bands = range(market_config['NUM_BANDS'])
+prices = range(num_prices)
+bands = range(num_bands)
 # Cartesian product gives you permutations with replacement, as at https://stackoverflow.com/questions/14006867/python-itertools-permutations-how-to-include-repeating-characters
 bid_permutations = itertools.product(prices, repeat=len(bands))
 bid_permutations = [x for x in bid_permutations]
