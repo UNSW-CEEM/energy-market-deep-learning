@@ -6,7 +6,7 @@ import marketsim.openai.envs
 from marketsim.logbook.logbook import logbook
 
 from keras.models import Sequential
-from keras.layers import Dense, Activation, Flatten
+from keras.layers import Dense, Activation, Flatten, LSTM
 from keras.optimizers import Adam
 
 import tensorflow as tf
@@ -25,25 +25,22 @@ import space_wrappers
 from market_config import params as market_config
 
 notes = """
-    EM 130 and 131
-    Night of Sun 16 Feb
 
-    Small batch - 50k. 
-    I have changed the number of prices from 10 to 5. This means that the action space has been reduced from 2002 to 126. Which is significant. 
+    Kicking off a giant - 140. 
+    7 million. 
+
+    Trying out the model from a DQN market trading example. 
+    Trying to run all on one again.
+
+    5 Prices to reduce the action and observation spaces.
 
     Learning Rate 1e-2
-
-    
-
     
     Took max demand to 10 not 20, lower obs space. 
     Evolving demand. Signalling next demand. No guidance on previous bids under these conditions (because superflous) BUT
     shouwing previous bids. The idea here is that the equilibrium might come out to be that for any given demand, over a number of rounds, participants adjust their bids
     such that demand is split between them, and price is maximised.
     
-    
-     
-
     EPS-Greedy Policy.
     
     5 bands each.
@@ -82,12 +79,11 @@ for param in market_config:
 # Set the tensorflow memory growth to auto - this is important when running two simultaneous models
 # Otherwise, the first process hogs all the memory and the second (the one that we watch the output of)
 # gets a CUDA_ERROR_OUT_OF_MEMORY message and crashes.
-# config = tf.compat.v1.ConfigProto()
-# # config.gpu_options.allow_growth = True #Set automatically - takes some time. 
-# config.gpu_options.per_process_gpu_memory_fraction = 0.95 / float(len(market_config['PARTICIPANTS'])) # Alternatively, allocate as a fraction of the available memory:
-# sess = tf.compat.v1.Session(config=config)
-# K.set_session(sess)
-
+config = tf.ConfigProto()
+# config.gpu_options.allow_growth = True #Set automatically - takes some time. 
+config.gpu_options.per_process_gpu_memory_fraction = 0.95 / float(len(market_config['PARTICIPANTS'])) # Alternatively, allocate as a fraction of the available memory:
+sess = tf.Session(config=config)
+K.set_session(sess)
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
@@ -102,24 +98,34 @@ logbook().record_hyperparameter('action_space', str(env.action_space))
 logbook().record_hyperparameter('action_space_size', str(nb_actions))
 
 # Next, we build a very simple model.
+# This is a model based on the Atari demo.
+# model = Sequential()
+# model.add(Flatten(input_shape=(1,) + env.observation_space.shape))
+# model.add(Dense(16))
+# model.add(Activation('relu'))
+# model.add(Dense(16))
+# model.add(Activation('relu'))
+# model.add(Dense(16))
+# model.add(Activation('relu'))
+# model.add(Dense(nb_actions))
+# model.add(Activation('linear'))
+
+# This is a model based on Deep RL Trader by miroblog (https://github.com/miroblog/deep_rl_trader)
 model = Sequential()
-model.add(Flatten(input_shape=(1,) + env.observation_space.shape))
-model.add(Dense(16))
+model.add(LSTM(64, input_shape=(1,) + env.observation_space.shape, return_sequences=True))
+model.add(LSTM(64))
+model.add(Dense(32))
 model.add(Activation('relu'))
-model.add(Dense(16))
-model.add(Activation('relu'))
-model.add(Dense(16))
-model.add(Activation('relu'))
-model.add(Dense(nb_actions))
-model.add(Activation('linear'))
+model.add(Dense(nb_actions, activation='linear'))
+
+
+# Record details of the model.
 print("MODEL SUMMARY",model.summary())
-
 logbook().record_model_json(model.to_json())
-
 
 # Finally, we configure and compile our agent. You can use every built-in Keras optimizer and
 # even the metrics!
-memory = SequentialMemory(limit=50000, window_length=1)
+memory = SequentialMemory(limit=50000, window_length=1) # see https://stackoverflow.com/questions/47140642/what-does-the-episodeparametermemory-of-keras-rl-do
 # policy = BoltzmannQPolicy()
 # policy = MaxBoltzmannQPolicy()
 # policy = GreedyQPolicy()
@@ -127,7 +133,7 @@ policy = EpsGreedyQPolicy()
 # policy = BoltzmannGumbelQPolicy()
 
 # DQN Agent Source here: https://github.com/keras-rl/keras-rl/blob/master/rl/agents/dqn.py#L89
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=20000, target_model_update=1e-3, policy=policy)
+dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=10000, target_model_update=1e-3, policy=policy)
 # Record to logbook
 logbook().record_hyperparameter('Agent', str(type(dqn)))
 logbook().record_hyperparameter('Memory Type', str(type(memory)))
@@ -154,7 +160,8 @@ logbook().record_hyperparameter('Learning Rate', learning_rate)
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
-nb_steps = 1300000
+nb_steps = 7000000
+# nb_steps = 1300000
 # nb_steps = 500000
 # nb_steps = 200000
 # nb_steps = 100000

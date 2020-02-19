@@ -4,9 +4,9 @@
 # sleep 120
 
 # GPU1
-floyd run --gpu --env tensorflow-1.3 python dqn_adversarial.py GEN_1
-floyd run --gpu --env tensorflow-1.3 python dqn_adversarial.py GEN_2
+# floyd run --gpu --env tensorflow-1.3 python dqn_adversarial.py GEN_1
+# floyd run --gpu --env tensorflow-1.3 python dqn_adversarial.py GEN_2
 
 #GPU2
-# floyd run --gpu2 --env tensorflow-1.4 python dqn_adversarial.py GEN_1
-# floyd run --gpu2 --env tensorflow-1.4 python dqn_adversarial.py GEN_2
+floyd run --gpu2 --env tensorflow-1.4 python dqn_adversarial.py GEN_1
+floyd run --gpu2 --env tensorflow-1.4 python dqn_adversarial.py GEN_2

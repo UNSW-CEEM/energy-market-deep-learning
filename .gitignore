@@ -1,3 +1,5 @@
 marketsim/io/examples
 *.pyc
 results
+weights
+*.h5f

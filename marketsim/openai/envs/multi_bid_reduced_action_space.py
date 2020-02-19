@@ -210,7 +210,8 @@ class MultiBidMarket(gym.Env):
         # Every X steps, write results to file in case of dramatic failure. 
         if self.total_steps % 20000 == 0:
         # if self.total_steps % 100 == 0:
-            logbook().save_json(label=str(self.label))
+            logbook().trim()
+            # logbook().save_json(label=str(self.label))
         
         return np.array(self.state)
 
