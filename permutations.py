@@ -5,11 +5,11 @@ import itertools
 
 # First, we generate every possible bid.
 # for band in bands:
-# num_prices = market_config['MAX_PRICE']
-num_prices = 5
+num_prices = market_config['MAX_PRICE']
+# num_prices = 5
 
-# num_bands = market_config['NUM_BANDS']
-num_bands = 5
+num_bands = market_config['NUM_BANDS']
+# num_bands = 5
 
 
 prices = range(num_prices)

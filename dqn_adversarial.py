@@ -25,25 +25,7 @@ import space_wrappers
 from market_config import params as market_config
 
 notes = """
-
-    Kicking off a giant - 140. 
-    7 million. 
-
-    Trying out the model from a DQN market trading example. 
-    Trying to run all on one again.
-
-    5 Prices to reduce the action and observation spaces.
-
-    Learning Rate 1e-2
-    
-    Took max demand to 10 not 20, lower obs space. 
-    Evolving demand. Signalling next demand. No guidance on previous bids under these conditions (because superflous) BUT
-    shouwing previous bids. The idea here is that the equilibrium might come out to be that for any given demand, over a number of rounds, participants adjust their bids
-    such that demand is split between them, and price is maximised.
-    
-    EPS-Greedy Policy.
-    
-    5 bands each.
+    A test with max demand 8, num bands 4, max price 5. Reduces action space to 70.
 """
 
 
@@ -132,7 +114,7 @@ policy = EpsGreedyQPolicy()
 # policy = BoltzmannGumbelQPolicy()
 
 # DQN Agent Source here: https://github.com/keras-rl/keras-rl/blob/master/rl/agents/dqn.py#L89
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=10000, target_model_update=1e-3, policy=policy)
+dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=2000, target_model_update=1e-3, policy=policy)
 # Record to logbook
 logbook().record_hyperparameter('Agent', str(type(dqn)))
 logbook().record_hyperparameter('Memory Type', str(type(memory)))
@@ -159,7 +141,7 @@ logbook().record_hyperparameter('Learning Rate', learning_rate)
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
-nb_steps = 7000000
+# nb_steps = 7000000
 # nb_steps = 1300000
 # nb_steps = 500000
 # nb_steps = 200000
@@ -167,7 +149,7 @@ nb_steps = 7000000
 # nb_steps = 50000
 
 # nb_steps = 25000
-# nb_steps = 5000
+nb_steps = 5000
 # nb_steps = 1500
 # nb_steps = 50
 
