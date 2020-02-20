@@ -24,8 +24,12 @@ import space_wrappers
 
 from market_config import params as market_config
 
+label = "147/148 lr=1e-2"
+
 notes = """
-    A test with max demand 8, num bands 4, max price 5. Reduces action space to 70.
+    Max demand 8, num bands 4, max price 5. Reduces action space to 70.
+    1e-2 LR.
+    10 mil.
 """
 
 
@@ -48,9 +52,8 @@ else:
 # ENV_NAME = 'CartPole-v0'
 # ENV_NAME = 'MultiBidMarket-v0'
 ENV_NAME = 'MultiBidMarketEfficient-v0'
-extra_label = "Simple Adversarial"
 
-logbook().set_label(extra_label+" "+ENV_NAME+" "+participant_name+" "+pendulum.now().format('D/M HH:mm'))
+
 logbook().record_metadata('Environment', ENV_NAME)
 logbook().record_metadata('datetime', pendulum.now().isoformat())
 for param in market_config:
@@ -114,7 +117,7 @@ policy = EpsGreedyQPolicy()
 # policy = BoltzmannGumbelQPolicy()
 
 # DQN Agent Source here: https://github.com/keras-rl/keras-rl/blob/master/rl/agents/dqn.py#L89
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=2000, target_model_update=1e-3, policy=policy)
+dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=10000, target_model_update=1e-3, policy=policy)
 # Record to logbook
 logbook().record_hyperparameter('Agent', str(type(dqn)))
 logbook().record_hyperparameter('Memory Type', str(type(memory)))
@@ -141,31 +144,41 @@ logbook().record_hyperparameter('Learning Rate', learning_rate)
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
 # dqn.fit(env, nb_steps=50000, visualize=False, verbose=2)
-# nb_steps = 7000000
+nb_steps = 50000000
 # nb_steps = 1300000
 # nb_steps = 500000
 # nb_steps = 200000
 # nb_steps = 100000
 # nb_steps = 50000
-
 # nb_steps = 25000
-nb_steps = 5000
+# nb_steps = 5000
 # nb_steps = 1500
 # nb_steps = 50
 
-dqn.fit(env, nb_steps=nb_steps, visualize=True, verbose=2)
+
 logbook().record_hyperparameter('nb_steps', nb_steps)
+logbook().record_hyperparameter('steps_per_testing_training_iteration', steps_per_testing_training_iteration)
 
-# After training is done, we save the final weights.
-dqn.save_weights('dqn_{}_{}_weights.h5f'.format(ENV_NAME,participant_name), overwrite=True)
+steps_per_testing_training_iteration = 250000
+num_steps_completed = 0
+# Train for a number of steps, then test and report. 
+while num_steps_completed < nb_steps:
+    # Fit / Re-Fit
+    dqn.fit(env, nb_steps=steps_per_testing_training_iteration, visualize=True, verbose=2)
+    # Iterate
+    num_steps_completed += steps_per_testing_training_iteration
+    # Test
+    nb_episodes = 20
+    dqn.test(env, nb_episodes=5, visualize=True)
+    # Record to logbook.
+    logbook().set_label(label+" i="+str(num_steps_completed))
+    logbook().record_metadata('nb_episodes (testing)', nb_episodes)
+    logbook().record_notes(notes + " \n Iteration"+str(num_steps_completed)+"    "+pendulum.now().format('D/M HH:mm'))
+    logbook().save_json()
+    logbook().trim()
+    logbook().submit()
 
-# Finally, evaluate our algorithm for 5 episodes.
-nb_episodes = 20
-logbook().record_metadata('nb_episodes (testing)', nb_episodes)
-dqn.test(env, nb_episodes=5, visualize=True)
+    # After training is done, we save the weights.
+    dqn.save_weights('dqn_{}_{}_weights.h5f'.format(ENV_NAME,participant_name), overwrite=True)
 
-logbook().record_notes(notes)
 
-logbook().save_json()
-logbook().trim()
-logbook().submit()

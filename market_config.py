@@ -21,9 +21,10 @@ params = {
     'MIN_PRICE' : 0,
     'MAX_PRICE' : 5,
     
-    'MARKET_SERVER':'tcp://localhost:5570', #local
-    # 'MARKET_SERVER':'tcp://138.68.254.184:5570', #digitalocean market-server - updated with new demand config options.
+    # 'MARKET_SERVER':'tcp://localhost:5570', #local
+    'MARKET_SERVER':'tcp://138.68.254.184:5570', #digitalocean market-server-147-148
     # 'MARKET_SERVER':'tcp://178.128.15.200:5570', #digitalocean market-server-test
     # 'MARKET_SERVER':'tcp://206.189.213.129:5570', #digitalocean market-server-test-2 - updated with new demand config options.
+    
 
 }
