@@ -3,3 +3,5 @@ marketsim/io/examples
 results
 weights
 *.h5f
+floyd-login-unsw.sh
+floyd-login-personal.sh

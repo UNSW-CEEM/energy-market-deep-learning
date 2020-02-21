@@ -24,12 +24,12 @@ import space_wrappers
 
 from market_config import params as market_config
 
-label = "147/148 lr=1e-2"
+label = "161-162 lr=1e-6"
 
 notes = """
     Max demand 8, num bands 4, max price 5. Reduces action space to 70.
-    1e-2 LR.
-    10 mil.
+    1e-6 LR.
+    50 mil steps.
 """
 
 
@@ -132,10 +132,11 @@ logbook().record_hyperparameter('gamma', dqn.gamma) #defaults to 0.99. 'Discount
 
 # dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 # Needs general tuning, usually model-specific - https://machinelearningmastery.com/learning-rate-for-deep-learning-neural-networks/
-# learning_rate = 1e-6
+learning_rate = 1e-6
+# learning_rate = 1e-5
+# learning_rate = 1e-4
 # learning_rate = 1e-3
-# learning_rate = 1e-3
-learning_rate = 1e-2
+# learning_rate = 1e-2
 # learning_rate = 1e-1
 dqn.compile(Adam(lr=learning_rate), metrics=['mae'])
 logbook().record_hyperparameter('Learning Rate', learning_rate)
@@ -157,9 +158,10 @@ nb_steps = 50000000
 
 
 logbook().record_hyperparameter('nb_steps', nb_steps)
-logbook().record_hyperparameter('steps_per_testing_training_iteration', steps_per_testing_training_iteration)
+
 
 steps_per_testing_training_iteration = 250000
+logbook().record_hyperparameter('steps_per_testing_training_iteration', steps_per_testing_training_iteration)
 num_steps_completed = 0
 # Train for a number of steps, then test and report. 
 while num_steps_completed < nb_steps:
