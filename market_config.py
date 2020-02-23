@@ -28,10 +28,10 @@ params = {
     # 'MARKET_SERVER':'tcp://167.71.115.44:5570', #digitalocean market-server-157-158
     # 'MARKET_SERVER':'tcp://167.71.115.35:5570', #digitalocean market-server-159-160
     # 'MARKET_SERVER':'tcp://167.71.117.174:5570', #digitalocean market-server-161-162
-    # 'MARKET_SERVER':'tcp://167.71.127.69:5570', #digitalocean market-server-random-1
+    'MARKET_SERVER':'tcp://167.71.127.69:5570', #digitalocean s1-market-server-random
     # 'MARKET_SERVER':'tcp://157.245.191.209:5570', #digitalocean market-server-random-2
     # 'MARKET_SERVER':'tcp://157.245.189.142:5570', #digitalocean market-server-random-3
-    'MARKET_SERVER':'tcp://157.245.173.223:5570', #digitalocean market-server-random-4
+    # 'MARKET_SERVER':'tcp://157.245.173.223:5570', #digitalocean market-server-random-4
     
 
 }
