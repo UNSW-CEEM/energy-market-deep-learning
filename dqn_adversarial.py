@@ -24,7 +24,7 @@ import space_wrappers
 
 from market_config import params as market_config
 
-label = "DO Random 1 lr=1e-2"
+label = "S1 Random lr=1e-2"
 
 notes = """
     Max demand 8, num bands 4, max price 5. Reduces action space to 70.
