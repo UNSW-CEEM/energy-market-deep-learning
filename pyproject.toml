@@ -19,6 +19,7 @@ requests = "^2.22.0"
 space-wrappers = {git = "https://github.com/ngc92/space-wrappers"}
 zmq = "^0.0.0"
 tensorflow = "1.13.1"
+pydigree = "^1.0.1"
 
 [tool.poetry.dev-dependencies]
 

@@ -81,7 +81,7 @@ class Log():
         self.data['timeseries']['epoch_reward']['data'].append(reward)
     
     def record_notes(self, notes):
-        self.data['notes'] += notes+"\n"
+        self.data['notes'] = notes+"\n"
     
     def record_bid(self, participant_label, price, volume,  step_no):
         step_no = int(step_no)

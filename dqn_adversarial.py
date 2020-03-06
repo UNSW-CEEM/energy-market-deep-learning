@@ -24,10 +24,10 @@ import space_wrappers
 
 from market_config import params as market_config
 
-label = "S2 Random lr=1e-3"
+label = "S3 Random lr=1e-3"
 
 notes = """
-    Max demand 8, num bands 4, max price 5. Reduces action space to 70.
+    Max demand 10, num bands 5, max price 10. 
     1e-3 LR.
     50 mil steps.
 """
@@ -162,6 +162,7 @@ logbook().record_hyperparameter('nb_steps', nb_steps)
 
 steps_per_testing_training_iteration = 250000
 logbook().record_hyperparameter('steps_per_testing_training_iteration', steps_per_testing_training_iteration)
+
 num_steps_completed = 0
 # Train for a number of steps, then test and report. 
 while num_steps_completed < nb_steps:
@@ -173,12 +174,17 @@ while num_steps_completed < nb_steps:
     nb_episodes = 20
     dqn.test(env, nb_episodes=5, visualize=True)
     # Record to logbook.
+    
     logbook().set_label(label+" i="+str(num_steps_completed))
     logbook().record_metadata('nb_episodes (testing)', nb_episodes)
     logbook().record_notes(notes + " \n Iteration"+str(num_steps_completed)+"    "+pendulum.now().format('D/M HH:mm'))
     logbook().save_json()
     logbook().trim()
-    logbook().submit()
+    try:
+        logbook().submit()
+    except:
+        print(pendulum.now().format('D/M HH:mm'))
+        print("Logbook Submission Failed :( ")
 
     # After training is done, we save the weights.
     dqn.save_weights('dqn_{}_{}_weights.h5f'.format(ENV_NAME,participant_name), overwrite=True)
