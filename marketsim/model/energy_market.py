@@ -1,11 +1,12 @@
-
+import random
 
 
 class Bid():
     """A bid that represents a price-quantity pair in the system."""
     def __init__(self, label, price, quantity, band):
         self.label = label
-        self.price = price
+        # Add a random number here so that when bids are tied, the selection is truly random. 
+        self.price = price + random.random()
         self.quantity = quantity
         self.band = band
     

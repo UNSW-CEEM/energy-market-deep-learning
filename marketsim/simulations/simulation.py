@@ -26,10 +26,8 @@ class Simulation():
         self.lock = Lock()
 
         # List of participants
-        # self.participant_list = ['Nyngan', 'Bayswater']
         self.participant_list = market_config.params['PARTICIPANTS']
         # Object that returns next demand in series. 
-        # self.demand = Demand(demand_path)
         if market_config.params['DEMAND_TYPE'] == 'fixed':
             self.demand = FixedDemand()
         elif market_config.params['DEMAND_TYPE'] == 'evolving':
