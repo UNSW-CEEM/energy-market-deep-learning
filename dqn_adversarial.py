@@ -24,12 +24,19 @@ import space_wrappers
 
 from market_config import params as market_config
 
-label = "S3 Random lr=1e-3"
+label = "S4 Random lr=1e-3"
 
 notes = """
     Max demand 10, num bands 5, max price 10. 
     1e-3 LR.
     50 mil steps.
+
+
+    Changes since S3:
+    -Now randomly deciding ties through internal random number generator. 
+    -Epoch length no longer 48. Had a feeling it was introducing odd behaviour. 
+    
+    
 """
 
 

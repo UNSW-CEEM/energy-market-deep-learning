@@ -184,7 +184,7 @@ class MultiBidMarket(gym.Env):
         self.epoch_reward += reward
         # Every day, start a new epoch.
         done = False
-        if self.total_steps % 48 == 0:
+        if self.total_steps % market_config['STEPS_PER_EPOCH'] == 0:
             done = True
         
         # the next next_state, the reward for the last action, the current next_state, a boolean representing whether the current episode of our model is done and some additional info on our problem
